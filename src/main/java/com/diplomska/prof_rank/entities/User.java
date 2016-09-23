@@ -4,6 +4,8 @@ import org.apache.tapestry5.beaneditor.NonVisual;
 import org.apache.tapestry5.beaneditor.Validate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Aleksandar on 21-Sep-16.
@@ -26,7 +28,11 @@ public class User {
 
     @Column(nullable = true)
     private Role role;
-    
+
+    @Column
+    @ElementCollection(targetClass = ReferenceUser.class)
+    private List<ReferenceUser> referenceUsers = new ArrayList<ReferenceUser>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NonVisual
@@ -77,5 +83,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    @OneToMany(mappedBy = "user")
+    public List<ReferenceUser> getReferenceUsers() {
+        return referenceUsers;
+    }
+
+    public void setReferenceUsers(List<ReferenceUser> referenceUsers) {
+        this.referenceUsers = referenceUsers;
     }
 }

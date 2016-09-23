@@ -1,25 +1,23 @@
 package com.diplomska.prof_rank.entities;
 
 import org.apache.tapestry5.beaneditor.NonVisual;
-import org.apache.tapestry5.beaneditor.Validate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Aleksandar on 21-Sep-16.
+ * Created by Aleksandar on 23-Sep-16.
  */
 @Entity
-public class Section {
+public class ReferenceType {
     private Long id;
 
-    @Validate("required")
     private String name;
 
     @Column
-    @ElementCollection(targetClass = RulebookSection.class)
-    private List<RulebookSection> rulebookSections = new ArrayList<RulebookSection>();
+    @ElementCollection(targetClass = AttributeReferenceType.class)
+    private List<AttributeReferenceType> attributeReferenceTypes = new ArrayList<AttributeReferenceType>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,12 +38,12 @@ public class Section {
         this.name = name;
     }
 
-//    @OneToMany(mappedBy = "section")
-    public List<RulebookSection> getRulebookSections() {
-        return rulebookSections;
+    @OneToMany(mappedBy = "referenceType")
+    public List<AttributeReferenceType> getAttributeReferenceTypes() {
+        return attributeReferenceTypes;
     }
 
-    public void setRulebookSections(List<RulebookSection> rulebookSections) {
-        this.rulebookSections = rulebookSections;
+    public void setAttributeReferenceTypes(List<AttributeReferenceType> attributeReferenceTypes) {
+        this.attributeReferenceTypes = attributeReferenceTypes;
     }
 }
