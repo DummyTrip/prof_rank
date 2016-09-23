@@ -17,9 +17,9 @@ public class SubjectDomain {
 
     private String identifier;
 
-    @Column
-    @ElementCollection(targetClass = InstitutionReport.class)
-    private List<InstitutionReport> institutionReports = new ArrayList<InstitutionReport>();
+//    @Column
+//    @ElementCollection(targetClass = InstitutionReport.class)
+//    private List<InstitutionReport> institutionReports = new ArrayList<InstitutionReport>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,11 +48,11 @@ public class SubjectDomain {
         this.identifier = identifier;
     }
 
-    public List<InstitutionReport> getInstitutionReports() {
-        return institutionReports;
-    }
-
-    public void setInstitutionReports(List<InstitutionReport> institutionReports) {
-        this.institutionReports = institutionReports;
-    }
+//    public List<InstitutionReport> getInstitutionReports() {
+//        return institutionReports;
+//    }
+//
+//    public void setInstitutionReports(List<InstitutionReport> institutionReports) {
+//        this.institutionReports = institutionReports;
+//    }
 }

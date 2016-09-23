@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Entity
 public class User {
-    private long id;
+    private Long id;
 
     @Validate("required")
     private String name;
@@ -36,12 +36,12 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NonVisual
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        id = id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -1,0 +1,20 @@
+<html t:type="layout" title="temp test page"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <h2>Pages</h2>
+
+    <ul>
+        <!--<li><t:pagelink page="address/create">Create new address</t:pagelink></li>-->
+
+    </ul>
+</div>
+
+<div>
+    <t:grid source="temp" row="tmp"/>
+</div>
+
+
+
+</html>

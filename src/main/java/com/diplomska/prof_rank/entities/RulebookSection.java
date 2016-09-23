@@ -1,11 +1,9 @@
 package com.diplomska.prof_rank.entities;
 
+import org.apache.tapestry5.beaneditor.NonVisual;
 import org.apache.tapestry5.beaneditor.Validate;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
  * Created by Aleksandar on 21-Sep-16.
@@ -20,6 +18,9 @@ public class RulebookSection {
     @Validate("required")
     private Section section;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @NonVisual
     public Long getId() {
         return id;
     }

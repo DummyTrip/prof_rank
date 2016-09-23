@@ -43,4 +43,13 @@
         <p>The current time is: <strong>${currentTime}</strong></p>
     </t:block>
 
+    <div>
+        <h2>Pages</h2>
+
+        <ul>
+            <li><t:pagelink page="temp">Test</t:pagelink></li>
+            <li><t:pagelink page="TempCreate">Test Create</t:pagelink></li>
+        </ul>
+    </div>
+
 </html>

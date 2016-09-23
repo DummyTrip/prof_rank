@@ -17,9 +17,9 @@ public class Section {
     @Validate("required")
     private String name;
 
-    @Column
-    @ElementCollection(targetClass = RulebookSection.class)
-    private List<RulebookSection> rulebookSections = new ArrayList<RulebookSection>();
+//    @Column
+//    @ElementCollection(targetClass = RulebookSection.class)
+//    private List<RulebookSection> rulebookSections = new ArrayList<RulebookSection>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,11 +41,11 @@ public class Section {
     }
 
 //    @OneToMany(mappedBy = "section")
-    public List<RulebookSection> getRulebookSections() {
-        return rulebookSections;
-    }
-
-    public void setRulebookSections(List<RulebookSection> rulebookSections) {
-        this.rulebookSections = rulebookSections;
-    }
+//    public List<RulebookSection> getRulebookSections() {
+//        return rulebookSections;
+//    }
+//
+//    public void setRulebookSections(List<RulebookSection> rulebookSections) {
+//        this.rulebookSections = rulebookSections;
+//    }
 }

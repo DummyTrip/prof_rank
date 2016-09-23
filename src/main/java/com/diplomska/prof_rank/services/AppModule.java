@@ -11,9 +11,6 @@ import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.services.ApplicationDefaults;
 import org.apache.tapestry5.ioc.services.SymbolProvider;
 import org.apache.tapestry5.services.*;
-import org.apache.tapestry5.services.javascript.JavaScriptStack;
-import org.apache.tapestry5.services.javascript.StackExtension;
-import org.apache.tapestry5.services.javascript.StackExtensionType;
 import org.slf4j.Logger;
 
 /**
@@ -30,6 +27,7 @@ public class AppModule
         // Use service builder methods (example below) when the implementation
         // is provided inline, or requires more initialization than simply
         // invoking the constructor.
+        binder.bind(UserHibernate.class);
     }
 
     public static void contributeFactoryDefaults(

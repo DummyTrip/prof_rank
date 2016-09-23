@@ -23,9 +23,9 @@ public class Reference {
     @ElementCollection(targetClass = AttributeReference.class)
     private List<AttributeReference> attributeReferences = new ArrayList<AttributeReference>();
 
-    @Column
-    @ElementCollection(targetClass = ReferenceUser.class)
-    private List<ReferenceUser> referenceUsers = new ArrayList<ReferenceUser>();
+//    @Column
+//    @ElementCollection(targetClass = ReferenceUser.class)
+//    private List<ReferenceUser> referenceUsers = new ArrayList<ReferenceUser>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -74,11 +74,11 @@ public class Reference {
     }
 
 //    @OneToMany(mappedBy = "reference")
-    public List<ReferenceUser> getReferenceUsers() {
-        return referenceUsers;
-    }
-
-    public void setReferenceUsers(List<ReferenceUser> referenceUsers) {
-        this.referenceUsers = referenceUsers;
-    }
+//    public List<ReferenceUser> getReferenceUsers() {
+//        return referenceUsers;
+//    }
+//
+//    public void setReferenceUsers(List<ReferenceUser> referenceUsers) {
+//        this.referenceUsers = referenceUsers;
+//    }
 }

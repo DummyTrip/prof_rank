@@ -18,10 +18,10 @@ public class Institution {
     private String city;
 
     private String country;
-
-    @Column
-    @ElementCollection(targetClass = InstitutionReport.class)
-    private List<InstitutionReport> institutionReports = new ArrayList<InstitutionReport>();
+//
+//    @Column
+//    @ElementCollection(targetClass = InstitutionReport.class)
+//    private List<InstitutionReport> institutionReports = new ArrayList<InstitutionReport>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -58,11 +58,11 @@ public class Institution {
         this.country = country;
     }
 
-    public List<InstitutionReport> getInstitutionReports() {
-        return institutionReports;
-    }
-
-    public void setInstitutionReports(List<InstitutionReport> institutionReports) {
-        this.institutionReports = institutionReports;
-    }
+//    public List<InstitutionReport> getInstitutionReports() {
+//        return institutionReports;
+//    }
+//
+//    public void setInstitutionReports(List<InstitutionReport> institutionReports) {
+//        this.institutionReports = institutionReports;
+//    }
 }

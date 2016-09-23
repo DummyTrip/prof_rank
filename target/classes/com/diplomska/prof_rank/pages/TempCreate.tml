@@ -1,0 +1,6 @@
+<html t:type="layout" title="temp create"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
+
+<t:beaneditform t:id="form" object="temp" submitLabel="Create"/>
+
+</html>
