@@ -34,6 +34,15 @@ public class ReferenceTypeHibernate {
     }
 
     @CommitAfter
+    public void update(ReferenceType referenceType) {
+        if (referenceType == null) {
+            throw new IllegalArgumentException("Cannot remove null value.");
+        }
+
+        session.update(referenceType);
+    }
+
+    @CommitAfter
     public void delete(ReferenceType referenceType) {
         if (referenceType == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
