@@ -1,7 +1,7 @@
-<html t:type="layout" title="Create New User"
+<html t:type="layout" title="Edit User"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
 
-<!--<t:beaneditform object="user" submitLabel="Create User"/>-->
+<!--<t:beaneditform object="user" submitLabel="Edit User"/>-->
 
 <t:form t:id="form" class="form-horizontal" validate="user">
     <t:errors globalOnly="true"/>

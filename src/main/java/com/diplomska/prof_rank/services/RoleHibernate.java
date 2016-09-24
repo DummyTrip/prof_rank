@@ -31,6 +31,15 @@ public class RoleHibernate {
     }
 
     @CommitAfter
+    public void update(Role role) {
+        if (role == null) {
+            throw new IllegalArgumentException("Cannot remove null value.");
+        }
+
+        session.update(role);
+    }
+
+    @CommitAfter
     public void delete(Role role) {
         if (role == null) {
             throw new IllegalArgumentException("Cannot remove null value.");

@@ -39,6 +39,6 @@ public class Role {
 
     @Override
     public String toString() {
-        return name;
+        return this.name;
     }
 }

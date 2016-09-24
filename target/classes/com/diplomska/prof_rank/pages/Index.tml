@@ -50,6 +50,7 @@
             <li><t:pagelink page="temp">Test</t:pagelink></li>
             <li><t:pagelink page="TempCreate">Test Create</t:pagelink></li>
             <li><t:pagelink page="user/index">Users</t:pagelink></li>
+            <li><t:pagelink page="role/index">Roles</t:pagelink></li>
         </ul>
     </div>
 
