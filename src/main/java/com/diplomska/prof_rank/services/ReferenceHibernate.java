@@ -1,8 +1,6 @@
 package com.diplomska.prof_rank.services;
 
-import com.diplomska.prof_rank.entities.Reference;
-import com.diplomska.prof_rank.entities.RulebookSection;
-import com.diplomska.prof_rank.entities.Section;
+import com.diplomska.prof_rank.entities.*;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
@@ -19,6 +17,9 @@ import static org.hibernate.criterion.Restrictions.eq;
 public class ReferenceHibernate {
     @Inject
     Session session;
+
+    @Inject
+    RulebookHibernate rulebookHibernate;
 
     @CommitAfter
     public void store(Reference reference) {
@@ -61,31 +62,93 @@ public class ReferenceHibernate {
         return entities;
     }
 
-//    public List<Section> getReferences(Reference reference) {
-//        if (reference == null) {
-//            throw new IllegalArgumentException("Cannot filter by null value.");
-//        }
-//
-//        List<RulebookSection> rulebookSections = reference.getRulebookSections();
-//        List<Section> references = new ArrayList<Section>();
-//
-//        for (RulebookSection rulebookSection : rulebookSections) {
-//            references.add(rulebookSection.getReference());
-//        }
-//
-//        return references;
-//    }
-//
-//    @CommitAfter
-//    public void setReference(Reference reference, Reference reference) {
-//        if (reference == null || reference == null) {
-//            throw new IllegalArgumentException("Cannot persist null value.");
-//        }
-//        RulebookSection rulebookSection = new RulebookSection();
-//
-//        rulebookSection.setReference(reference);
-//        rulebookSection.setReference(reference);
-//
-//        session.persist(rulebookSection);
-//    }
+    public List<Section> getSections(Reference reference) {
+        if (reference == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        List<ReferenceRulebookSection> referenceRulebookSections= reference.getReferenceRulebookSections();
+        List<RulebookSection> rulebookSections = new ArrayList<RulebookSection>();
+
+        for (ReferenceRulebookSection referenceRulebookSection : referenceRulebookSections) {
+            rulebookSections.add(referenceRulebookSection.getRulebookSection());
+        }
+
+        List<Section> sections = new ArrayList<Section>();
+
+        for (RulebookSection rulebookSection : rulebookSections) {
+            sections.add(rulebookSection.getSection());
+        }
+
+        return sections;
+    }
+
+    @CommitAfter
+    public void setSection(Reference reference, RulebookSection rulebookSection) {
+        if (reference == null || rulebookSection == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+        ReferenceRulebookSection referenceRulebookSection = new ReferenceRulebookSection();
+
+        referenceRulebookSection.setRulebookSection(rulebookSection);
+        referenceRulebookSection.setReference(reference);
+
+        session.persist(referenceRulebookSection);
+    }
+
+    public void setSection(Reference reference, Section section, Rulebook rulebook) {
+        if (reference == null || section == null || rulebook == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        RulebookSection rulebookSection = rulebookHibernate.getRulebookSection(rulebook, section);
+
+        setSection(reference, rulebookSection);
+    }
+
+    public ReferenceType getReferenceTypes(Reference reference) {
+        if (reference == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        return reference.getReferenceType();
+    }
+
+    @CommitAfter
+    public void setReferenceType(Reference reference, ReferenceType referenceType) {
+        if (reference == null || reference == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        reference.setReferenceType(referenceType);
+        session.persist(reference);
+    }
+
+    public List<Attribute> getAttributes(Reference reference) {
+        if (reference == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        List<AttributeReference> attributeReferences = reference.getAttributeReferences();
+        List<Attribute> attributes = new ArrayList<Attribute>();
+
+        for (AttributeReference attributeReference : attributeReferences) {
+            attributes.add(attributeReference.getAttribute());
+        }
+
+        return attributes;
+    }
+
+    @CommitAfter
+    public void setAttribute(Reference reference, Attribute attribute) {
+        if (reference == null || attribute == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+        AttributeReference attributeReference = new AttributeReference();
+
+        attributeReference.setReference(reference);
+        attributeReference.setAttribute(attribute);
+
+        session.persist(attributeReference);
+    }
 }

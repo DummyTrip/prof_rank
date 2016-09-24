@@ -63,6 +63,24 @@ public class RulebookHibernate {
         return entities;
     }
 
+    public RulebookSection getRulebookSection(Rulebook rulebook, Section section) {
+        if (rulebook == null || section == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        Criteria criteria = session.createCriteria(RulebookSection.class);
+        List<RulebookSection> rulebookSections = criteria
+                .add(eq("rulebook_id", rulebook.getId()))
+                .add(eq("section_id", section.getId()))
+                .list();
+
+        if (rulebookSections.size() == 0) {
+            throw new IllegalStateException("No data in database.");
+        }
+
+        return rulebookSections.get(0);
+    }
+
     public List<Section> getSections(Rulebook rulebook) {
         if (rulebook == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");

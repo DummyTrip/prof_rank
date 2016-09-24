@@ -17,13 +17,13 @@ public class Attribute {
 
     private String inputType;
 
-    @Column
-    @ElementCollection(targetClass = AttributeReferenceType.class)
-    private List<AttributeReferenceType> attributeReferenceTypes = new ArrayList<AttributeReferenceType>();
+//    @Column
+//    @ElementCollection(targetClass = AttributeReferenceType.class)
+//    private List<AttributeReferenceType> attributeReferenceTypes = new ArrayList<AttributeReferenceType>();
 
-    @Column
-    @ElementCollection(targetClass = AttributeReference.class)
-    private List<AttributeReference> attributeReferences = new ArrayList<AttributeReference>();
+//    @Column
+//    @ElementCollection(targetClass = AttributeReference.class)
+//    private List<AttributeReference> attributeReferences = new ArrayList<AttributeReference>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -52,21 +52,21 @@ public class Attribute {
         this.inputType = inputType;
     }
 
-    @OneToMany(mappedBy = "attribute")
-    public List<AttributeReferenceType> getAttributeReferenceTypes() {
-        return attributeReferenceTypes;
-    }
+//    @OneToMany(mappedBy = "attribute")
+//    public List<AttributeReferenceType> getAttributeReferenceTypes() {
+//        return attributeReferenceTypes;
+//    }
+//
+//    public void setAttributeReferenceTypes(List<AttributeReferenceType> attributeReferenceTypes) {
+//        this.attributeReferenceTypes = attributeReferenceTypes;
+//    }
 
-    public void setAttributeReferenceTypes(List<AttributeReferenceType> attributeReferenceTypes) {
-        this.attributeReferenceTypes = attributeReferenceTypes;
-    }
-
-    @OneToMany(mappedBy = "attribute")
-    public List<AttributeReference> getAttributeReferences() {
-        return attributeReferences;
-    }
-
-    public void setAttributeReferences(List<AttributeReference> attributeReferences) {
-        this.attributeReferences = attributeReferences;
-    }
+//    @OneToMany(mappedBy = "attribute")
+//    public List<AttributeReference> getAttributeReferences() {
+//        return attributeReferences;
+//    }
+//
+//    public void setAttributeReferences(List<AttributeReference> attributeReferences) {
+//        this.attributeReferences = attributeReferences;
+//    }
 }
