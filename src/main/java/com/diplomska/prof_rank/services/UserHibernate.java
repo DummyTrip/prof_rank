@@ -126,7 +126,7 @@ public class UserHibernate {
     }
 
     @CommitAfter
-    public void setReport(User user, List<Report> reports) {
+    public void setReports(User user, List<Report> reports) {
         if (user == null || reports == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
@@ -134,6 +134,23 @@ public class UserHibernate {
         for (Report report : reports) {
             report.setUser(user);
         }
+        user.setReports(reports);
+
+        session.persist(user);
+    }
+
+
+    @CommitAfter
+    public void setReport(User user, Report report) {
+        if (user == null || report == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        List<Report> reports = user.getReports();
+
+        report.setUser(user);
+        reports.add(report);
+
         user.setReports(reports);
 
         session.persist(user);
