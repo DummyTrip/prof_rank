@@ -106,7 +106,7 @@ public class ReferenceHibernate {
         setSection(reference, rulebookSection);
     }
 
-    public ReferenceType getReferenceTypes(Reference reference) {
+    public ReferenceType getReferenceType(Reference reference) {
         if (reference == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }

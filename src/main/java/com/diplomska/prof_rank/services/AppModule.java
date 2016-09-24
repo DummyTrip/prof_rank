@@ -2,6 +2,7 @@ package com.diplomska.prof_rank.services;
 
 import java.io.IOException;
 
+import com.diplomska.prof_rank.entities.ReferenceType;
 import org.apache.tapestry5.*;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
@@ -31,6 +32,12 @@ public class AppModule
         binder.bind(RoleHibernate.class);
         binder.bind(RulebookHibernate.class);
         binder.bind(SectionHibernate.class);
+        binder.bind(ReferenceHibernate.class);
+        binder.bind(ReferenceTypeHibernate.class);
+        binder.bind(AttributeHibernate.class);
+        binder.bind(ReportHibernate.class);
+        binder.bind(InstitutionHibernate.class);
+        binder.bind(SubjectDomainHibernate.class);
     }
 
     public static void contributeFactoryDefaults(
@@ -60,7 +67,7 @@ public class AppModule
 
               // You should change the passphrase immediately; the HMAC passphrase is used to secure
         // the hidden field data stored in forms to encrypt and digitally sign client-side data.
-        configuration.add(SymbolConstants.HMAC_PASSPHRASE, "change this immediately");
+        configuration.add(SymbolConstants.HMAC_PASSPHRASE, "I don't need to remember this so i can write whatever i want.");
     }
 
 	/**

@@ -15,7 +15,7 @@ public class User {
     private Long id;
 
     @Validate("required")
-    private String name;
+    private String firstName;
 
     @Validate("required")
     private String fatherName;
@@ -48,12 +48,12 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getFatherName() {

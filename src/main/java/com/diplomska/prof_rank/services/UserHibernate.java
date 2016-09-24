@@ -44,6 +44,15 @@ public class UserHibernate {
     }
 
     @CommitAfter
+    public void update(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        session.update(user);
+    }
+
+    @CommitAfter
     public void delete(User user) {
         if (user == null) {
             throw new IllegalArgumentException("Cannot remove null value.");

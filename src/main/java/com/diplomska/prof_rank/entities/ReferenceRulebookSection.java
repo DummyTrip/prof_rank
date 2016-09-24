@@ -7,6 +7,7 @@ import javax.persistence.*;
 /**
  * Created by Aleksandar on 24-Sep-16.
  */
+@Entity
 public class ReferenceRulebookSection {
     private Long id;
 
@@ -14,13 +15,13 @@ public class ReferenceRulebookSection {
 
     private RulebookSection rulebookSection;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @NonVisual
     public Long getId() {
         return id;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @NonVisual
     public void setId(Long id) {
         this.id = id;
     }
