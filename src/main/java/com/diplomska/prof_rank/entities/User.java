@@ -98,7 +98,7 @@ public class User {
         this.referenceUsers = referenceUsers;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "report")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     public List<Report> getReports() {
         return reports;
     }

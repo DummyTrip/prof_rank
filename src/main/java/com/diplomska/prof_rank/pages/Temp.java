@@ -2,6 +2,7 @@ package com.diplomska.prof_rank.pages;
 
 import com.diplomska.prof_rank.entities.Institution;
 import com.diplomska.prof_rank.entities.User;
+import com.diplomska.prof_rank.services.UserHibernate;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Session;
@@ -16,9 +17,9 @@ public class Temp {
     private User tmp;
 
     @Inject
-    Session session;
+    UserHibernate userHibernate;
 
     public List<User> getTemp() {
-        return session.createCriteria(User.class).list();
+        return userHibernate.getAll();
     }
 }

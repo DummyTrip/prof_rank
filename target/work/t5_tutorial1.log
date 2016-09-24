@@ -1,3 +1,5 @@
-/*C3*/SET SCHEMA PUBLIC
-INSERT INTO USER VALUES(3,'f','f','f','f',NULL)
+/*C2*/SET SCHEMA PUBLIC
+\u000a    alter table Report \u000a        add column user_id bigint
+\u000a    alter table Report \u000a        add constraint FK_q8xq6jgl38r39cogrph09w76m \u000a        foreign key (user_id) \u000a        references User
+INSERT INTO USER VALUES(4,'s','S','SD','s',NULL)
 COMMIT
