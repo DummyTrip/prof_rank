@@ -29,6 +29,8 @@ public class AppModule
         // invoking the constructor.
         binder.bind(UserHibernate.class);
         binder.bind(RoleHibernate.class);
+        binder.bind(RulebookHibernate.class);
+        binder.bind(SectionHibernate.class);
     }
 
     public static void contributeFactoryDefaults(
