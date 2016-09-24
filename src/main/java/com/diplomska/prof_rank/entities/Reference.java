@@ -27,6 +27,10 @@ public class Reference {
 //    @ElementCollection(targetClass = ReferenceUser.class)
 //    private List<ReferenceUser> referenceUsers = new ArrayList<ReferenceUser>();
 
+    @Column
+    @ElementCollection(targetClass = ReferenceRulebookSection.class)
+    private List<ReferenceRulebookSection> referenceRulebookSections = new ArrayList<ReferenceRulebookSection>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NonVisual
@@ -71,6 +75,15 @@ public class Reference {
 
     public void setAttributeReferences(List<AttributeReference> attributeReferences) {
         this.attributeReferences = attributeReferences;
+    }
+
+    @OneToMany(mappedBy = "reference")
+    public List<ReferenceRulebookSection> getReferenceRulebookSections() {
+        return referenceRulebookSections;
+    }
+
+    public void setReferenceRulebookSections(List<ReferenceRulebookSection> referenceRulebookSections) {
+        this.referenceRulebookSections = referenceRulebookSections;
     }
 
 //    @OneToMany(mappedBy = "reference")
