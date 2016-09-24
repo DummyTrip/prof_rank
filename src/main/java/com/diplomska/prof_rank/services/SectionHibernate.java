@@ -31,6 +31,15 @@ public class SectionHibernate {
     }
 
     @CommitAfter
+    public void update(Section section) {
+        if (section == null) {
+            throw new IllegalArgumentException("Cannot remove null value.");
+        }
+
+        session.update(section);
+    }
+
+    @CommitAfter
     public void delete(Section section) {
         if (section == null) {
             throw new IllegalArgumentException("Cannot remove null value.");

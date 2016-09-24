@@ -1,0 +1,23 @@
+<html t:type="layout" title="Section Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <h2>Sections</h2>
+
+    <t:grid source="sections" row="section" model="sectionBeanModel">
+        <p:editCell>
+            <t:pagelink page="section/editsection" context="section.id">Edit</t:pagelink>
+        </p:editCell>
+        <p:deleteCell>
+            <t:actionlink t:id="delete" context="section.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+    <p><t:pagelink page="section/createsection">Create new section</t:pagelink></p>
+
+    <hr/>
+
+</div>
+
+</html>
