@@ -65,7 +65,7 @@
     <div class="form-group">
         <div class="col-sm-3 col-sm-offset-3">
             <t:submit value="Save"/>
-            <t:pagelink page="user" class="btn btn-default">Cancel</t:pagelink>
+            <t:pagelink page="user/index" class="btn btn-default">Cancel</t:pagelink>
         </div>
     </div>
 

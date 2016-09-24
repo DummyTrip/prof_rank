@@ -36,6 +36,15 @@ public class RulebookHibernate {
     }
 
     @CommitAfter
+    public void update(Rulebook rulebook) {
+        if (rulebook == null) {
+            throw new IllegalArgumentException("Cannot remove null value.");
+        }
+
+        session.update(rulebook);
+    }
+
+    @CommitAfter
     public void delete(Rulebook rulebook) {
         if (rulebook == null) {
             throw new IllegalArgumentException("Cannot remove null value.");

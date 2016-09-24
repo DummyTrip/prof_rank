@@ -1,9 +1,9 @@
-package com.diplomska.prof_rank.pages.User;
+package com.diplomska.prof_rank.pages.Rulebook;
 
 import com.diplomska.prof_rank.entities.Role;
-import com.diplomska.prof_rank.entities.User;
+import com.diplomska.prof_rank.entities.Rulebook;
 import com.diplomska.prof_rank.services.RoleHibernate;
-import com.diplomska.prof_rank.services.UserHibernate;
+import com.diplomska.prof_rank.services.RulebookHibernate;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
@@ -11,22 +11,19 @@ import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import com.diplomska.prof_rank.pages.User.Index;
+import com.diplomska.prof_rank.pages.Rulebook.Index;
 
 import java.util.List;
 
 /**
  * Created by Aleksandar on 24-Sep-16.
  */
-public class CreateUser {
+public class CreateRulebook {
     @Property
-    private User user;
+    private Rulebook rulebook;
 
     @Inject
-    private UserHibernate userHibernate;
-
-    @Inject
-    private RoleHibernate roleHibernate;
+    private RulebookHibernate rulebookHibernate;
 
     @InjectPage
     private Index index;
@@ -34,30 +31,21 @@ public class CreateUser {
     @InjectComponent
     private Form form;
 
-    @Property
-    private Role role;
-
-    private List<Role> roles;
-
-    public List<Role> getRoles() {
-        return roleHibernate.getAll();
-    }
-
     void onPrepareForRender() throws Exception {
         // If fresh start, make sure there's a Person object available.
         if (form.isValid()) {
-            user = new User();
+            rulebook = new Rulebook();
         }
     }
 
     void onPrepareForSubmit() throws Exception {
         // Instantiate a Person for the form data to overlay.
-        user = new User();
+        rulebook = new Rulebook();
     }
 
     @CommitAfter
     Object onSuccess() {
-        userHibernate.store(user);
+        rulebookHibernate.store(rulebook);
 
         return index;
     }

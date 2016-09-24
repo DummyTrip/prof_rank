@@ -7,7 +7,7 @@
 
     <t:grid source="users" row="user" model="userBeanModel">
         <p:editCell>
-            <t:pagelink page="user/edit" context="user.id">Edit</t:pagelink>
+            <t:pagelink page="user/edituser" context="user.id">Edit</t:pagelink>
         </p:editCell>
         <p:deleteCell>
             <t:actionlink t:id="delete" context="user.id">Delete</t:actionlink>

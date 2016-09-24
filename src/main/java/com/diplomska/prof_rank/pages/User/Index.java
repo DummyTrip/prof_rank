@@ -1,6 +1,5 @@
 package com.diplomska.prof_rank.pages.User;
 
-import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.entities.User;
 import com.diplomska.prof_rank.services.UserHibernate;
 import org.apache.tapestry5.annotations.Property;
