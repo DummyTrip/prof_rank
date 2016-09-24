@@ -25,17 +25,17 @@ public class TempCreate {
     @Inject
     UserHibernate userHibernate;
 
-    void onPrepareForRender() throws Exception {
-        // If fresh start, make sure there's a User object available.
-        if (form.isValid()) {
-            temp = new User();
-        }
-    }
-
-    void onPrepareForSubmit() throws Exception {
-        // Instantiate a User for the form data to overlay.
-        temp = new User();
-    }
+//    void onPrepareForRender() throws Exception {
+//        // If fresh start, make sure there's a User object available.
+//        if (form.isValid()) {
+//            temp = new User();
+//        }
+//    }
+//
+//    void onPrepareForSubmit() throws Exception {
+//        // Instantiate a User for the form data to overlay.
+//        temp = new User();
+//    }
 
     @CommitAfter
     Object onSuccess() {

@@ -22,11 +22,19 @@ public class UserHibernate {
 
     @CommitAfter
     public void store(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
         session.persist(user);
     }
 
     @CommitAfter
     public void store(User user, Role role) {
+        if (user == null || role == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
         user.setRole(role);
         session.persist(user);
     }
@@ -35,11 +43,28 @@ public class UserHibernate {
         return session.createCriteria(User.class).list();
     }
 
+    @CommitAfter
+    public void delete(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("Cannot remove null value.");
+        }
+
+        session.delete(user);
+    }
+
     public User getById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
         return (User) session.get(User.class, id);
     }
 
     public List<User> getByColumn(String column, String value) {
+        if (column == null || value == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
         Criteria criteria = session.createCriteria(User.class);
         List<User> entities = criteria.add(eq(column, value)).list();
 
@@ -47,15 +72,28 @@ public class UserHibernate {
     }
 
     public Role getRole(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
         return user.getRole();
     }
 
     @CommitAfter
     public void setRole(User user, Role role) {
+        if (user == null || role == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
         user.setRole(role);
+        session.persist(user);
     }
 
     public List<Reference> getReferences(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
         List<ReferenceUser> referenceUsers = user.getReferenceUsers();
         List<Reference> references = new ArrayList<Reference>();
 
@@ -68,6 +106,9 @@ public class UserHibernate {
 
     @CommitAfter
     public void setReference(User user, Reference reference) {
+        if (user == null || reference == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
         ReferenceUser referenceUser = new ReferenceUser();
 
         referenceUser.setUser(user);
@@ -77,11 +118,19 @@ public class UserHibernate {
     }
 
     public List<Report> getReports(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
         return user.getReports();
     }
 
     @CommitAfter
     public void setReport(User user, List<Report> reports) {
+        if (user == null || reports == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
         for (Report report : reports) {
             report.setUser(user);
         }
