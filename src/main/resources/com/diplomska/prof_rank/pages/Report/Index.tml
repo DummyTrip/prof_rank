@@ -1,0 +1,23 @@
+<html t:type="layout" title="Report Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <h2>Reports</h2>
+
+    <t:grid source="reports" row="report" model="reportBeanModel">
+        <p:editCell>
+            <t:pagelink page="report/editreport" context="report.id">Edit</t:pagelink>
+        </p:editCell>
+        <p:deleteCell>
+            <t:actionlink t:id="delete" context="report.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+    <p><t:pagelink page="report/createreport">Create new report</t:pagelink></p>
+
+    <hr/>
+
+</div>
+
+</html>

@@ -35,6 +35,15 @@ public class ReportHibernate {
     }
 
     @CommitAfter
+    public void update(Report report) {
+        if (report == null) {
+            throw new IllegalArgumentException("Cannot remove null value.");
+        }
+
+        session.update(report);
+    }
+
+    @CommitAfter
     public void delete(Report report) {
         if (report == null) {
             throw new IllegalArgumentException("Cannot remove null value.");

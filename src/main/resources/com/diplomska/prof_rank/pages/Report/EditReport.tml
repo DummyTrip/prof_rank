@@ -1,0 +1,62 @@
+<html t:type="layout" title="Edit Report"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
+
+<!--<t:beaneditform object="report" submitLabel="Edit Report"/>-->
+
+<t:form t:id="form" class="form-horizontal" validate="report">
+    <t:errors globalOnly="true"/>
+
+    <div class="form-group">
+        <t:label for="title" class="col-sm-3"/>
+        <div class="col-sm-3">
+            <t:textfield t:id="title" value="report.title"/>
+        </div>
+        <div class="col-sm-6">
+            <p class="form-control-static">
+                (required)
+            </p>
+        </div>
+    </div>
+    <div class="form-group">
+        <t:label for="totalScore" class="col-sm-3"/>
+        <div class="col-sm-3">
+            <t:textfield t:id="totalScore" value="report.totalScore"/>
+        </div>
+        <div class="col-sm-6">
+            <p class="form-control-static">
+                (required)
+            </p>
+        </div>
+    </div>
+    <div class="form-group">
+        <t:label for="startDate" class="col-sm-3"/>
+        <div class="col-sm-3">
+            <t:datefield t:id="startDate" value="report.startDate"/>
+        </div>
+        <div class="col-sm-6">
+            <p class="form-control-static">
+                (required)
+            </p>
+        </div>
+    </div>
+    <div class="form-group">
+        <t:label for="endDate" class="col-sm-3"/>
+        <div class="col-sm-3">
+            <t:datefield t:id="endDate" value="report.endDate"/>
+        </div>
+        <div class="col-sm-6">
+            <p class="form-control-static">
+                (required)
+            </p>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-3 col-sm-offset-3">
+            <t:submit value="Save"/>
+            <t:pagelink page="report/index" class="btn btn-default">Cancel</t:pagelink>
+        </div>
+    </div>
+
+</t:form>
+
+</html>
