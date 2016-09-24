@@ -31,6 +31,15 @@ public class SubjectDomainHibernate {
     }
 
     @CommitAfter
+    public void update(SubjectDomain subjectDomain) {
+        if (subjectDomain == null) {
+            throw new IllegalArgumentException("Cannot remove null value.");
+        }
+
+        session.update(subjectDomain);
+    }
+
+    @CommitAfter
     public void delete(SubjectDomain subjectDomain) {
         if (subjectDomain == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
