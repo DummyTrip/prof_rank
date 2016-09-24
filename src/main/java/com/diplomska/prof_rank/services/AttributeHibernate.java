@@ -31,6 +31,15 @@ public class AttributeHibernate {
     }
 
     @CommitAfter
+    public void update(Attribute attribute) {
+        if (attribute == null) {
+            throw new IllegalArgumentException("Cannot remove null value.");
+        }
+
+        session.update(attribute);
+    }
+
+    @CommitAfter
     public void delete(Attribute attribute) {
         if (attribute == null) {
             throw new IllegalArgumentException("Cannot remove null value.");

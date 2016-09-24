@@ -1,0 +1,40 @@
+<html t:type="layout" title="Create New Attribute"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
+
+<!--<t:beaneditform object="attribute" submitLabel="Create Attribute"/>-->
+
+<t:form t:id="form" class="form-horizontal" validate="attribute">
+    <t:errors globalOnly="true"/>
+
+    <div class="form-group">
+        <t:label for="name" class="col-sm-3"/>
+        <div class="col-sm-3">
+            <t:textfield t:id="name" value="attribute.name"/>
+        </div>
+        <div class="col-sm-6">
+            <p class="form-control-static">
+                (required)
+            </p>
+        </div>
+    </div>
+    <div class="form-group">
+        <t:label for="inputType" class="col-sm-3"/>
+        <div class="col-sm-3">
+            <t:textfield t:id="inputType" value="attribute.inputType"/>
+        </div>
+        <div class="col-sm-6">
+            <p class="form-control-static">
+                (required)
+            </p>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-3 col-sm-offset-3">
+            <t:submit value="Save"/>
+            <t:pagelink page="attribute/index" class="btn btn-default">Cancel</t:pagelink>
+        </div>
+    </div>
+
+</t:form>
+
+</html>
