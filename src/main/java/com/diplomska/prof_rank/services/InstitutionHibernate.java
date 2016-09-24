@@ -31,6 +31,15 @@ public class InstitutionHibernate {
     }
 
     @CommitAfter
+    public void update(Institution institution) {
+        if (institution == null) {
+            throw new IllegalArgumentException("Cannot remove null value.");
+        }
+
+        session.update(institution);
+    }
+
+    @CommitAfter
     public void delete(Institution institution) {
         if (institution == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
