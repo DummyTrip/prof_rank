@@ -34,6 +34,8 @@ public class Report {
     @ElementCollection(targetClass = ReferenceReport.class)
     private List<ReferenceReport> referenceReports = new ArrayList<ReferenceReport>();
 
+    private User user;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NonVisual
@@ -102,5 +104,14 @@ public class Report {
 
     public void setReferenceReports(List<ReferenceReport> referenceReports) {
         this.referenceReports = referenceReports;
+    }
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -33,6 +33,10 @@ public class User {
     @ElementCollection(targetClass = ReferenceUser.class)
     private List<ReferenceUser> referenceUsers = new ArrayList<ReferenceUser>();
 
+    @Column()
+    @ElementCollection(targetClass = Report.class)
+    private List<Report> reports = new ArrayList<Report>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NonVisual
@@ -92,5 +96,14 @@ public class User {
 
     public void setReferenceUsers(List<ReferenceUser> referenceUsers) {
         this.referenceUsers = referenceUsers;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "report")
+    public List<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
     }
 }
