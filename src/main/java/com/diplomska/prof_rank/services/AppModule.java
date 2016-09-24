@@ -28,6 +28,7 @@ public class AppModule
         // is provided inline, or requires more initialization than simply
         // invoking the constructor.
         binder.bind(UserHibernate.class);
+        binder.bind(RoleHibernate.class);
     }
 
     public static void contributeFactoryDefaults(
