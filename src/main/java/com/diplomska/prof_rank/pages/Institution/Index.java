@@ -41,6 +41,7 @@ public class Index {
     void setupRender() {
         institutionBeanModel = beanModelSource.createDisplayModel(Institution.class, messages);
         institutionBeanModel.include("name", "city", "country");
+        institutionBeanModel.add("show", null);
         institutionBeanModel.add("edit", null);
         institutionBeanModel.add("delete", null);
     }

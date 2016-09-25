@@ -6,7 +6,9 @@
     <h2>Institutions</h2>
 
     <t:grid source="institutions" row="institution" model="institutionBeanModel">
-        <p:editCell>
+        <p:showCell>
+            <t:pagelink page="institution/showinstitution" context="institution.id">Show</t:pagelink>
+        </p:showCell> <p:editCell>
             <t:pagelink page="institution/editinstitution" context="institution.id">Edit</t:pagelink>
         </p:editCell>
         <p:deleteCell>
