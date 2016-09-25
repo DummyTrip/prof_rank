@@ -38,6 +38,7 @@ public class AppModule
         binder.bind(ReportHibernate.class);
         binder.bind(InstitutionHibernate.class);
         binder.bind(SubjectDomainHibernate.class);
+        binder.bind(CountryNames.class);
     }
 
     public static void contributeFactoryDefaults(

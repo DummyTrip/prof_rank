@@ -2,6 +2,7 @@ package com.diplomska.prof_rank.pages.Institution;
 
 import com.diplomska.prof_rank.entities.Role;
 import com.diplomska.prof_rank.entities.Institution;
+import com.diplomska.prof_rank.services.CountryNames;
 import com.diplomska.prof_rank.services.RoleHibernate;
 import com.diplomska.prof_rank.services.InstitutionHibernate;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -13,6 +14,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import com.diplomska.prof_rank.pages.Institution.Index;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +35,22 @@ public class CreateInstitution {
 
     @InjectComponent
     private Form form;
+
+    @Inject
+    private CountryNames countryNames;
+
+    List<String> onProvideCOmpletionsFromCountry(String partial) {
+        List<String> matches = new ArrayList<String>();
+        partial = partial.toUpperCase();
+
+        for (String countryName : countryNames.getSet()) {
+            if (countryName.toUpperCase().startsWith(partial)) {
+                matches.add(countryName);
+            }
+        }
+
+        return matches;
+    }
 
     void onPrepareForRender() throws Exception {
         // If fresh start, make sure there's a Person object available.
