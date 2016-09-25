@@ -6,6 +6,9 @@
     <h2>SubjectDomains</h2>
 
     <t:grid source="subjectDomains" row="subjectDomain" model="subjectDomainBeanModel">
+        <p:showCell>
+            <t:pagelink page="subjectdomain/showsubjectdomain" context="subjectDomain.id">Show</t:pagelink>
+        </p:showCell>
         <p:editCell>
             <t:pagelink page="subjectDomain/editsubjectDomain" context="subjectDomain.id">Edit</t:pagelink>
         </p:editCell>

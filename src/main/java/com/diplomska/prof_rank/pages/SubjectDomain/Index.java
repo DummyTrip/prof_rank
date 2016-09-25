@@ -41,6 +41,7 @@ public class Index {
     void setupRender() {
         subjectDomainBeanModel = beanModelSource.createDisplayModel(SubjectDomain.class, messages);
         subjectDomainBeanModel.include("name", "identifier");
+        subjectDomainBeanModel.add("show", null);
         subjectDomainBeanModel.add("edit", null);
         subjectDomainBeanModel.add("delete", null);
     }

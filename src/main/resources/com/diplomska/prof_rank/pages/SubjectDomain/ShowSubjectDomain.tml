@@ -1,0 +1,12 @@
+<html t:type="layout" title="SubjectDomain Show"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <h2>SubjectDomain</h2>
+
+    <t:beandisplay object="subjectDomain"/>
+
+</div>
+
+</html>
