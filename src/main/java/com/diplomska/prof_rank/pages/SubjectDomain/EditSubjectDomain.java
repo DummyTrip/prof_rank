@@ -1,12 +1,9 @@
 package com.diplomska.prof_rank.pages.SubjectDomain;
 
-import com.diplomska.prof_rank.entities.Reference;
-import com.diplomska.prof_rank.entities.Role;
 import com.diplomska.prof_rank.entities.SubjectDomain;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
 import com.diplomska.prof_rank.services.RoleHibernate;
 import com.diplomska.prof_rank.services.SubjectDomainHibernate;
-import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Persist;
@@ -14,7 +11,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.SelectModelFactory;
 
 import com.diplomska.prof_rank.pages.SubjectDomain.Index;
 

@@ -1,9 +1,6 @@
 package com.diplomska.prof_rank.pages.Role;
 
-import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.entities.Role;
-import com.diplomska.prof_rank.services.ReferenceHibernate;
-import com.diplomska.prof_rank.services.RoleHibernate;
 import com.diplomska.prof_rank.services.RoleHibernate;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;

@@ -1,6 +1,5 @@
 package com.diplomska.prof_rank.pages.Report;
 
-import com.diplomska.prof_rank.entities.Role;
 import com.diplomska.prof_rank.entities.Report;
 import com.diplomska.prof_rank.services.RoleHibernate;
 import com.diplomska.prof_rank.services.ReportHibernate;

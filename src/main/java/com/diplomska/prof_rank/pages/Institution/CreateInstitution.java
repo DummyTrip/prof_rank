@@ -1,9 +1,7 @@
 package com.diplomska.prof_rank.pages.Institution;
 
-import com.diplomska.prof_rank.entities.Role;
 import com.diplomska.prof_rank.entities.Institution;
 import com.diplomska.prof_rank.services.CountryNames;
-import com.diplomska.prof_rank.services.RoleHibernate;
 import com.diplomska.prof_rank.services.InstitutionHibernate;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
@@ -27,16 +25,13 @@ public class CreateInstitution {
     @Inject
     private InstitutionHibernate institutionHibernate;
 
-    @Inject
-    private RoleHibernate roleHibernate;
-
     @InjectPage
     private Index index;
 
     @InjectComponent
     private Form form;
 
-    @Inject
+       @Inject
     private CountryNames countryNames;
 
     List<String> onProvideCOmpletionsFromCountry(String partial) {

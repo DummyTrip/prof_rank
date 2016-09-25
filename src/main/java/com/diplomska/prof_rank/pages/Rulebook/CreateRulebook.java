@@ -1,8 +1,6 @@
 package com.diplomska.prof_rank.pages.Rulebook;
 
-import com.diplomska.prof_rank.entities.Role;
 import com.diplomska.prof_rank.entities.Rulebook;
-import com.diplomska.prof_rank.services.RoleHibernate;
 import com.diplomska.prof_rank.services.RulebookHibernate;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;

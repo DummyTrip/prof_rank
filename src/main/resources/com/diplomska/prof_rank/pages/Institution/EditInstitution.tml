@@ -31,7 +31,7 @@
     <div class="form-group">
         <t:label for="country" class="col-sm-3"/>
         <div class="col-sm-3">
-            <t:textfield t:id="country" value="institution.country"/>
+            <t:textfield t:id="country" t:mixins="autocomplete" value="institution.country"/>
         </div>
         <div class="col-sm-6">
             <p class="form-control-static">

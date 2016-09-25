@@ -1,12 +1,8 @@
 package com.diplomska.prof_rank.pages.Institution;
 
-import com.diplomska.prof_rank.entities.Reference;
-import com.diplomska.prof_rank.entities.Role;
 import com.diplomska.prof_rank.entities.Institution;
-import com.diplomska.prof_rank.services.ReferenceHibernate;
-import com.diplomska.prof_rank.services.RoleHibernate;
+import com.diplomska.prof_rank.services.CountryNames;
 import com.diplomska.prof_rank.services.InstitutionHibernate;
-import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Persist;
@@ -14,10 +10,10 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.SelectModelFactory;
 
 import com.diplomska.prof_rank.pages.Institution.Index;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,14 +32,24 @@ public class EditInstitution {
     @Inject
     private InstitutionHibernate institutionHibernate;
 
-    @Inject
-    private RoleHibernate roleHibernate;
-
-    @Inject
-    private ReferenceHibernate referenceHibernate;
-
     @InjectPage
     private Index index;
+
+    @Inject
+    private CountryNames countryNames;
+
+    List<String> onProvideCOmpletionsFromCountry(String partial) {
+        List<String> matches = new ArrayList<String>();
+        partial = partial.toUpperCase();
+
+        for (String countryName : countryNames.getSet()) {
+            if (countryName.toUpperCase().startsWith(partial)) {
+                matches.add(countryName);
+            }
+        }
+
+        return matches;
+    }
 
     void onActivate(Long institutionId) {
         this.institutionId = institutionId;
