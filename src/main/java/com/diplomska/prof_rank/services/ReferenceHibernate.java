@@ -182,7 +182,7 @@ public class ReferenceHibernate {
 
         Criteria criteria = session.createCriteria(AttributeReference.class);
         List<AttributeReference> entities = criteria
-                .add(eq("referenceType", reference))
+                .add(eq("reference", reference))
                 .add(eq("attribute", attribute))
                 .list();
 

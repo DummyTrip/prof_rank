@@ -116,6 +116,6 @@ public class RulebookHibernate {
         rulebookSection.setRulebook(rulebook);
         rulebookSection.setSection(section);
 
-        session.persist(rulebookSection);
+        session.saveOrUpdate(rulebookSection);
     }
 }

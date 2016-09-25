@@ -41,6 +41,7 @@ public class Index {
     void setupRender() {
         reportBeanModel = beanModelSource.createDisplayModel(Report.class, messages);
         reportBeanModel.include("title", "totalScore", "startDate", "endDate");
+        reportBeanModel.add("show", null);
         reportBeanModel.add("edit", null);
         reportBeanModel.add("delete", null);
     }

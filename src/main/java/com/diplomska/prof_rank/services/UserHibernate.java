@@ -95,7 +95,7 @@ public class UserHibernate {
         }
 
         user.setRole(role);
-        session.persist(user);
+        session.saveOrUpdate(user);
     }
 
     public List<Reference> getReferences(User user) {
@@ -123,7 +123,7 @@ public class UserHibernate {
         referenceUser.setUser(user);
         referenceUser.setReference(reference);
 
-        session.persist(referenceUser);
+        session.saveOrUpdate(referenceUser);
     }
 
     public List<Report> getReports(User user) {
@@ -145,7 +145,7 @@ public class UserHibernate {
         }
         user.setReports(reports);
 
-        session.persist(user);
+        session.saveOrUpdate(user);
     }
 
 
@@ -162,7 +162,7 @@ public class UserHibernate {
 
         user.setReports(reports);
 
-        session.persist(user);
+        session.saveOrUpdate(user);
     }
 
 }

@@ -108,7 +108,29 @@ public class ReportHibernate {
         institutionReport.setReport(report);
         institutionReport.setInstitution(institution);
 
-        session.persist(institutionReport);
+        session.saveOrUpdate(institutionReport);
+    }
+
+
+    @CommitAfter
+    public void deleteInstitution(Report report, Institution institution) {
+        if (report == null || institution == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        Criteria criteria = session.createCriteria(InstitutionReport.class);
+        List<InstitutionReport> entities = criteria
+                .add(eq("report", report))
+                .add(eq("institution", institution))
+                .list();
+
+        if (entities.size() < 1) {
+            throw new IllegalStateException("No data in database.");
+        }
+
+        InstitutionReport institutionReport = entities.get(0);
+        institutionReport.setReport(null);
+        report.getInstitutionReports().remove(institutionReport);
     }
 
     public List<SubjectDomain> getSubjectDomains(Report report) {
@@ -136,7 +158,28 @@ public class ReportHibernate {
         subjectDomainReport.setReport(report);
         subjectDomainReport.setSubjectDomain(subjectDomain);
 
-        session.persist(subjectDomainReport);
+        session.saveOrUpdate(subjectDomainReport);
+    }
+
+    @CommitAfter
+    public void deleteSubjectDomain(Report report, SubjectDomain subjectDomain) {
+        if (report == null || subjectDomain == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        Criteria criteria = session.createCriteria(ReportSubjectDomain.class);
+        List<ReportSubjectDomain> entities = criteria
+                .add(eq("report", report))
+                .add(eq("subjectDomain", subjectDomain))
+                .list();
+
+        if (entities.size() < 1) {
+            throw new IllegalStateException("No data in database.");
+        }
+
+        ReportSubjectDomain reportSubjectDomain = entities.get(0);
+        reportSubjectDomain.setReport(null);
+        report.getReportSubjectDomains().remove(reportSubjectDomain);
     }
 
     public List<Reference> getReferences(Report report) {
@@ -164,6 +207,27 @@ public class ReportHibernate {
         referenceReport.setReport(report);
         referenceReport.setReference(reference);
 
-        session.persist(referenceReport);
+        session.saveOrUpdate(referenceReport);
+    }
+
+    @CommitAfter
+    public void deleteReference(Report report, Reference reference) {
+        if (report == null || reference == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        Criteria criteria = session.createCriteria(ReferenceReport.class);
+        List<ReferenceReport> entities = criteria
+                .add(eq("report", report))
+                .add(eq("reference", reference))
+                .list();
+
+        if (entities.size() < 1) {
+            throw new IllegalStateException("No data in database.");
+        }
+
+        ReferenceReport referenceReport = entities.get(0);
+        referenceReport.setReport(null);
+        report.getReferenceReports().remove(referenceReport);
     }
 }

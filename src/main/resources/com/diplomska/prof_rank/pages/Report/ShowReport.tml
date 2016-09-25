@@ -1,0 +1,86 @@
+<html t:type="layout" title="Report Show"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <h2>Report</h2>
+
+    <t:beandisplay object="report"/>
+
+    <hr/>
+
+    <h3>User</h3>
+    <t:if test="userNull">
+        <t:beandisplay object="user"/>
+    </t:if>
+    <hr/>
+
+    <h3>Institutions</h3>
+    <t:grid source="institutions" row="institution" model="institutionBeanModel">
+        <p:deleteCell>
+            <t:actionlink t:id="deleteInstitution" context="institution.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+    <hr/>
+
+    <h3>Subject Domains</h3>
+    <t:grid source="subjectDomains" row="subjectDomain" model="subjectDomainBeanModel">
+        <p:deleteCell>
+            <t:actionlink t:id="deleteSubjectDomain" context="subjectDomain.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+    <hr/>
+
+    <h3>References</h3>
+    <t:grid source="references" row="reference" model="referenceBeanModel">
+        <p:deleteCell>
+            <t:actionlink t:id="deleteReference" context="reference.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+    <hr/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <hr/>
+
+    <h3>Add Users</h3>
+    <t:grid source="addUsers" row="addUser" model="addUserBeanModel">
+        <p:addCell>
+            <t:actionlink t:id="addUser" context="addUser.id">Add</t:actionlink>
+        </p:addCell>
+    </t:grid>
+
+    <hr/>
+
+    <h3>Add Institutions</h3>
+    <t:grid source="addInstitutions" row="addInstitution" model="addInstitutionBeanModel">
+        <p:addCell>
+            <t:actionlink t:id="addInstitution" context="addInstitution.id">Add</t:actionlink>
+        </p:addCell>
+    </t:grid>
+
+    <hr/>
+
+    <h3>Add Subject Domains</h3>
+    <t:grid source="addSubjectDomains" row="addSubjectDomain" model="addSubjectDomainBeanModel">
+        <p:addCell>
+            <t:actionlink t:id="addSubjectDomain" context="addSubjectDomain.id">Add</t:actionlink>
+        </p:addCell>
+    </t:grid>
+
+    <hr/>
+
+    <h3>Add References</h3>
+    <t:grid source="addReferences" row="addReference" model="addReferenceBeanModel">
+        <p:addCell>
+            <t:actionlink t:id="addReference" context="addReference.id">Add</t:actionlink>
+        </p:addCell>
+    </t:grid>
+
+</div>
+
+</html>
