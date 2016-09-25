@@ -41,6 +41,7 @@ public class Index {
     void setupRender() {
         attributeBeanModel = beanModelSource.createDisplayModel(Attribute.class, messages);
         attributeBeanModel.include("name", "inputType");
+        attributeBeanModel.add("show", null);
         attributeBeanModel.add("edit", null);
         attributeBeanModel.add("delete", null);
     }
