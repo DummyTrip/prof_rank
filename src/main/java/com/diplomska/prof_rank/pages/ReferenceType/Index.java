@@ -70,10 +70,4 @@ public class Index {
         referenceType = referenceTypeHibernate.getById(referenceTypeId);
         referenceTypeHibernate.delete(referenceType);
     }
-
-    @CommitAfter
-    void onActionFromAdd(Long attributeId) {
-        attribute = attributeHibernate.getById(attributeId);
-        referenceTypeHibernate.setAttribute(referenceType, attribute);
-    }
 }

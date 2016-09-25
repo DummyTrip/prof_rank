@@ -42,6 +42,7 @@ public class Index {
         userBeanModel = beanModelSource.createDisplayModel(User.class, messages);
         userBeanModel.include("firstName", "fatherName", "lastName", "email");
         userBeanModel.add("role", pcs.create(User.class, "role"));
+        userBeanModel.add("show", null);
         userBeanModel.add("edit", null);
         userBeanModel.add("delete", null);
     }

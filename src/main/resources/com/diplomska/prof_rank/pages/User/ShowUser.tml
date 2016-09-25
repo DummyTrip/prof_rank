@@ -1,0 +1,50 @@
+<html t:type="layout" title="User Show"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <h2>User</h2>
+
+    <t:beandisplay object="user"/>
+    
+    <t:if test="roleNull">
+        <h3>Role</h3>
+        <t:beandisplay object="role"/>
+    </t:if>
+    
+    <h3>References</h3>
+    <t:grid source="references" row="reference" model="referenceBeanModel">
+        <p:deleteCell>
+            <t:actionlink t:id="deleteReference" context="reference.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+    
+    <h3>Reports</h3>
+    <t:grid source="reports" row="report" model="reportBeanModel">
+        <p:deleteCell>
+            <t:actionlink t:id="deleteReport" context="report.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+    <hr/>
+    <br/>
+    <br/>
+    <hr/>
+
+    <h3>Add Reports</h3>
+    <t:grid source="addReports" row="addReport" model="addReportBeanModel">
+        <p:addCell>
+            <t:actionlink t:id="addReport" context="addReport.id">Add</t:actionlink>
+        </p:addCell>
+    </t:grid>
+
+    <h3>Add References</h3>
+    <t:grid source="addReferences" row="addReference" model="addReferenceBeanModel">
+        <p:addCell>
+            <t:actionlink t:id="addReference" context="addReference.id">Add</t:actionlink>
+        </p:addCell>
+    </t:grid>
+    
+</div>
+
+</html>

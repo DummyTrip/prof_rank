@@ -126,6 +126,27 @@ public class UserHibernate {
         session.saveOrUpdate(referenceUser);
     }
 
+    @CommitAfter
+    public void deleteReference(User user, Reference reference) {
+        if (user == null || reference == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        Criteria criteria = session.createCriteria(ReferenceUser.class);
+        List<ReferenceUser> entities = criteria
+                .add(eq("user", user))
+                .add(eq("reference", reference))
+                .list();
+
+        if (entities.size() < 1) {
+            throw new IllegalStateException("No data in database.");
+        }
+
+        ReferenceUser referenceUser = entities.get(0);
+        referenceUser.setUser(null);
+        user.getReferenceUsers().remove(referenceUser);
+    }
+
     public List<Report> getReports(User user) {
         if (user == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
@@ -165,4 +186,13 @@ public class UserHibernate {
         session.saveOrUpdate(user);
     }
 
+    @CommitAfter
+    public void deleteReport(User user, Report report) {
+        if (user == null || report == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        report.setUser(null);
+        user.getReports().remove(report);
+    }
 }

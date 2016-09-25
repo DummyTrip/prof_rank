@@ -9,11 +9,12 @@
 
     <hr/>
 
-    <h3>User</h3>
     <t:if test="userNull">
+        <h3>User</h3>
         <t:beandisplay object="user"/>
+        <hr/>
     </t:if>
-    <hr/>
+
 
     <h3>Institutions</h3>
     <t:grid source="institutions" row="institution" model="institutionBeanModel">

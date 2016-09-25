@@ -21,13 +21,6 @@
 
     <hr/>
 
-
-    <t:grid source="attributes" row="attribute" model="attributeBeanModel">
-        <p:addCell>
-            <t:actionlink t:id="add" context="attribute.id">Add</t:actionlink>
-        </p:addCell>
-    </t:grid>
-
 </div>
 
 </html>
