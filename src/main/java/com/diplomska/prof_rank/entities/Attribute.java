@@ -69,4 +69,10 @@ public class Attribute {
 //    public void setAttributeReferences(List<AttributeReference> attributeReferences) {
 //        this.attributeReferences = attributeReferences;
 //    }
+
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -94,4 +94,9 @@ public class Reference {
 //    public void setReferenceUsers(List<ReferenceUser> referenceUsers) {
 //        this.referenceUsers = referenceUsers;
 //    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -95,6 +95,6 @@ public class ReferenceTypeHibernate {
         attributeReferenceType.setReferenceType(referenceType);
         attributeReferenceType.setAttribute(attribute);
 
-        session.persist(attributeReferenceType);
+        session.saveOrUpdate(attributeReferenceType);
     }
 }

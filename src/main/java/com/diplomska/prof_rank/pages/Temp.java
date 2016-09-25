@@ -1,11 +1,13 @@
 package com.diplomska.prof_rank.pages;
 
-import com.diplomska.prof_rank.entities.Institution;
-import com.diplomska.prof_rank.entities.User;
+import com.diplomska.prof_rank.entities.*;
+import com.diplomska.prof_rank.services.ReferenceHibernate;
+import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
 import com.diplomska.prof_rank.services.UserHibernate;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Session;
+import org.w3c.dom.Attr;
 
 import java.util.List;
 
@@ -14,12 +16,30 @@ import java.util.List;
  */
 public class Temp {
     @Property
-    private User tmp;
+    private Reference tmp;
 
     @Inject
-    UserHibernate userHibernate;
+    ReferenceHibernate referenceHibernate;
 
-    public List<User> getTemp() {
-        return userHibernate.getAll();
+    public List<Reference> getTemp() {
+        return referenceHibernate.getAll();
     }
+
+    @Property
+    private Attribute attribute;
+
+    @Inject
+    private ReferenceTypeHibernate referenceTypeHibernate;
+
+    public List<Attribute> getAttributes() {
+        ReferenceType referenceType = referenceHibernate.getReferenceType(tmp);
+        return referenceTypeHibernate.getAttributes(referenceType);
+    }
+
+    public boolean isTextInput() {
+        return attribute.getInputType().equals("text") ? true :false;
+    }
+
+    @Property
+    private String testVal;
 }

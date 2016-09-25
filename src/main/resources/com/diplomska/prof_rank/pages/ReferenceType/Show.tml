@@ -1,0 +1,24 @@
+<html t:type="layout" title="ReferenceType Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <h2>ReferenceTypes</h2>
+
+    <t:beandisplay object="referenceType"/>
+
+    <hr/>
+
+    <t:grid source="attributeReferenceTypes" row="attributeReferenceType" model="attributeReferenceTypeBeanModel"></t:grid>
+
+    <hr/>
+
+    <t:grid source="attributes" row="attribute" model="attributeBeanModel">
+        <p:addCell>
+            <t:actionlink t:id="add" context="attribute.id">Add</t:actionlink>
+        </p:addCell>
+    </t:grid>
+
+</div>
+
+</html>

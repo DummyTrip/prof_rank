@@ -1,6 +1,6 @@
 <html t:type="layout" title="temp test page"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
-      xmlns:p="tapestry:parameter">
+      xmlns:p="tapestry:parameter" xmlns:T="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
 
 <div>
     <h2>Pages</h2>
@@ -15,6 +15,25 @@
     <t:grid source="temp" row="tmp"/>
 </div>
 
+<div>
+    <t:loop source="temp" value="tmp">
+        <t:beandisplay object="tmp"/>
+    </t:loop>
+</div>
 
+<div>
+    <t:form>
+        <t:loop source="temp" value="tmp">
+            <h3>${tmp}</h3>
+            <t:loop source="attributes" value="attribute">
+                <p>${attribute.getName()}</p>
+                <t:if test="textInput">
+                    <t:textfield value="testVal"/>
+                </t:if>
+            </t:loop>
+        </t:loop>
+    </t:form>
+
+</div>
 
 </html>

@@ -21,6 +21,9 @@ public class ReferenceHibernate {
     @Inject
     RulebookHibernate rulebookHibernate;
 
+    @Inject
+    ReferenceTypeHibernate referenceTypeHibernate;
+
     @CommitAfter
     public void store(Reference reference) {
         if (reference == null) {
@@ -137,6 +140,16 @@ public class ReferenceHibernate {
         if (reference == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
+        ReferenceType referenceType = reference.getReferenceType();
+        List<Attribute> attributes = referenceTypeHibernate.getAttributes(referenceType);
+
+        return attributes;
+    }
+
+    public List<Attribute> getAttributeValues(Reference reference) {
+        if (reference == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
 
         List<AttributeReference> attributeReferences = reference.getAttributeReferences();
         List<Attribute> attributes = new ArrayList<Attribute>();
@@ -149,7 +162,7 @@ public class ReferenceHibernate {
     }
 
     @CommitAfter
-    public void setAttribute(Reference reference, Attribute attribute) {
+    public void setAttributeValue(Reference reference, Attribute attribute) {
         if (reference == null || attribute == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
