@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.pages.Section;
 
+import com.diplomska.prof_rank.entities.RulebookSection;
 import com.diplomska.prof_rank.entities.Section;
 import com.diplomska.prof_rank.services.SectionHibernate;
 import org.apache.tapestry5.annotations.Property;
@@ -20,10 +21,10 @@ public class Index {
     private SectionHibernate sectionHibernate;
 
     @Property
-    private Section section;
+    private RulebookSection rulebookSection;
 
     @Property
-    private BeanModel<Section> sectionBeanModel;
+    private BeanModel<RulebookSection> sectionBeanModel;
 
     @Inject
     private BeanModelSource beanModelSource;
@@ -34,20 +35,22 @@ public class Index {
     @Inject
     private PropertyConduitSource pcs;
 
-    public List<Section> getSections() {
-        return sectionHibernate.getAll();
+    public List<RulebookSection> getRulebookSections() {
+        return sectionHibernate.getAllRulebookSection();
     }
 
     void setupRender() {
-        sectionBeanModel = beanModelSource.createDisplayModel(Section.class, messages);
-        sectionBeanModel.include("name");
+        sectionBeanModel = beanModelSource.createDisplayModel(RulebookSection.class, messages);
+//        sectionBeanModel.add("rulebookName", pcs.create(RulebookSection.class, "rulebook.name"));
+        sectionBeanModel.add("sectionName", pcs.create(RulebookSection.class, "section.name"));
+        sectionBeanModel.add("show", null);
         sectionBeanModel.add("edit", null);
         sectionBeanModel.add("delete", null);
     }
 
     @CommitAfter
     void onActionFromDelete(Long sectionId) {
-        section = sectionHibernate.getById(sectionId);
-        sectionHibernate.delete(section);
+        Section entity = sectionHibernate.getById(sectionId);
+        sectionHibernate.delete(entity);
     }
 }

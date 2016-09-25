@@ -1,0 +1,40 @@
+<html t:type="layout" title="Section Show"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <h2>Section</h2>
+
+    <t:beandisplay object="rulebookSection.section"/>
+
+
+    <t:if test="rulebookNull">
+        <h3>Rulebook</h3>
+        <t:beandisplay object="rulebook"/>
+    </t:if>
+
+    <h3>References</h3>
+    <t:grid source="references" row="reference" model="referenceBeanModel">
+        <p:deleteCell>
+            <t:actionlink t:id="delete" context="reference.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+    <h3>Add References</h3>
+    <t:grid source="addReferences" row="addReference" model="addReferenceBeanModel">
+        <p:addCell>
+            <t:actionlink t:id="addReference" context="addReference.id">Add</t:actionlink>
+        </p:addCell>
+    </t:grid>
+
+    <h3>Add Rulebook</h3>
+    <t:grid source="addRulebooks" row="addRulebook" model="addRulebookBeanModel">
+        <p:addCell>
+            <t:actionlink t:id="addRulebook" context="addRulebook.id">Add</t:actionlink>
+        </p:addCell>
+    </t:grid>
+
+
+</div>
+
+</html>

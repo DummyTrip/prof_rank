@@ -1,11 +1,14 @@
 package com.diplomska.prof_rank.services;
 
+import com.diplomska.prof_rank.entities.Reference;
+import com.diplomska.prof_rank.entities.RulebookSection;
 import com.diplomska.prof_rank.entities.Section;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hibernate.criterion.Restrictions.eq;
@@ -16,6 +19,9 @@ import static org.hibernate.criterion.Restrictions.eq;
 public class SectionHibernate {
     @Inject
     Session session;
+
+    @Inject
+    ReferenceHibernate referenceHibernate;
 
     @CommitAfter
     public void store(Section section) {
@@ -28,6 +34,10 @@ public class SectionHibernate {
 
     public List<Section> getAll() {
         return session.createCriteria(Section.class).list();
+    }
+
+    public List<RulebookSection> getAllRulebookSection() {
+        return session.createCriteria(RulebookSection.class).list();
     }
 
     @CommitAfter
@@ -56,6 +66,14 @@ public class SectionHibernate {
         return (Section) session.get(Section.class, id);
     }
 
+    public RulebookSection getRulebookSectionById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        return (RulebookSection) session.get(RulebookSection.class, id);
+    }
+
     public List<Section> getByColumn(String column, String value) {
         if (column == null || value == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
@@ -65,5 +83,18 @@ public class SectionHibernate {
         List<Section> entities = criteria.add(eq(column, value)).list();
 
         return entities;
+    }
+
+    public List<Reference> getReferences(Section section) {
+        List<Reference> refs = referenceHibernate.getAll();
+        List<Reference> references = new ArrayList<Reference>();
+
+        for (Reference reference : refs ) {
+            if (referenceHibernate.getSections(reference).contains(section)) {
+                references.add(reference);
+            }
+        }
+
+        return references;
     }
 }

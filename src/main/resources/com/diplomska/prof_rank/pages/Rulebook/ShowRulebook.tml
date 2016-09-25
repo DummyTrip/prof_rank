@@ -15,7 +15,7 @@
     </t:grid>
 
     <h3>Add Sections</h3>
-    <t:grid source="sectionss" row="addSection" model="addSectionBeanModel">
+    <t:grid source="addSections" row="addSection" model="addSectionBeanModel">
         <p:addCell>
             <t:actionlink t:id="add" context="addSection.id">Add</t:actionlink>
         </p:addCell>

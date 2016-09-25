@@ -120,6 +120,18 @@ public class RulebookHibernate {
     }
 
     @CommitAfter
+    public void setSection(Rulebook rulebook, Section section, RulebookSection rulebookSection) {
+        if (rulebook == null || section == null || rulebookSection == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        rulebookSection.setRulebook(rulebook);
+        rulebookSection.setSection(section);
+
+        session.update(rulebookSection);
+    }
+
+    @CommitAfter
     public void deleteSection(Rulebook rulebook, Section section) {
         if (rulebook == null || section == null) {
             throw new IllegalArgumentException("Cannot persist null value.");

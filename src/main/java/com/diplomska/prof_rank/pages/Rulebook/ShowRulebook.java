@@ -37,8 +37,6 @@ public class ShowRulebook {
     @Property
     private Section addSection;
 
-    private List<Section> addSections = new ArrayList<Section>();
-
     @Inject
     private SectionHibernate sectionHibernate;
 
@@ -61,7 +59,7 @@ public class ShowRulebook {
         return rulebookHibernate.getSections(rulebook);
     }
 
-    public List<Section> getSectionss() throws Exception {
+    public List<Section> getAddSections() throws Exception {
         return sectionHibernate.getAll();
     }
 

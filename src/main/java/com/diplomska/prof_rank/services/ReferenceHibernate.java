@@ -108,6 +108,27 @@ public class ReferenceHibernate {
         session.persist(referenceRulebookSection);
     }
 
+    @CommitAfter
+    public void deleteSection(Reference reference, RulebookSection rulebookSection) {
+        if (reference == null || rulebookSection == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        Criteria criteria = session.createCriteria(ReferenceRulebookSection.class);
+        List<ReferenceRulebookSection> entities = criteria
+                .add(eq("reference", reference))
+                .add(eq("rulebookSection", rulebookSection))
+                .list();
+
+        if (entities.size() < 1) {
+            throw new IllegalStateException("No data in database.");
+        }
+
+        ReferenceRulebookSection referenceRulebookSection = entities.get(0);
+        referenceRulebookSection.setReference(null);
+        reference.getReferenceRulebookSections().remove(referenceRulebookSection);
+    }
+
     public void setSection(Reference reference, Section section, Rulebook rulebook) {
         if (reference == null || section == null || rulebook == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
