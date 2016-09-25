@@ -97,4 +97,25 @@ public class ReferenceTypeHibernate {
 
         session.saveOrUpdate(attributeReferenceType);
     }
+
+    @CommitAfter
+    public void deleteAttribute(ReferenceType referenceType, Attribute attribute) {
+        if (referenceType == null || attribute == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        Criteria criteria = session.createCriteria(AttributeReferenceType.class);
+        List<AttributeReferenceType> entities = criteria
+                .add(eq("referenceType", referenceType))
+                .add(eq("attribute", attribute))
+                .list();
+
+        if (entities.size() < 1) {
+            throw new IllegalStateException("No data in database.");
+        }
+
+        AttributeReferenceType attributeReferenceType = entities.get(0);
+        attributeReferenceType.setReferenceType(null);
+        referenceType.getAttributeReferenceTypes().remove(attributeReferenceType);
+    }
 }

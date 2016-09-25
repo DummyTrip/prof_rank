@@ -173,4 +173,25 @@ public class ReferenceHibernate {
 
         session.persist(attributeReference);
     }
+
+    @CommitAfter
+    public void deleteAttribute(Reference reference, Attribute attribute) {
+        if (reference == null || attribute == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        Criteria criteria = session.createCriteria(AttributeReference.class);
+        List<AttributeReference> entities = criteria
+                .add(eq("referenceType", reference))
+                .add(eq("attribute", attribute))
+                .list();
+
+        if (entities.size() < 1) {
+            throw new IllegalStateException("No data in database.");
+        }
+
+        AttributeReference attributeReference = entities.get(0);
+        attributeReference.setReference(null);
+        reference.getAttributeReferences().remove(attributeReference);
+    }
 }

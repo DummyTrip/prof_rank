@@ -7,7 +7,7 @@
 
     <t:grid source="referenceTypes" row="referenceType" model="referenceTypeBeanModel">
         <p:showCell>
-            <t:pagelink page="referencetype/show" context="referenceType.id">Show</t:pagelink>
+            <t:pagelink page="referencetype/showreferencetype" context="referenceType.id">Show</t:pagelink>
         </p:showCell>
         <p:editCell>
             <t:pagelink page="referenceType/editreferenceType" context="referenceType.id">Edit</t:pagelink>

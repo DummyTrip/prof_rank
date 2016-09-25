@@ -42,6 +42,7 @@ public class Index {
         referenceBeanModel = beanModelSource.createDisplayModel(Reference.class, messages);
         referenceBeanModel.include("name");
         referenceBeanModel.add("referenceType", pcs.create(Reference.class, "referenceType"));
+        referenceBeanModel.add("show", null);
         referenceBeanModel.add("edit", null);
         referenceBeanModel.add("delete", null);
     }

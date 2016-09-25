@@ -1,7 +1,6 @@
 package com.diplomska.prof_rank.pages.ReferenceType;
 
 import com.diplomska.prof_rank.entities.Attribute;
-import com.diplomska.prof_rank.entities.AttributeReferenceType;
 import com.diplomska.prof_rank.entities.ReferenceType;
 import com.diplomska.prof_rank.services.AttributeHibernate;
 import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
@@ -20,7 +19,7 @@ import java.util.List;
 /**
  * Created by Aleksandar on 25-Sep-16.
  */
-public class Show {
+public class ShowReferenceType {
     @Persist
     @Property
     private Long referenceTypeId;
@@ -31,20 +30,21 @@ public class Show {
     @Inject
     private AttributeHibernate attributeHibernate;
 
+    @Persist
     @Property
     private ReferenceType referenceType;
+
+    @Property
+    private Attribute addAttribute;
 
     @Property
     private Attribute attribute;
 
     @Property
-    private AttributeReferenceType attributeReferenceType;
-
-    @Property
-    private BeanModel<AttributeReferenceType> attributeReferenceTypeBeanModel;
-
-    @Property
     private BeanModel<Attribute> attributeBeanModel;
+
+    @Property
+    private BeanModel<Attribute> addAttributeBeanModel;
 
     @Inject
     private BeanModelSource beanModelSource;
@@ -55,17 +55,14 @@ public class Show {
     @Inject
     private PropertyConduitSource pcs;
 
-    public List<Attribute> getAttributes() {
+    public List<Attribute> getAddAttributes() {
         return attributeHibernate.getAll();
     }
 
-    public List<AttributeReferenceType> getAttributeReferenceTypes() {
-        List<AttributeReferenceType> attributeReferenceTypes = new ArrayList<AttributeReferenceType>();
-        List<ReferenceType> allReferenceTypes = referenceTypeHibernate.getAll();
+    public List<Attribute> getAttributes() {
+        List<Attribute> attributeReferenceTypes = new ArrayList<Attribute>();
 
-        for (ReferenceType ref : allReferenceTypes) {
-            attributeReferenceTypes.addAll(ref.getAttributeReferenceTypes());
-        }
+        attributeReferenceTypes.addAll(referenceTypeHibernate.getAttributes(referenceType));
 
         return attributeReferenceTypes;
     }
@@ -79,26 +76,33 @@ public class Show {
     }
 
     void setupRender() throws Exception {
-        referenceType = referenceTypeHibernate.getById(referenceTypeId);
+        this.referenceType = referenceTypeHibernate.getById(referenceTypeId);
 
         if (referenceType == null) {
             throw new Exception("ReferenceType " + referenceTypeId + " does not exist.");
         }
 
         attributeBeanModel = beanModelSource.createDisplayModel(Attribute.class, messages);
-        attributeBeanModel.include("name", "inputType");
-        attributeBeanModel.add("add", null);
+        attributeBeanModel.add("attributeName", pcs.create(Attribute.class, "name"));
+        attributeBeanModel.add("attributeInputType", pcs.create(Attribute.class, "inputType"));
+        attributeBeanModel.add("delete", null);
 
-        attributeReferenceTypeBeanModel = beanModelSource.createDisplayModel(AttributeReferenceType.class, messages);
-        attributeReferenceTypeBeanModel.add("referenceType", pcs.create(AttributeReferenceType.class, "referenceType"));
-        attributeReferenceTypeBeanModel.add("attribute", pcs.create(AttributeReferenceType.class, "attribute"));
+        addAttributeBeanModel = beanModelSource.createDisplayModel(Attribute.class, messages);
+        addAttributeBeanModel.include("name", "inputType");
+        addAttributeBeanModel.add("add", null);
     }
 
     @CommitAfter
     void onActionFromAdd(Long attributeId) {
-        referenceType = referenceTypeHibernate.getById(referenceTypeId);
-
         attribute = attributeHibernate.getById(attributeId);
+
         referenceTypeHibernate.setAttribute(referenceType, attribute);
+    }
+
+    @CommitAfter
+    void onActionFromDelete(Long attributeId) {
+        Attribute attr = attributeHibernate.getById(attributeId);
+
+        referenceTypeHibernate.deleteAttribute(referenceType, attr);
     }
 }
