@@ -1,0 +1,23 @@
+<html t:type="layout" title="Reference Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <h2>References</h2>
+
+    <t:grid source="references" row="reference" model="referenceBeanModel">
+        <p:editCell>
+            <t:pagelink page="reference/editreference" context="reference.id">Edit</t:pagelink>
+        </p:editCell>
+        <p:deleteCell>
+            <t:actionlink t:id="delete" context="reference.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+    <p><t:pagelink page="reference/createreference">Create new reference</t:pagelink></p>
+
+    <hr/>
+
+</div>
+
+</html>

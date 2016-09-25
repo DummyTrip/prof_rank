@@ -46,4 +46,9 @@ public class ReferenceType {
     public void setAttributeReferenceTypes(List<AttributeReferenceType> attributeReferenceTypes) {
         this.attributeReferenceTypes = attributeReferenceTypes;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

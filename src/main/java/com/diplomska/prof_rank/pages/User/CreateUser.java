@@ -59,6 +59,10 @@ public class CreateUser {
     Object onSuccess() {
         userHibernate.store(user);
 
+        if (role != null){
+            userHibernate.setRole(user, role);
+        }
+
         return index;
     }
 }

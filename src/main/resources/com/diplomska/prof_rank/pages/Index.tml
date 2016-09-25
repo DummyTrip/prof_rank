@@ -51,6 +51,7 @@
             <li><t:pagelink page="role/index">Roles</t:pagelink></li>
             <li><t:pagelink page="rulebook/index">Rulebooks</t:pagelink></li>
             <li><t:pagelink page="section/index">Sections</t:pagelink></li>
+            <li><t:pagelink page="reference/index">References</t:pagelink></li>
             <li><t:pagelink page="referencetype/index">Reference Types</t:pagelink></li>
             <li><t:pagelink page="attribute/index">Attributes</t:pagelink></li>
             <li><t:pagelink page="report/index">Reports</t:pagelink></li>
