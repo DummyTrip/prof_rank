@@ -41,6 +41,7 @@ public class Index {
     void setupRender() {
         rulebookBeanModel = beanModelSource.createDisplayModel(Rulebook.class, messages);
         rulebookBeanModel.include("name");
+        rulebookBeanModel.add("show", null);
         rulebookBeanModel.add("edit", null);
         rulebookBeanModel.add("delete", null);
     }

@@ -118,4 +118,25 @@ public class RulebookHibernate {
 
         session.saveOrUpdate(rulebookSection);
     }
+
+    @CommitAfter
+    public void deleteSection(Rulebook rulebook, Section section) {
+        if (rulebook == null || section == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        Criteria criteria = session.createCriteria(RulebookSection.class);
+        List<RulebookSection> entities = criteria
+                .add(eq("rulebook", rulebook))
+                .add(eq("section", section))
+                .list();
+
+        if (entities.size() < 1) {
+            throw new IllegalStateException("No data in database.");
+        }
+
+        RulebookSection rulebookSection = entities.get(0);
+        rulebookSection.setRulebook(null);
+        rulebook.getRulebookSections().remove(rulebookSection);
+    }
 }

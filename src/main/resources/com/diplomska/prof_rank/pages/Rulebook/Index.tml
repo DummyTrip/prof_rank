@@ -6,6 +6,9 @@
     <h2>Rulebooks</h2>
 
     <t:grid source="rulebooks" row="rulebook" model="rulebookBeanModel">
+        <p:showCell>
+            <t:pagelink page="rulebook/showrulebook" context="rulebook.id">Show</t:pagelink>
+        </p:showCell>
         <p:editCell>
             <t:pagelink page="rulebook/editrulebook" context="rulebook.id">Edit</t:pagelink>
         </p:editCell>

@@ -1,0 +1,27 @@
+<html t:type="layout" title="Rulebook Show"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <h2>Rulebook</h2>
+
+    <t:beandisplay object="rulebook"/>
+    
+    <h3>Sections</h3>
+    <t:grid source="sections" row="section" model="sectionBeanModel">
+        <p:deleteCell>
+            <t:actionlink t:id="delete" context="section.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+    <h3>Add Sections</h3>
+    <t:grid source="sectionss" row="addSection" model="addSectionBeanModel">
+        <p:addCell>
+            <t:actionlink t:id="add" context="addSection.id">Add</t:actionlink>
+        </p:addCell>
+    </t:grid>
+
+
+</div>
+
+</html>
