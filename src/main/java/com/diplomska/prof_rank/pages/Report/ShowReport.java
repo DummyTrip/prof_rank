@@ -8,12 +8,9 @@ import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.annotations.PostInjection;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.PropertyConduitSource;
 
-import javax.jws.soap.SOAPBinding;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

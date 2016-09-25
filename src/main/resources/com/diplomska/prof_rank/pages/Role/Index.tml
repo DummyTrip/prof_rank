@@ -6,6 +6,9 @@
     <h2>Roles</h2>
 
     <t:grid source="roles" row="role" model="roleBeanModel">
+        <p:showCell>
+            <t:pagelink page="role/showrole" context="role.id">Show</t:pagelink>
+        </p:showCell>
         <p:editCell>
             <t:pagelink page="role/editrole" context="role.id">Edit</t:pagelink>
         </p:editCell>

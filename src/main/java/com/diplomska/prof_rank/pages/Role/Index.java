@@ -42,6 +42,7 @@ public class Index {
     void setupRender() {
         roleBeanModel = beanModelSource.createDisplayModel(Role.class, messages);
         roleBeanModel.include("name");
+        roleBeanModel.add("show", null);
         roleBeanModel.add("edit", null);
         roleBeanModel.add("delete", null);
     }
