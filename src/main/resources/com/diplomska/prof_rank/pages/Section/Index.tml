@@ -5,21 +5,28 @@
 <div>
     <h2>Sections</h2>
 
-    <t:grid source="rulebookSections" row="rulebookSection" model="sectionBeanModel">
-        <p:showCell>
-            <t:pagelink page="section/showsection" context="rulebookSection.id">Show</t:pagelink>
-        </p:showCell>
+    <t:grid source="sections" row="section" model="sectionBeanModel">
         <p:editCell>
-            <t:pagelink page="section/editsection" context="rulebookSection.id">Edit</t:pagelink>
+            <t:pagelink page="section/editsection" context="section.id">Edit</t:pagelink>
         </p:editCell>
         <p:deleteCell>
-            <t:actionlink t:id="delete" context="rulebookSection.id">Delete</t:actionlink>
+            <t:actionlink t:id="deleteSection" context="section.id">Delete</t:actionlink>
         </p:deleteCell>
     </t:grid>
 
     <p><t:pagelink page="section/createsection">Create new section</t:pagelink></p>
 
     <hr/>
+
+    <h3>Rulebook Sections</h3>
+    <t:grid source="rulebookSections" row="rulebookSection" model="rulebookSectionBeanModel">
+        <p:showCell>
+            <t:pagelink page="section/showsection" context="rulebookSection.id">Show</t:pagelink>
+        </p:showCell>
+        <p:deleteCell>
+            <t:actionlink t:id="delete" context="rulebookSection.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
 
 </div>
 
