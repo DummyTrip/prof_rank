@@ -31,7 +31,7 @@ public class ShowReport {
     private SubjectDomainHibernate subjectDomainHibernate;
 
     @Inject
-    private ReferenceHibernate referenceHibernate;
+    private ReferenceInstanceHibernate referenceInstanceHibernate;
 
     @Inject
     private UserHibernate userHibernate;
@@ -56,10 +56,10 @@ public class ShowReport {
     private SubjectDomain addSubjectDomain;
 
     @Property
-    private Reference reference;
+    private ReferenceInstance referenceInstance;
 
     @Property
-    private Reference addReference;
+    private ReferenceInstance addReferenceInstance;
 
     @Property
     private BeanModel<User> addUserBeanModel;
@@ -77,10 +77,10 @@ public class ShowReport {
     private BeanModel<SubjectDomain> addSubjectDomainBeanModel;
 
     @Property
-    private BeanModel<Reference> referenceBeanModel;
+    private BeanModel<ReferenceInstance> referenceInstanceBeanModel;
 
     @Property
-    private BeanModel<Reference> addReferenceBeanModel;
+    private BeanModel<ReferenceInstance> addReferenceInstanceBeanModel;
 
     @Inject
     private BeanModelSource beanModelSource;
@@ -115,12 +115,12 @@ public class ShowReport {
         return subjectDomainHibernate.getAll();
     }
 
-    public List<Reference> getReferences() {
-        return reportHibernate.getReferences(report);
+    public List<ReferenceInstance> getReferenceInstances() {
+        return reportHibernate.getReferenceInstances(report);
     }
 
-    public List<Reference> getAddReferences() {
-        return referenceHibernate.getAll();
+    public List<ReferenceInstance> getAddReferenceInstances() {
+        return referenceInstanceHibernate.getAll();
     }
 
     void onActivate(Long reportId) {
@@ -167,13 +167,13 @@ public class ShowReport {
         addSubjectDomainBeanModel.add("subjectDomainIdentifier", pcs.create(SubjectDomain.class, "identifier"));
         addSubjectDomainBeanModel.add("add", null);
 
-        referenceBeanModel = beanModelSource.createDisplayModel(Reference.class, messages);
-        referenceBeanModel.add("referenceName", pcs.create(Reference.class, "name"));
-        referenceBeanModel.add("delete", null);
+        referenceInstanceBeanModel = beanModelSource.createDisplayModel(ReferenceInstance.class, messages);
+        referenceInstanceBeanModel.add("referenceInstanceName", pcs.create(ReferenceInstance.class, "reference.name"));
+        referenceInstanceBeanModel.add("delete", null);
 
-        addReferenceBeanModel = beanModelSource.createDisplayModel(Reference.class, messages);
-        addReferenceBeanModel.add("referenceName", pcs.create(Reference.class, "name"));
-        addReferenceBeanModel.add("add", null);
+        addReferenceInstanceBeanModel = beanModelSource.createDisplayModel(ReferenceInstance.class, messages);
+        addReferenceInstanceBeanModel.add("referenceInstanceName", pcs.create(ReferenceInstance.class, "reference.name"));
+        addReferenceInstanceBeanModel.add("add", null);
     }
 
     public boolean isUserNull() {
@@ -217,16 +217,16 @@ public class ShowReport {
     }
 
     @CommitAfter
-    void onActionFromDeleteReference(Long id) {
-        Reference entity = referenceHibernate.getById(id);
+    void onActionFromDeleteReferenceInstance(Long id) {
+        ReferenceInstance entity = referenceInstanceHibernate.getById(id);
 
-        reportHibernate.deleteReference(report, entity);
+        reportHibernate.deleteReferenceInstance(report, entity);
     }
 
     @CommitAfter
-    void onActionFromAddReference(Long id) {
-        Reference entity = referenceHibernate.getById(id);
+    void onActionFromAddReferenceInstance(Long id) {
+        ReferenceInstance entity = referenceInstanceHibernate.getById(id);
 
-        reportHibernate.setReference(report, entity);
+        reportHibernate.setReferenceInstance(report, entity);
     }
 }

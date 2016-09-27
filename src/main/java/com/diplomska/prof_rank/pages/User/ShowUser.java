@@ -1,10 +1,10 @@
 package com.diplomska.prof_rank.pages.User;
 
-import com.diplomska.prof_rank.entities.Reference;
+import com.diplomska.prof_rank.entities.ReferenceInstance;
 import com.diplomska.prof_rank.entities.Report;
 import com.diplomska.prof_rank.entities.Role;
 import com.diplomska.prof_rank.entities.User;
-import com.diplomska.prof_rank.services.ReferenceHibernate;
+import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import com.diplomska.prof_rank.services.ReportHibernate;
 import com.diplomska.prof_rank.services.UserHibernate;
 import org.apache.tapestry5.annotations.Persist;
@@ -34,16 +34,16 @@ public class ShowUser {
     private User user;
 
     @Inject
-    private ReferenceHibernate referenceHibernate;
+    private ReferenceInstanceHibernate referenceInstanceHibernate;
 
     @Inject
     private ReportHibernate reportHibernate;
 
     @Property
-    private Reference reference;
+    private ReferenceInstance referenceInstance;
 
     @Property
-    private Reference addReference;
+    private ReferenceInstance addReferenceInstance;
 
     @Property
     private Report report;
@@ -52,10 +52,10 @@ public class ShowUser {
     private Report addReport;
 
     @Property
-    private BeanModel<Reference> referenceBeanModel;
+    private BeanModel<ReferenceInstance> referenceInstanceBeanModel;
 
     @Property
-    private BeanModel<Reference> addReferenceBeanModel;
+    private BeanModel<ReferenceInstance> addReferenceInstanceBeanModel;
 
     @Property
     private BeanModel<Report> reportBeanModel;
@@ -76,12 +76,12 @@ public class ShowUser {
         return user.getRole();
     }
 
-    public List<Reference> getReferences() {
-        return userHibernate.getReferences(user);
+    public List<ReferenceInstance> getReferenceInstances() {
+        return userHibernate.getReferenceInstances(user);
     }
 
-    public List<Reference> getAddReferences() {
-        return referenceHibernate.getAll();
+    public List<ReferenceInstance> getAddReferenceInstances() {
+        return referenceInstanceHibernate.getAll();
     }
 
     public List<Report> getReports() {
@@ -107,13 +107,13 @@ public class ShowUser {
             throw new Exception("Report " + userId + " does not exist.");
         }
 
-        referenceBeanModel = beanModelSource.createDisplayModel(Reference.class, messages);
-        referenceBeanModel.add("referenceName", pcs.create(Reference.class, "name"));
-        referenceBeanModel.add("delete", null);
+        referenceInstanceBeanModel = beanModelSource.createDisplayModel(ReferenceInstance.class, messages);
+        referenceInstanceBeanModel.add("referenceInstanceName", pcs.create(ReferenceInstance.class, "reference.name"));
+        referenceInstanceBeanModel.add("delete", null);
 
-        addReferenceBeanModel = beanModelSource.createDisplayModel(Reference.class, messages);
-        addReferenceBeanModel.add("referenceName", pcs.create(Reference.class, "name"));
-        addReferenceBeanModel.add("add", null);
+        addReferenceInstanceBeanModel = beanModelSource.createDisplayModel(ReferenceInstance.class, messages);
+        addReferenceInstanceBeanModel.add("referenceInstanceName", pcs.create(ReferenceInstance.class, "reference.name"));
+        addReferenceInstanceBeanModel.add("add", null);
 
         reportBeanModel = beanModelSource.createDisplayModel(Report.class, messages);
         reportBeanModel.add("reportTitle", pcs.create(Report.class, "title"));
@@ -136,10 +136,10 @@ public class ShowUser {
     }
 
     @CommitAfter
-    void onActionFromAddReference(Long id) {
-        Reference entity = referenceHibernate.getById(id);
+    void onActionFromAddReferenceInstance(Long id) {
+        ReferenceInstance entity = referenceInstanceHibernate.getById(id);
 
-        userHibernate.setReference(user, entity);
+        userHibernate.setReferenceInstance(user, entity);
     }
 
     @CommitAfter
@@ -151,10 +151,10 @@ public class ShowUser {
     }
 
     @CommitAfter
-    void onActionFromDeleteReference(Long id) {
-        Reference entity = referenceHibernate.getById(id);
+    void onActionFromDeleteReferenceInstance(Long id) {
+        ReferenceInstance entity = referenceInstanceHibernate.getById(id);
 
-        userHibernate.deleteReference(user, entity);
+        userHibernate.deleteReferenceInstance(user, entity);
     }
 
     @CommitAfter

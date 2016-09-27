@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * Created by Aleksandar on 27.09.2016.
  */
+@Entity
 public class ReferenceInstance {
     private Long id;
 

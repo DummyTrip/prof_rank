@@ -2,6 +2,7 @@ package com.diplomska.prof_rank.services;
 
 import java.io.IOException;
 
+import com.diplomska.prof_rank.entities.ReferenceInstance;
 import com.diplomska.prof_rank.entities.ReferenceType;
 import org.apache.tapestry5.*;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -39,6 +40,7 @@ public class AppModule
         binder.bind(InstitutionHibernate.class);
         binder.bind(SubjectDomainHibernate.class);
         binder.bind(CountryNames.class);
+        binder.bind(ReferenceInstanceHibernate.class);
     }
 
     public static void contributeFactoryDefaults(

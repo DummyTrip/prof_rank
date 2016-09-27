@@ -7,6 +7,7 @@ import javax.persistence.*;
 /**
  * Created by Aleksandar on 27.09.2016.
  */
+@Entity
 public class ReferenceInstanceUser {
     private Long id;
 
