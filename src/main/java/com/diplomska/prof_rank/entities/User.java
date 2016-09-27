@@ -30,8 +30,8 @@ public class User {
     private Role role;
 
     @Column
-    @ElementCollection(targetClass = ReferenceUser.class)
-    private List<ReferenceUser> referenceUsers = new ArrayList<ReferenceUser>();
+    @ElementCollection(targetClass = ReferenceInstanceUser.class)
+    private List<ReferenceInstanceUser> referenceInstanceUsers = new ArrayList<ReferenceInstanceUser>();
 
     @Column()
     @ElementCollection(targetClass = Report.class)
@@ -90,12 +90,12 @@ public class User {
     }
 
     @OneToMany(mappedBy = "user")
-    public List<ReferenceUser> getReferenceUsers() {
-        return referenceUsers;
+    public List<ReferenceInstanceUser> getReferenceInstanceUsers() {
+        return referenceInstanceUsers;
     }
 
-    public void setReferenceUsers(List<ReferenceUser> referenceUsers) {
-        this.referenceUsers = referenceUsers;
+    public void setReferenceInstanceUsers(List<ReferenceInstanceUser> referenceInstanceUsers) {
+        this.referenceInstanceUsers = referenceInstanceUsers;
     }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
