@@ -98,53 +98,53 @@ public class UserHibernate {
         session.saveOrUpdate(user);
     }
 
-    public List<Reference> getReferences(User user) {
+    public List<ReferenceInstance> getReferenceInstances(User user) {
         if (user == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        List<ReferenceUser> referenceUsers = user.getReferenceUsers();
-        List<Reference> references = new ArrayList<Reference>();
+        List<ReferenceInstanceUser> referenceInstanceUsers = user.getReferenceInstanceUsers();
+        List<ReferenceInstance> referenceInstances = new ArrayList<ReferenceInstance>();
 
-        for (ReferenceUser referenceUser : referenceUsers) {
-            references.add(referenceUser.getReference());
+        for (ReferenceInstanceUser referenceInstanceUser : referenceInstanceUsers) {
+            referenceInstances.add(referenceInstanceUser.getReferenceInstance());
         }
 
-        return references;
+        return referenceInstances;
     }
 
     @CommitAfter
-    public void setReference(User user, Reference reference) {
-        if (user == null || reference == null) {
+    public void setReferenceInstance(User user, ReferenceInstance referenceInstance) {
+        if (user == null || referenceInstance == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
-        ReferenceUser referenceUser = new ReferenceUser();
+        ReferenceInstanceUser referenceInstanceUser = new ReferenceInstanceUser();
 
-        referenceUser.setUser(user);
-        referenceUser.setReference(reference);
+        referenceInstanceUser.setUser(user);
+        referenceInstanceUser.setReferenceInstance(referenceInstance);
 
-        session.saveOrUpdate(referenceUser);
+        session.saveOrUpdate(referenceInstanceUser);
     }
 
     @CommitAfter
-    public void deleteReference(User user, Reference reference) {
-        if (user == null || reference == null) {
+    public void deleteReferenceInstance(User user, ReferenceInstance referenceInstance) {
+        if (user == null || referenceInstance == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
-        Criteria criteria = session.createCriteria(ReferenceUser.class);
-        List<ReferenceUser> entities = criteria
+        Criteria criteria = session.createCriteria(ReferenceInstanceUser.class);
+        List<ReferenceInstanceUser> entities = criteria
                 .add(eq("user", user))
-                .add(eq("reference", reference))
+                .add(eq("referenceInstance", referenceInstance))
                 .list();
 
         if (entities.size() < 1) {
             throw new IllegalStateException("No data in database.");
         }
 
-        ReferenceUser referenceUser = entities.get(0);
-        referenceUser.setUser(null);
-        user.getReferenceUsers().remove(referenceUser);
+        ReferenceInstanceUser referenceInstanceUser = entities.get(0);
+        referenceInstanceUser.setUser(null);
+        user.getReferenceInstanceUsers().remove(referenceInstanceUser);
     }
 
     public List<Report> getReports(User user) {

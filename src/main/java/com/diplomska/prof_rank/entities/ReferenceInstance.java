@@ -15,8 +15,8 @@ public class ReferenceInstance {
     private Reference reference;
 
     @Column
-    @ElementCollection(targetClass = AttributeReference.class)
-    private List<AttributeReference> attributeReferences = new ArrayList<AttributeReference>();
+    @ElementCollection(targetClass = AttributeReferenceInstance.class)
+    private List<AttributeReferenceInstance> attributeReferenceInstances = new ArrayList<AttributeReferenceInstance>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,12 +39,12 @@ public class ReferenceInstance {
     }
 
     @OneToMany(mappedBy = "referenceInstance")
-    public List<AttributeReference> getAttributeReferences() {
-        return attributeReferences;
+    public List<AttributeReferenceInstance> getAttributeReferenceInstances() {
+        return attributeReferenceInstances;
     }
 
-    public void setAttributeReferences(List<AttributeReference> attributeReferences) {
-        this.attributeReferences = attributeReferences;
+    public void setAttributeReferenceInstances(List<AttributeReferenceInstance> attributeReferenceInstances) {
+        this.attributeReferenceInstances = attributeReferenceInstances;
     }
 
     @Override

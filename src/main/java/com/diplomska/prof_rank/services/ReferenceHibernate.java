@@ -183,19 +183,6 @@ public class ReferenceHibernate {
     }
 
     @CommitAfter
-    public void setAttributeValue(Reference reference, Attribute attribute) {
-        if (reference == null || attribute == null) {
-            throw new IllegalArgumentException("Cannot persist null value.");
-        }
-        AttributeReference attributeReference = new AttributeReference();
-
-        attributeReference.setReference(reference);
-        attributeReference.setAttribute(attribute);
-
-        session.persist(attributeReference);
-    }
-
-    @CommitAfter
     public void deleteAttribute(Reference reference, Attribute attribute) {
         if (reference == null || attribute == null) {
             throw new IllegalArgumentException("Cannot persist null value.");

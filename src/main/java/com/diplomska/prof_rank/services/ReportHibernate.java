@@ -182,52 +182,52 @@ public class ReportHibernate {
         report.getReportSubjectDomains().remove(reportSubjectDomain);
     }
 
-    public List<Reference> getReferences(Report report) {
+    public List<ReferenceInstance> getReferenceInstances(Report report) {
         if (report == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        List<ReferenceReport> referenceReports = report.getReferenceReports();
-        List<Reference> references = new ArrayList<Reference>();
+        List<ReferenceInstanceReport> referenceInstanceReports = report.getReferenceInstanceReports();
+        List<ReferenceInstance> referenceInstances = new ArrayList<ReferenceInstance>();
 
-        for (ReferenceReport referenceReport : referenceReports) {
-            references.add(referenceReport.getReference());
+        for (ReferenceInstanceReport referenceInstanceReport : referenceInstanceReports) {
+            referenceInstances.add(referenceInstanceReport.getReferenceInstance());
         }
 
-        return references;
+        return referenceInstances;
     }
 
     @CommitAfter
-    public void setReference(Report report, Reference reference) {
-        if (report == null || reference == null) {
+    public void setReferenceInstance(Report report, ReferenceInstance referenceInstance) {
+        if (report == null || referenceInstance == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
-        ReferenceReport referenceReport = new ReferenceReport();
+        ReferenceInstanceReport referenceInstanceReport = new ReferenceInstanceReport();
 
-        referenceReport.setReport(report);
-        referenceReport.setReference(reference);
+        referenceInstanceReport.setReport(report);
+        referenceInstanceReport.setReferenceInstance(referenceInstance);
 
-        session.saveOrUpdate(referenceReport);
+        session.saveOrUpdate(referenceInstanceReport);
     }
 
     @CommitAfter
-    public void deleteReference(Report report, Reference reference) {
-        if (report == null || reference == null) {
+    public void deleteReferenceInstance(Report report, ReferenceInstance referenceInstance) {
+        if (report == null || referenceInstance == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
-        Criteria criteria = session.createCriteria(ReferenceReport.class);
-        List<ReferenceReport> entities = criteria
+        Criteria criteria = session.createCriteria(ReferenceInstanceReport.class);
+        List<ReferenceInstanceReport> entities = criteria
                 .add(eq("report", report))
-                .add(eq("reference", reference))
+                .add(eq("referenceInstance", referenceInstance))
                 .list();
 
         if (entities.size() < 1) {
             throw new IllegalStateException("No data in database.");
         }
 
-        ReferenceReport referenceReport = entities.get(0);
-        referenceReport.setReport(null);
-        report.getReferenceReports().remove(referenceReport);
+        ReferenceInstanceReport referenceInstanceReport = entities.get(0);
+        referenceInstanceReport.setReport(null);
+        report.getReferenceInstanceReports().remove(referenceInstanceReport);
     }
 }
