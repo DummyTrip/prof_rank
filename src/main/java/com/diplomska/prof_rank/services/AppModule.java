@@ -41,6 +41,7 @@ public class AppModule
         binder.bind(SubjectDomainHibernate.class);
         binder.bind(CountryNames.class);
         binder.bind(ReferenceInstanceHibernate.class);
+        binder.bind(ExcelWorkbook.class);
     }
 
     public static void contributeFactoryDefaults(

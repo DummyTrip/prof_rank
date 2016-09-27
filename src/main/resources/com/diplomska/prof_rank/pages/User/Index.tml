@@ -1,6 +1,6 @@
 <html t:type="layout" title="User Index"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
-      xmlns:p="tapestry:parameter">
+      xmlns:p="tapestry:parameter" xmlns:T="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
 
 <div>
     <h2>Users</h2>
@@ -21,8 +21,15 @@
 
     <hr/>
 
+    <!--<t:grid source="poi" row="po"></t:grid>-->
+    <t:loop source="poi" value="po">
+        <!--<t:loop source="po" value="p">-->
+            <p>${p}</p>
+        <!--</t:loop>-->
+    </t:loop>
 
-    <!--<t:grid source="korisnikReferenci" row="korRef" model="korisnikReferenceModel"></t:grid>-->
+    <!--<p>${poi}</p>-->
+    <p></p>
 </div>
 
 </html>

@@ -15,6 +15,8 @@ public class Reference {
 
     private String name;
 
+    private Float points;
+
     private RulebookSection rulebookSection;
 
     private ReferenceType referenceType;
@@ -48,6 +50,14 @@ public class Reference {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Float getPoints() {
+        return points;
+    }
+
+    public void setPoints(Float points) {
+        this.points = points;
     }
 
     @ManyToOne(cascade = CascadeType.ALL)

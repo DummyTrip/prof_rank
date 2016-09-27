@@ -1,7 +1,13 @@
 package com.diplomska.prof_rank.pages.User;
 
 import com.diplomska.prof_rank.entities.User;
+import com.diplomska.prof_rank.services.ExcelWorkbook;
 import com.diplomska.prof_rank.services.UserHibernate;
+import org.apache.commons.codec.binary.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
@@ -12,7 +18,10 @@ import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.PropertyConduitSource;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -21,6 +30,9 @@ import java.util.List;
 public class Index {
     @Inject
     private UserHibernate userHibernate;
+
+    @Inject
+    ExcelWorkbook excelWorkbook;
 
     @Property
     private User user;
@@ -41,6 +53,22 @@ public class Index {
         return userHibernate.getAll();
     }
 
+    @Property
+    private List<String> po;
+
+    public String getP() {
+        String tmp = "";
+        for (String pop : po) {
+            tmp += " " + pop;
+        }
+
+        return tmp;
+    }
+
+    public List<List<String>> getPoi() throws  Exception{
+        return excelWorkbook.readCategorySpreadsheet("poi_test.xlsx", 4);
+    }
+
     void setupRender() {
         userBeanModel = beanModelSource.createDisplayModel(User.class, messages);
         userBeanModel.include("firstName", "fatherName", "lastName", "email");
@@ -52,12 +80,9 @@ public class Index {
 
     @CommitAfter
     void onActionFromDelete(Long userId) throws Exception{
-//        user = userHibernate.getById(userId);
-//        userHibernate.delete(user);
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        FileOutputStream out = new FileOutputStream(new File("createworkbook.xlsx"));
-
-        workbook.write(out);
-        out.close();
+        user = userHibernate.getById(userId);
+        userHibernate.delete(user);
     }
+
+
 }
