@@ -85,6 +85,12 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
             <version>2.3.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.8-beta4</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>prof_rank</finalName>

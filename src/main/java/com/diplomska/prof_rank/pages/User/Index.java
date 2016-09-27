@@ -2,6 +2,7 @@ package com.diplomska.prof_rank.pages.User;
 
 import com.diplomska.prof_rank.entities.User;
 import com.diplomska.prof_rank.services.UserHibernate;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
@@ -10,6 +11,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.PropertyConduitSource;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 /**
@@ -48,8 +51,13 @@ public class Index {
     }
 
     @CommitAfter
-    void onActionFromDelete(Long userId) {
-        user = userHibernate.getById(userId);
-        userHibernate.delete(user);
+    void onActionFromDelete(Long userId) throws Exception{
+//        user = userHibernate.getById(userId);
+//        userHibernate.delete(user);
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        FileOutputStream out = new FileOutputStream(new File("createworkbook.xlsx"));
+
+        workbook.write(out);
+        out.close();
     }
 }
