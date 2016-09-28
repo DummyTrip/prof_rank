@@ -21,6 +21,8 @@
 
     <hr/>
 
+    <t:actionlink t:id="readExcel">Read Excel</t:actionlink>
+
 </div>
 
 </html>

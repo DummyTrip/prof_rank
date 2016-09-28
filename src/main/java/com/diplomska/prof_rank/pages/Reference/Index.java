@@ -1,6 +1,7 @@
 package com.diplomska.prof_rank.pages.Reference;
 
 import com.diplomska.prof_rank.entities.Reference;
+import com.diplomska.prof_rank.services.ExcelWorkbook;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
@@ -18,6 +19,9 @@ import java.util.List;
 public class Index {
     @Inject
     private ReferenceHibernate referenceHibernate;
+
+    @Inject
+    private ExcelWorkbook excelWorkbook;
 
     @Property
     private Reference reference;
@@ -40,7 +44,7 @@ public class Index {
 
     void setupRender() {
         referenceBeanModel = beanModelSource.createDisplayModel(Reference.class, messages);
-        referenceBeanModel.include("name");
+        referenceBeanModel.include("name", "points");
         referenceBeanModel.add("referenceType", pcs.create(Reference.class, "referenceType"));
         referenceBeanModel.add("show", null);
         referenceBeanModel.add("edit", null);
@@ -51,5 +55,12 @@ public class Index {
     void onActionFromDelete(Long referenceId) {
         reference = referenceHibernate.getById(referenceId);
         referenceHibernate.delete(reference);
+    }
+
+    @CommitAfter
+    void onActionFromReadExcel() throws Exception {
+        excelWorkbook.readCategorySpreadsheet("poi_test.xlsx", 1);
+//        excelWorkbook.readCategorySpreadsheet("poi_test.xlsx", 2);
+//        excelWorkbook.readCategorySpreadsheet("poi_test.xlsx", 3);
     }
 }

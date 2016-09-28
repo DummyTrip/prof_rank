@@ -59,14 +59,14 @@ public class Index {
     public String getP() {
         String tmp = "";
         for (String pop : po) {
-            tmp += " " + pop;
+            tmp += " || " + pop;
         }
 
         return tmp;
     }
 
     public List<List<String>> getPoi() throws  Exception{
-        return excelWorkbook.readCategorySpreadsheet("poi_test.xlsx", 4);
+        return excelWorkbook.readCategorySpreadsheet("poi_test.xlsx", 1);
     }
 
     void setupRender() {
