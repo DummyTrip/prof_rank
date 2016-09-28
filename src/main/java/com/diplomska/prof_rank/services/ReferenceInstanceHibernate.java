@@ -102,7 +102,7 @@ public class ReferenceInstanceHibernate {
     }
 
     @CommitAfter
-    public void setAttributeValue(ReferenceInstance referenceInstance, Attribute attribute) {
+    public void setAttributeValue(ReferenceInstance referenceInstance, Attribute attribute, String value) {
         if (referenceInstance == null || attribute == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
@@ -110,6 +110,7 @@ public class ReferenceInstanceHibernate {
 
         attributeReferenceInstance.setReferenceInstance(referenceInstance);
         attributeReferenceInstance.setAttribute(attribute);
+        attributeReferenceInstance.setValue(value);
 
         session.persist(attributeReferenceInstance);
     }

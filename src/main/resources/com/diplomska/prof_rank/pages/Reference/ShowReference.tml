@@ -9,9 +9,11 @@
 
     <hr/>
 
-    <h3>Reference Type</h3>
-    <t:beandisplay object="referenceType"></t:beandisplay>
 
+    <t:if test="refTypeNull">
+        <h3>Reference Type</h3>
+        <t:beandisplay object="referenceType"></t:beandisplay>
+    </t:if>
     <hr/>
 
     <h3>Sections</h3>

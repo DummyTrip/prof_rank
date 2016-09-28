@@ -115,6 +115,11 @@ public class ShowReference {
 //        addAttributeBeanModel.include("name", "inputType");
 //        addAttributeBeanModel.add("add", null);
     }
+
+    public boolean isRefTypeNull() {
+        return reference.getReferenceType() == null ? false : true;
+    }
+
 //
 //    @CommitAfter
 //    void onActionFromAdd(Long attributeId) {

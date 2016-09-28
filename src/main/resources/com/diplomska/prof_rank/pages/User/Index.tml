@@ -21,11 +21,6 @@
 
     <hr/>
 
-    <t:loop source="poi" value="po">
-            <p>${p}</p>
-    </t:loop>
-
-    <p></p>
 </div>
 
 </html>

@@ -11,28 +11,35 @@
     </ul>
 </div>
 
-<div>
-    <t:grid source="temp" row="tmp"/>
-</div>
+<!--<div>-->
+    <!--<t:grid source="temp" row="tmp"/>-->
+<!--</div>-->
+
+<!--<div>-->
+    <!--<t:loop source="temp" value="tmp">-->
+        <!--<t:beandisplay object="tmp"/>-->
+    <!--</t:loop>-->
+<!--</div>-->
+
+<!--<div>-->
+    <!--<t:form>-->
+        <!--<t:loop source="temp" value="tmp">-->
+            <!--<h3>${tmp}</h3>-->
+            <!--<t:loop source="attributes" value="attribute">-->
+                <!--<p>${attribute.getName()}</p>-->
+                <!--<t:if test="textInput">-->
+                    <!--<t:textfield value="testVal"/>-->
+                <!--</t:if>-->
+            <!--</t:loop>-->
+        <!--</t:loop>-->
+    <!--</t:form>-->
+
+<!--</div>-->
 
 <div>
-    <t:loop source="temp" value="tmp">
-        <t:beandisplay object="tmp"/>
+    <t:loop source="poi" value="po">
+        <p>${p}</p>
     </t:loop>
-</div>
-
-<div>
-    <t:form>
-        <t:loop source="temp" value="tmp">
-            <h3>${tmp}</h3>
-            <t:loop source="attributes" value="attribute">
-                <p>${attribute.getName()}</p>
-                <t:if test="textInput">
-                    <t:textfield value="testVal"/>
-                </t:if>
-            </t:loop>
-        </t:loop>
-    </t:form>
 
 </div>
 

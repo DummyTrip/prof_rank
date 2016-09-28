@@ -53,22 +53,6 @@ public class Index {
         return userHibernate.getAll();
     }
 
-    @Property
-    private List<String> po;
-
-    public String getP() {
-        String tmp = "";
-        for (String pop : po) {
-            tmp += " || " + pop;
-        }
-
-        return tmp;
-    }
-
-    public List<List<String>> getPoi() throws  Exception{
-        return excelWorkbook.readCategorySpreadsheet("poi_test.xlsx", 1);
-    }
-
     void setupRender() {
         userBeanModel = beanModelSource.createDisplayModel(User.class, messages);
         userBeanModel.include("firstName", "fatherName", "lastName", "email");
