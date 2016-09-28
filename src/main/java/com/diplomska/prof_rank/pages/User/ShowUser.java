@@ -1,9 +1,6 @@
 package com.diplomska.prof_rank.pages.User;
 
-import com.diplomska.prof_rank.entities.ReferenceInstance;
-import com.diplomska.prof_rank.entities.Report;
-import com.diplomska.prof_rank.entities.Role;
-import com.diplomska.prof_rank.entities.User;
+import com.diplomska.prof_rank.entities.*;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import com.diplomska.prof_rank.services.ReportHibernate;
 import com.diplomska.prof_rank.services.UserHibernate;
@@ -16,6 +13,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.PropertyConduitSource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,10 +50,16 @@ public class ShowUser {
     private Report addReport;
 
     @Property
+    private AttributeReferenceInstance attributeReferenceInstance;
+
+    @Property
     private BeanModel<ReferenceInstance> referenceInstanceBeanModel;
 
     @Property
     private BeanModel<ReferenceInstance> addReferenceInstanceBeanModel;
+
+    @Property
+    private BeanModel<AttributeReferenceInstance> attributeReferenceInstanceBeanModel;
 
     @Property
     private BeanModel<Report> reportBeanModel;
@@ -74,6 +78,17 @@ public class ShowUser {
 
     public Role getRole() {
         return user.getRole();
+    }
+
+    public List<AttributeReferenceInstance> getAttributeReferenceInstances() {
+        List<ReferenceInstance> refins = getReferenceInstances();
+        List<AttributeReferenceInstance> ari = new ArrayList<AttributeReferenceInstance>();
+
+        for (ReferenceInstance ri : refins) {
+            ari.addAll(ri.getAttributeReferenceInstances());
+        }
+
+        return ari;
     }
 
     public List<ReferenceInstance> getReferenceInstances() {
@@ -107,12 +122,22 @@ public class ShowUser {
             throw new Exception("Report " + userId + " does not exist.");
         }
 
+        attributeReferenceInstanceBeanModel = beanModelSource.createDisplayModel(AttributeReferenceInstance.class, messages);
+        attributeReferenceInstanceBeanModel.include();
+        attributeReferenceInstanceBeanModel.add("referenceName", pcs.create(AttributeReferenceInstance.class, "referenceInstance.reference.name"));
+        attributeReferenceInstanceBeanModel.add("ReferenceInstanceName", pcs.create(AttributeReferenceInstance.class, "attribute.name"));
+        attributeReferenceInstanceBeanModel.add("attributeInputType", pcs.create(AttributeReferenceInstance.class, "attribute.inputType"));
+        attributeReferenceInstanceBeanModel.add("attributeValue", pcs.create(AttributeReferenceInstance.class, "value"));
+        attributeReferenceInstanceBeanModel.add("delete", null);
+
         referenceInstanceBeanModel = beanModelSource.createDisplayModel(ReferenceInstance.class, messages);
         referenceInstanceBeanModel.add("referenceInstanceName", pcs.create(ReferenceInstance.class, "reference.name"));
+        referenceInstanceBeanModel.add("show", null);
         referenceInstanceBeanModel.add("delete", null);
 
         addReferenceInstanceBeanModel = beanModelSource.createDisplayModel(ReferenceInstance.class, messages);
         addReferenceInstanceBeanModel.add("referenceInstanceName", pcs.create(ReferenceInstance.class, "reference.name"));
+        addReferenceInstanceBeanModel.add("show", null);
         addReferenceInstanceBeanModel.add("add", null);
 
         reportBeanModel = beanModelSource.createDisplayModel(Report.class, messages);
@@ -133,6 +158,10 @@ public class ShowUser {
     public boolean isRoleNull() {
         return user.getRole() == null ? false : true;
 //        return false;
+    }
+
+    public boolean isAttributeReferenceInstanceNull() {
+        return getAttributeReferenceInstances().size() == 0 ? false : true;
     }
 
     @CommitAfter

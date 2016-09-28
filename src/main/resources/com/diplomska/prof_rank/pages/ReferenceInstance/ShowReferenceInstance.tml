@@ -1,0 +1,20 @@
+<html t:type="layout" title="ReferenceInstance Show"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <h2>ReferenceInstance</h2>
+
+    <t:beandisplay object="referenceInstance"/>
+
+    <hr/>
+
+    <h3>AttributeReferenceInstances</h3>
+    <t:grid source="attributeReferenceInstances" row="attributeReferenceInstance" model="attributeReferenceInstanceBeanModel">
+    </t:grid>
+
+    <hr/>
+
+</div>
+
+</html>

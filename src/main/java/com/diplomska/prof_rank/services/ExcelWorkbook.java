@@ -175,6 +175,7 @@ public class ExcelWorkbook {
     @Inject
     UserHibernate userHibernate;
 
+    @CommitAfter
     private List<List<String>> iterateAndStoreNastavaSpreadsheet(Iterator<Row> rowIterator, List<List<String>> categoryValues) {
         while (rowIterator.hasNext()) {
             XSSFRow row = (XSSFRow) rowIterator.next();
@@ -196,8 +197,7 @@ public class ExcelWorkbook {
 
                 rowValues = getAttributeValues(row, rowValues, referenceInstance);
 
-//                if (rowValues.size() == attributes.size()) {
-                if (rowValues.size() > 0) {
+                if (rowValues.size() == attributes.size()) {
                     categoryValues.add(rowValues);
                 }
             }

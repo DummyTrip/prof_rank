@@ -14,10 +14,21 @@
     
     <h3>ReferenceInstances</h3>
     <t:grid source="referenceInstances" row="referenceInstance" model="referenceInstanceBeanModel">
+        <p:showCell>
+            <t:pagelink page="referenceinstance/showreferenceinstance" context="referenceInstance.id">Show</t:pagelink>
+        </p:showCell>
         <p:deleteCell>
             <t:actionlink t:id="deleteReferenceInstance" context="referenceInstance.id">Delete</t:actionlink>
         </p:deleteCell>
     </t:grid>
+
+    <t:if test="attributeReferenceInstanceNull">
+        <h3>AttributeReferenceInstances</h3>
+        <t:grid source="attributeReferenceInstances" row="attributeReferenceInstance" model="attributeReferenceInstanceBeanModel">
+        </t:grid>
+    </t:if>
+
+    <hr/>
     
     <h3>Reports</h3>
     <t:grid source="reports" row="report" model="reportBeanModel">
@@ -40,6 +51,9 @@
 
     <h3>Add ReferenceInstances</h3>
     <t:grid source="addReferenceInstances" row="addReferenceInstance" model="addReferenceInstanceBeanModel">
+        <p:showCell>
+            <t:pagelink page="referenceinstance/showreferenceinstance" context="addReferenceInstance.id">Show</t:pagelink>
+        </p:showCell>
         <p:addCell>
             <t:actionlink t:id="addReferenceInstance" context="addReferenceInstance.id">Add</t:actionlink>
         </p:addCell>
