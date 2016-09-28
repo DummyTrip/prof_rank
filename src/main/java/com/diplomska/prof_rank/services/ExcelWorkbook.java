@@ -221,7 +221,7 @@ public class ExcelWorkbook {
         referenceInstance.setReference(reference);
         referenceInstanceHibernate.store(referenceInstance);
 
-        return referenceInstance
+        return referenceInstance;
     }
 
     @CommitAfter
@@ -238,7 +238,7 @@ public class ExcelWorkbook {
                 break;
             }
 
-            Attribute attribute = createAttribute();
+            Attribute attribute = createAttribute(cellValue);
 
             rowValues.add(attribute);
         }
@@ -246,7 +246,7 @@ public class ExcelWorkbook {
         return rowValues;
     }
 
-    private Attribute createAttribute() {
+    private Attribute createAttribute(String cellValue) {
         List<Attribute> attributes = attributeHibernate.getByColumn("name", cellValue);
         Attribute attribute;
         if (attributes.size() == 0) {
