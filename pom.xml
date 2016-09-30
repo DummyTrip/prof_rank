@@ -91,6 +91,12 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
             <version>3.8-beta4</version>
         </dependency>
 
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.37</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>prof_rank</finalName>
@@ -103,6 +109,7 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
                     <source>1.6</source>
                     <target>1.6</target>
                     <optimize>true</optimize>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
 

@@ -62,6 +62,22 @@ public class Temp {
 
     @CommitAfter
     public List<List<String>> getPoi() throws  Exception{
-        return excelWorkbook.readNastavaSpreadsheet("poi_test.xlsx", 4);
+        String fileName            = "poi_test.xlsx";
+        Integer spreadsheetNumber  = 7;
+        String referenceName       = "Books";
+        Integer startAtRow         = 1;
+        String notNullColumnName   = "Автори";
+        String stopReadingAtColumn = "";
+
+        // Reads projects, papers and books spreadsheets.
+        // 5, 6 or 7 spreadsheet number
+        return excelWorkbook.readSpreadsheet(fileName,
+                spreadsheetNumber, referenceName, startAtRow,
+                notNullColumnName, stopReadingAtColumn);
+
+//        // 1, 2 or 3 spreadsheet number
+//        return excelWorkbook.readCategorySpreadsheet(fileName, 1);
+//
+//        return excelWorkbook.readNastavaSpreadsheet(fileName, 4);
     }
 }

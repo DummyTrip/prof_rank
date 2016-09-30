@@ -1,6 +1,7 @@
 package com.diplomska.prof_rank.entities;
 
 import org.apache.tapestry5.beaneditor.NonVisual;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -28,6 +29,7 @@ public class AttributeReferenceInstance {
         this.id = id;
     }
 
+    @Type(type = "text")
     public String getValue() {
         return value;
     }

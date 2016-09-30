@@ -9,9 +9,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.annotations.IntermediateType;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,9 +23,24 @@ import java.util.List;
 public class ExcelWorkbook {
     @Inject
     private ReferenceHibernate referenceHibernate;
+
+    @Inject
+    ReferenceInstanceHibernate referenceInstanceHibernate;
+
+    @Inject
+    AttributeHibernate attributeHibernate;
+
+    @Inject
+    UserHibernate userHibernate;
     
     // helper variable. remembers parent name for category names
     private String parentCategoryName = "";
+
+    private Integer columnNum = Integer.MAX_VALUE;
+    private List<Attribute> attributes = new ArrayList<Attribute>();
+
+    private String parentYear = "";
+    private String parentSemester = "";
 
     public List<List<String>> readCategorySpreadsheet(String fileName, Integer spreadsheetNumber) throws Exception{
         // List of row values of Category Spreadsheet.
@@ -160,22 +173,6 @@ public class ExcelWorkbook {
         return categoryValues;
     }
 
-    private Integer columnNum = Integer.MAX_VALUE;
-    private List<Attribute> attributes = new ArrayList<Attribute>();
-
-    private String parentYear = "";
-    private String parentSemester = "";
-    
-    @Inject
-    ReferenceInstanceHibernate referenceInstanceHibernate;
-    
-    @Inject
-    AttributeHibernate attributeHibernate;
-
-    @Inject
-    UserHibernate userHibernate;
-
-    @CommitAfter
     private List<List<String>> iterateAndStoreNastavaSpreadsheet(Iterator<Row> rowIterator, List<List<String>> categoryValues) {
         while (rowIterator.hasNext()) {
             XSSFRow row = (XSSFRow) rowIterator.next();
@@ -188,14 +185,14 @@ public class ExcelWorkbook {
             if (row.getRowNum() == 2){
                 // remember attribute names.
                 // remember column index
-                attributes = getAttributes(row);
+                attributes = getNastavaAttributes(row);
                 columnNum = attributes.size();
             } else {
                 List<String> rowValues = new ArrayList<String>();
 
-                ReferenceInstance referenceInstance = createReferenceInstance();
+                ReferenceInstance referenceInstance = createReferenceInstance("Настава");
 
-                rowValues = getAttributeValues(row, rowValues, referenceInstance);
+                rowValues = getNastavaAttributeValues(row, rowValues, referenceInstance);
 
                 if (rowValues.size() == attributes.size()) {
                     categoryValues.add(rowValues);
@@ -206,26 +203,7 @@ public class ExcelWorkbook {
         return categoryValues;
     }
 
-    @CommitAfter
-    private ReferenceInstance createReferenceInstance() {
-        List<Reference> references = referenceHibernate.getByColumn("name", "Настава");
-        Reference reference;
-        if (references.size() == 0) {
-            reference = new Reference();
-            reference.setName("Настава");
-            referenceHibernate.store(reference);
-        } else {
-            reference = references.get(0);
-        }
-        ReferenceInstance referenceInstance = new ReferenceInstance();
-        referenceInstance.setReference(reference);
-        referenceInstanceHibernate.store(referenceInstance);
-
-        return referenceInstance;
-    }
-
-    @CommitAfter
-    private List<Attribute> getAttributes(Row row) {
+    private List<Attribute> getNastavaAttributes(Row row) {
         List<Attribute> rowValues = new ArrayList<Attribute>();
 
         Iterator<Cell> cellIterator = row.cellIterator();
@@ -246,23 +224,7 @@ public class ExcelWorkbook {
         return rowValues;
     }
 
-    private Attribute createAttribute(String cellValue) {
-        List<Attribute> attributes = attributeHibernate.getByColumn("name", cellValue);
-        Attribute attribute;
-        if (attributes.size() == 0) {
-            attribute = new Attribute();
-            attribute.setName(cellValue);
-            attribute.setInputType("text");
-            attributeHibernate.store(attribute);
-        } else {
-            attribute = attributes.get(0);
-        }
-
-        return attribute;
-    }
-
-    @CommitAfter
-    private List<String> getAttributeValues(Row row, List<String> rowValues, ReferenceInstance referenceInstance) {
+    private List<String> getNastavaAttributeValues(Row row, List<String> rowValues, ReferenceInstance referenceInstance) {
         Iterator<Cell> cellIterator = row.cellIterator();
         while (cellIterator.hasNext()) {
             Cell cell = cellIterator.next();
@@ -277,16 +239,6 @@ public class ExcelWorkbook {
             Attribute attribute = attributes.get(rowValues.size() - 1);
             referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, cellValue);
         }
-
-        return rowValues;
-    }
-
-    private List<String> getNastavaCell(List<String> rowValues, Cell cell) {
-        Integer columnIndex = cell.getColumnIndex();
-
-        String cellValue = parseNastavaCell(cell);
-
-        rowValues.add(cellValue);
 
         return rowValues;
     }
@@ -317,4 +269,147 @@ public class ExcelWorkbook {
 
         return cellValue;
     }
+
+    // Reads spreadsheets: projects, papers and books
+    public List<List<String>> readSpreadsheet(String fileName, Integer spreadsheetNumber, String referenceName, Integer startAtRow, String notNullColumnName, String stopReadingAtColumn) throws Exception{
+        // Row values are a list of strings.
+        List<List<String>> categoryValues = new ArrayList<List<String>>();
+
+        FileInputStream fis = new FileInputStream(new File(fileName));
+        XSSFWorkbook workbook = new XSSFWorkbook(fis);
+        // 1, 2 and 3 spreadsheets are categories
+        XSSFSheet spreadsheet = workbook.getSheetAt(spreadsheetNumber);
+
+        Iterator<Row> rowIterator = spreadsheet.iterator();
+
+        categoryValues = iterateAndStoreSpreadsheet(rowIterator, categoryValues, referenceName, stopReadingAtColumn, startAtRow, notNullColumnName);
+
+        return categoryValues;
+    }
+
+    private List<List<String>> iterateAndStoreSpreadsheet(Iterator<Row> rowIterator, List<List<String>> categoryValues, String referenceName, String stopReadingAtColumn, Integer startAtRow, String notNullColumnName) {
+        while (rowIterator.hasNext()) {
+            XSSFRow row = (XSSFRow) rowIterator.next();
+
+            // ignore the first two rows for now.
+            if (row.getRowNum() < startAtRow) {
+                continue;
+            }
+
+            if (row.getRowNum() == startAtRow){
+                // remember attribute names.
+                // remember column index
+                attributes = getAttributes(row, stopReadingAtColumn);
+                columnNum = attributes.size();
+            } else {
+                List<String> rowValues = new ArrayList<String>();
+
+                rowValues = getAttributeValues(row, rowValues, notNullColumnName);
+
+                if (rowValues.size() == attributes.size()) {
+                    categoryValues.add(rowValues);
+
+                    ReferenceInstance referenceInstance = createReferenceInstance(referenceName);
+
+                    for (String cellValue : rowValues) {
+                        Attribute attribute = attributes.get(rowValues.size() - 1);
+                        referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, cellValue);
+                    }
+                }
+            }
+        }
+
+        return categoryValues;
+    }
+
+    private List<Attribute> getAttributes(Row row, String stopReadingAtColumn) {
+        List<Attribute> rowValues = new ArrayList<Attribute>();
+
+        Iterator<Cell> cellIterator = row.cellIterator();
+        while (cellIterator.hasNext()) {
+            Cell cell = cellIterator.next();
+
+            String columnName = parseCell(cell);
+
+            if (columnName.equals(stopReadingAtColumn)){
+                break;
+            }
+
+            Attribute attribute = createAttribute(columnName);
+
+            rowValues.add(attribute);
+        }
+
+        return rowValues;
+    }
+
+    private Attribute createAttribute(String columnName) {
+        List<Attribute> attributes = attributeHibernate.getByColumn("name", columnName);
+        Attribute attribute;
+        if (attributes.size() == 0) {
+            attribute = new Attribute();
+            attribute.setName(columnName);
+            attribute.setInputType("text");
+            attributeHibernate.store(attribute);
+        } else {
+            attribute = attributes.get(0);
+        }
+
+        return attribute;
+    }
+
+    private ReferenceInstance createReferenceInstance(String name) {
+        List<Reference> references = referenceHibernate.getByColumn("name", name);
+        Reference reference;
+        if (references.size() == 0) {
+            reference = new Reference();
+            reference.setName(name);
+            referenceHibernate.store(reference);
+        } else {
+            reference = references.get(0);
+        }
+        ReferenceInstance referenceInstance = new ReferenceInstance();
+        referenceInstance.setReference(reference);
+        referenceInstanceHibernate.store(referenceInstance);
+
+        return referenceInstance;
+    }
+
+    private List<String> getAttributeValues(Row row, List<String> rowValues, String notNullColumnName) {
+        Iterator<Cell> cellIterator = row.cellIterator();
+        while (cellIterator.hasNext()) {
+            Cell cell = cellIterator.next();
+
+            if (cell.getColumnIndex() == columnNum) {
+                break;
+            }
+
+            String cellValue = parseCell(cell);
+
+            // this cell must not be empty
+            if (attributes.get(rowValues.size()).getName().equals(notNullColumnName)) {
+                if (cellValue.length() == 0) {
+                    return new ArrayList<String>();
+                }
+            }
+
+            rowValues.add(cellValue);
+        }
+
+        return rowValues;
+    }
+
+    private String parseCell(Cell cell) {
+        String cellValue = "";
+        // a column can have string or numeric value
+        if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+            cellValue = cell.getStringCellValue();
+        } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+            cellValue = String.valueOf(cell.getNumericCellValue());
+        }
+
+        return cellValue;
+    }
+
+
 }
