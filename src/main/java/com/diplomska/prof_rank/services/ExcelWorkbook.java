@@ -1,9 +1,6 @@
 package com.diplomska.prof_rank.services;
 
-import com.diplomska.prof_rank.entities.Attribute;
-import com.diplomska.prof_rank.entities.Reference;
-import com.diplomska.prof_rank.entities.ReferenceInstance;
-import com.diplomska.prof_rank.entities.User;
+import com.diplomska.prof_rank.entities.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -311,9 +308,9 @@ public class ExcelWorkbook {
 
                     ReferenceInstance referenceInstance = createReferenceInstance(referenceName);
 
-                    for (String cellValue : rowValues) {
-                        Attribute attribute = attributes.get(rowValues.size() - 1);
-                        referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, cellValue);
+                    for (int i = 0; i < rowValues.size() ; i++) {
+                        Attribute attribute = attributes.get(i);
+                        referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, rowValues.get(i));
                     }
                 }
             }
@@ -335,9 +332,11 @@ public class ExcelWorkbook {
                 break;
             }
 
-            Attribute attribute = createAttribute(columnName);
+            if (!columnName.equals("")) {
+                Attribute attribute = createAttribute(columnName);
 
-            rowValues.add(attribute);
+                rowValues.add(attribute);
+            }
         }
 
         return rowValues;
@@ -365,6 +364,10 @@ public class ExcelWorkbook {
             reference = new Reference();
             reference.setName(name);
             referenceHibernate.store(reference);
+            // create attributeReference
+            for (Attribute attribute : attributes) {
+                referenceHibernate.setAttributeReference(reference, attribute);
+            }
         } else {
             reference = references.get(0);
         }
@@ -388,7 +391,7 @@ public class ExcelWorkbook {
 
             // this cell must not be empty
             if (attributes.get(rowValues.size()).getName().equals(notNullColumnName)) {
-                if (cellValue.length() == 0) {
+                if (cellValue.equals("") || cellValue.length() == 0) {
                     return new ArrayList<String>();
                 }
             }

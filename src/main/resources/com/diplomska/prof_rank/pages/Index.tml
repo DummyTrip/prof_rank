@@ -2,21 +2,72 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
         >
 
-    <div>
-        <h2>Pages</h2>
+    <head>
+        <style>
+            .truncate
+            {
+                width: 240px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        </style>
+    </head>
 
-        <ul>
-            <li><t:pagelink page="admin/user/index">Users</t:pagelink></li>
-            <li><t:pagelink page="admin/role/index">Roles</t:pagelink></li>
-            <li><t:pagelink page="admin/rulebook/index">Rulebooks</t:pagelink></li>
-            <li><t:pagelink page="admin/section/index">Sections</t:pagelink></li>
-            <li><t:pagelink page="admin/reference/index">References</t:pagelink></li>
-            <li><t:pagelink page="admin/referencetype/index">Reference Types</t:pagelink></li>
-            <li><t:pagelink page="admin/attribute/index">Attributes</t:pagelink></li>
-            <li><t:pagelink page="admin/report/index">Reports</t:pagelink></li>
-            <li><t:pagelink page="admin/institution/index">Institutions</t:pagelink></li>
-            <li><t:pagelink page="admin/subjectdomain/index">Subject Domains</t:pagelink></li>
-        </ul>
+    <div class="container">
+        <div>
+            <h2>Pages</h2>
+
+            <ul>
+                <li><t:pagelink page="admin/user/index">Users</t:pagelink></li>
+                <li><t:pagelink page="admin/role/index">Roles</t:pagelink></li>
+                <li><t:pagelink page="admin/rulebook/index">Rulebooks</t:pagelink></li>
+                <li><t:pagelink page="admin/section/index">Sections</t:pagelink></li>
+                <li><t:pagelink page="admin/reference/index">References</t:pagelink></li>
+                <li><t:pagelink page="admin/referencetype/index">Reference Types</t:pagelink></li>
+                <li><t:pagelink page="admin/attribute/index">Attributes</t:pagelink></li>
+                <li><t:pagelink page="admin/report/index">Reports</t:pagelink></li>
+                <li><t:pagelink page="admin/institution/index">Institutions</t:pagelink></li>
+                <li><t:pagelink page="admin/subjectdomain/index">Subject Domains</t:pagelink></li>
+            </ul>
+
+            <t:actionlink t:id="addReferencesFromExcel">Add References From Excel</t:actionlink>
+        </div>
+
+        <div class="row">
+            <h3>Најпопуларни корисник</h3>
+
+            <t:loop source="references" value="reference">
+                <t:delegate to="block:referenceElement"/>
+            </t:loop>
+
+        </div>
+
+        <div class="row">
+            <h3>Најпопуларни</h3>
+
+            <t:loop source="references" value="reference">
+                <t:delegate to="block:referenceElement"/>
+            </t:loop>
+
+        </div>
+
     </div>
+
+    <t:block id="referenceElement">
+        <div class="col-md-4">
+            <div style="background-color: #dbdbdb; padding: 15px; margin-top: 15px;">
+                <h4 class="truncate" style="margin-top: 0px">${reference.getName()}</h4>
+                <div class="row">
+                    <!--<div class="col-md-6"><div>Категорија:</div>    <p>${section.getName()}</p></div>-->
+                    <div class="col-md-6"><div>Број инстанци:</div> <p>${numberOfReferenceInstances}</p></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6"><t:pagelink page="reference/index" context="reference.id" class="btn btn-default">Прикажи &raquo;</t:pagelink></div>
+                    <div class="col-md-6"><t:pagelink page="reference/createreference" context="reference.id" class="btn btn-default">Додај &raquo;</t:pagelink></div>
+                </div>
+            </div>
+        </div>
+    </t:block>
 
 </html>

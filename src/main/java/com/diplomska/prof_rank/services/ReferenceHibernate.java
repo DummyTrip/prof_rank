@@ -4,7 +4,9 @@ import com.diplomska.prof_rank.entities.*;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,10 @@ public class ReferenceHibernate {
 
     public List<Reference> getAll() {
         return session.createCriteria(Reference.class).list();
+    }
+
+    public List<Reference> getAll(Integer limit) {
+        return session.createCriteria(Reference.class).addOrder(Order.desc("id")).setMaxResults(limit).list();
     }
 
     @CommitAfter
@@ -155,6 +161,20 @@ public class ReferenceHibernate {
 
         reference.setReferenceType(referenceType);
         session.persist(reference);
+    }
+
+    public void setAttributeReference(Reference reference, Attribute attribute) {
+        AttributeReference attributeReference = new AttributeReference();
+
+        attributeReference.setAttribute(attribute);
+        attributeReference.setReference(reference);
+
+        session.persist(attributeReference);
+
+        List<AttributeReference> attributeReferences = reference.getAttributeReferences();
+        attributeReferences.add(attributeReference);
+
+        reference.setAttributeReferences(attributeReferences);
     }
 
     public List<Attribute> getAttributes(Reference reference) {

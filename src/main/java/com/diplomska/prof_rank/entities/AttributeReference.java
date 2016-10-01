@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class AttributeReference {
     private Long id;
 
-    private String value;
+    private boolean display;
 
     private Attribute attribute;
 
@@ -28,12 +28,12 @@ public class AttributeReference {
         this.id = id;
     }
 
-    public String getValue() {
-        return value;
+    public boolean getValue() {
+        return display;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setValue(boolean display) {
+        this.display = display;
     }
 
     @ManyToOne(cascade = CascadeType.ALL)

@@ -27,6 +27,9 @@ public class ReferenceInstanceHibernate {
     @Inject
     ReferenceHibernate referenceHibernate;
 
+    @Inject
+    UserHibernate userHibernate;
+
     @CommitAfter
     public void store(ReferenceInstance referenceInstance) {
         if (referenceInstance == null) {
@@ -75,6 +78,32 @@ public class ReferenceInstanceHibernate {
         List<ReferenceInstance> entities = criteria.add(eq(column, value)).list();
 
         return entities;
+    }
+
+    public List<ReferenceInstance> getByReference(Reference reference) {
+        List<ReferenceInstance> referenceInstances = getAll();
+        List<ReferenceInstance> referenceInstancesOfSpecificReference = new ArrayList<ReferenceInstance>();
+
+        for (ReferenceInstance referenceInstance : referenceInstances) {
+            if (referenceInstance.getReference().getId().equals(reference.getId())) {
+                referenceInstancesOfSpecificReference.add(referenceInstance);
+            }
+        }
+
+        return referenceInstancesOfSpecificReference;
+    }
+
+    public List<ReferenceInstance> getByReferenceAndUser(Reference reference, User user) {
+        List<ReferenceInstance> referenceInstances = userHibernate.getReferenceInstances(user);
+        List<ReferenceInstance> referenceInstancesOfSpecificReference = new ArrayList<ReferenceInstance>();
+
+        for (ReferenceInstance referenceInstance : referenceInstances) {
+            if (referenceInstance.getReference().getId().equals(reference.getId())) {
+                referenceInstancesOfSpecificReference.add(referenceInstance);
+            }
+        }
+
+        return referenceInstancesOfSpecificReference;
     }
 
     public List<Attribute> getAttributes(ReferenceInstance referenceInstance) {

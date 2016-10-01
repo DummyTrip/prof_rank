@@ -1,0 +1,46 @@
+<html t:type="layout" title="references test page"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter" xmlns:T="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+
+<div>
+    <h4>${reference}</h4>
+
+    <hr/>
+
+    <t:form t:id="form" class="form-horizontal">
+        <!--<t:loop source="references" value="reference">-->
+            <t:loop source="attributes" value="attribute">
+                <!--<p>${attribute.getName()}</p>-->
+                <!--<t:if test="textInput">-->
+                    <!--<t:textfield value="testVal"/>-->
+                <!--</t:if>-->
+
+                <div class="form-group">
+                    <label for="${attribute.getId()}" class="col-sm-3">${attribute.getName()}</label>
+                    <!--<t:label for="${attribute.getName()}" class="col-sm-3"/>-->
+                    <t:if test="textInput">
+                        <div class="col-sm-3">
+                            <t:textfield id="${attribute.getId()}" value="testVal"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="form-control-static">
+                                (required)
+                            </p>
+                        </div>
+                    </t:if>
+                </div>
+            </t:loop>
+        <!--</t:loop>-->
+
+        <div class="form-group">
+            <div class="col-sm-3 col-sm-offset-3">
+                <t:submit value="Save"/>
+                <t:pagelink page="admin/user/index" class="btn btn-default">Cancel</t:pagelink>
+            </div>
+        </div>
+
+    </t:form>
+
+</div>
+
+</html>

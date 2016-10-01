@@ -60,14 +60,14 @@ public class Temp {
         return tmp;
     }
 
-    @CommitAfter
+//    @CommitAfter
     public List<List<String>> getPoi() throws  Exception{
         String fileName            = "poi_test.xlsx";
-        Integer spreadsheetNumber  = 7;
-        String referenceName       = "Books";
-        Integer startAtRow         = 1;
-        String notNullColumnName   = "Автори";
-        String stopReadingAtColumn = "";
+        Integer spreadsheetNumber  = 6;
+        String referenceName       = "Papers";
+        Integer startAtRow         = 2;
+        String notNullColumnName   = "Автор 1";
+        String stopReadingAtColumn = "//";
 
         // Reads projects, papers and books spreadsheets.
         // 5, 6 or 7 spreadsheet number
