@@ -6,16 +6,16 @@
         <h2>Pages</h2>
 
         <ul>
-            <li><t:pagelink page="user/index">Users</t:pagelink></li>
-            <li><t:pagelink page="role/index">Roles</t:pagelink></li>
-            <li><t:pagelink page="rulebook/index">Rulebooks</t:pagelink></li>
-            <li><t:pagelink page="section/index">Sections</t:pagelink></li>
-            <li><t:pagelink page="reference/index">References</t:pagelink></li>
-            <li><t:pagelink page="referencetype/index">Reference Types</t:pagelink></li>
-            <li><t:pagelink page="attribute/index">Attributes</t:pagelink></li>
-            <li><t:pagelink page="report/index">Reports</t:pagelink></li>
-            <li><t:pagelink page="institution/index">Institutions</t:pagelink></li>
-            <li><t:pagelink page="subjectdomain/index">Subject Domains</t:pagelink></li>
+            <li><t:pagelink page="admin/user/index">Users</t:pagelink></li>
+            <li><t:pagelink page="admin/role/index">Roles</t:pagelink></li>
+            <li><t:pagelink page="admin/rulebook/index">Rulebooks</t:pagelink></li>
+            <li><t:pagelink page="admin/section/index">Sections</t:pagelink></li>
+            <li><t:pagelink page="admin/reference/index">References</t:pagelink></li>
+            <li><t:pagelink page="admin/referencetype/index">Reference Types</t:pagelink></li>
+            <li><t:pagelink page="admin/attribute/index">Attributes</t:pagelink></li>
+            <li><t:pagelink page="admin/report/index">Reports</t:pagelink></li>
+            <li><t:pagelink page="admin/institution/index">Institutions</t:pagelink></li>
+            <li><t:pagelink page="admin/subjectdomain/index">Subject Domains</t:pagelink></li>
         </ul>
     </div>
 

@@ -1,0 +1,25 @@
+<html t:type="layout" title="Institution Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <h2>Institutions</h2>
+
+    <t:grid source="institutions" row="institution" model="institutionBeanModel">
+        <p:showCell>
+            <t:pagelink page="admin/institution/showinstitution" context="institution.id">Show</t:pagelink>
+        </p:showCell> <p:editCell>
+            <t:pagelink page="admin/institution/editinstitution" context="institution.id">Edit</t:pagelink>
+        </p:editCell>
+        <p:deleteCell>
+            <t:actionlink t:id="delete" context="institution.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+    <p><t:pagelink page="admin/institution/createinstitution">Create new institution</t:pagelink></p>
+
+    <hr/>
+
+</div>
+
+</html>

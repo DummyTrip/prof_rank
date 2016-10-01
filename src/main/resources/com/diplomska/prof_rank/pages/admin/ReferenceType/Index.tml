@@ -1,0 +1,26 @@
+<html t:type="layout" title="ReferenceType Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <h2>ReferenceTypes</h2>
+
+    <t:grid source="referenceTypes" row="referenceType" model="referenceTypeBeanModel">
+        <p:showCell>
+            <t:pagelink page="admin/referencetype/showreferencetype" context="referenceType.id">Show</t:pagelink>
+        </p:showCell>
+        <p:editCell>
+            <t:pagelink page="admin/referenceType/editreferenceType" context="referenceType.id">Edit</t:pagelink>
+        </p:editCell>
+        <p:deleteCell>
+            <t:actionlink t:id="delete" context="referenceType.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+    <p><t:pagelink page="admin/referenceType/createreferenceType">Create new referenceType</t:pagelink></p>
+
+    <hr/>
+
+</div>
+
+</html>

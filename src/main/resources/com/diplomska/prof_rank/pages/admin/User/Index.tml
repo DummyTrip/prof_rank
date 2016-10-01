@@ -1,0 +1,26 @@
+<html t:type="layout" title="User Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter" xmlns:T="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+
+<div>
+    <h2>Users</h2>
+
+    <t:grid source="users" row="user" model="userBeanModel">
+        <p:showCell>
+            <t:pagelink page="admin/user/showuser" context="user.id">Show</t:pagelink>
+        </p:showCell>
+        <p:editCell>
+            <t:pagelink page="admin/user/edituser" context="user.id">Edit</t:pagelink>
+        </p:editCell>
+        <p:deleteCell>
+            <t:actionlink t:id="delete" context="user.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+    <p><t:pagelink page="admin/user/createuser">Create new user</t:pagelink></p>
+
+    <hr/>
+
+</div>
+
+</html>

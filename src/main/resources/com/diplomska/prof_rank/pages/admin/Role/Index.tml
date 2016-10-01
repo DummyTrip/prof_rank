@@ -1,0 +1,26 @@
+<html t:type="layout" title="Role Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <h2>Roles</h2>
+
+    <t:grid source="roles" row="role" model="roleBeanModel">
+        <p:showCell>
+            <t:pagelink page="admin/role/showrole" context="role.id">Show</t:pagelink>
+        </p:showCell>
+        <p:editCell>
+            <t:pagelink page="admin/role/editrole" context="role.id">Edit</t:pagelink>
+        </p:editCell>
+        <p:deleteCell>
+            <t:actionlink t:id="delete" context="role.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+    <p><t:pagelink page="admin/role/createrole">Create new role</t:pagelink></p>
+
+    <hr/>
+
+</div>
+
+</html>

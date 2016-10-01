@@ -1,0 +1,33 @@
+<html t:type="layout" title="Section Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <h2>Sections</h2>
+
+    <t:grid source="sections" row="section" model="sectionBeanModel">
+        <p:editCell>
+            <t:pagelink page="admin/section/editsection" context="section.id">Edit</t:pagelink>
+        </p:editCell>
+        <p:deleteCell>
+            <t:actionlink t:id="deleteSection" context="section.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+    <p><t:pagelink page="admin/section/createsection">Create new section</t:pagelink></p>
+
+    <hr/>
+
+    <h3>Rulebook Sections</h3>
+    <t:grid source="rulebookSections" row="rulebookSection" model="rulebookSectionBeanModel">
+        <p:showCell>
+            <t:pagelink page="admin/section/showsection" context="rulebookSection.id">Show</t:pagelink>
+        </p:showCell>
+        <p:deleteCell>
+            <t:actionlink t:id="delete" context="rulebookSection.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+</div>
+
+</html>
