@@ -8,36 +8,26 @@
     <hr/>
 
     <t:form t:id="form" class="form-horizontal">
-        <!--<t:loop source="references" value="reference">-->
-            <t:loop source="attributes" value="attribute">
-                <!--<p>${attribute.getName()}</p>-->
-                <!--<t:if test="textInput">-->
-                    <!--<t:textfield value="testVal"/>-->
-                <!--</t:if>-->
-
-                <div class="form-group">
-                    <label for="${attribute.getId()}" class="col-sm-3">${attribute.getName()}</label>
-                    <!--<t:label for="${attribute.getName()}" class="col-sm-3"/>-->
-                    <t:if test="textInput">
-                        <div class="col-sm-3">
-                            <t:textfield id="${attribute.getId()}" value="testVal"/>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="form-control-static">
-                                (required)
-                            </p>
-                        </div>
-                    </t:if>
-                </div>
-            </t:loop>
-        <!--</t:loop>-->
-
-        <div class="form-group">
-            <div class="col-sm-3 col-sm-offset-3">
-                <t:submit value="Save"/>
-                <t:pagelink page="admin/user/index" class="btn btn-default">Cancel</t:pagelink>
+        <t:loop source="attributes" value="attribute" index="loopIndex">
+            <div class="form-group">
+                <label class="control-label col-sm-3">${attribute.getName()}</label>
+                <t:if test="textInput">
+                    <div class="col-sm-9">
+                        <t:mapfield key="${attribute.getId()}" t:map="testMap"/>
+                    </div>
+                </t:if>
             </div>
-        </div>
+        </t:loop>
+
+        <t:if test="numAttributes">
+            <div class="form-group">
+                <div class="col-sm-3 col-sm-offset-3">
+                    <t:submit value="Save"/>
+                    <t:pagelink page="admin/user/index" class="btn btn-default">Cancel</t:pagelink>
+                </div>
+            </div>
+        </t:if>
+
 
     </t:form>
 

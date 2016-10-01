@@ -36,7 +36,7 @@ public class ReferenceInstanceHibernate {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
-        session.persist(referenceInstance);
+        session.save(referenceInstance);
     }
 
     public List<ReferenceInstance> getAll() {

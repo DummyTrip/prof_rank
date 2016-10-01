@@ -1,9 +1,13 @@
 package com.diplomska.prof_rank.pages.Reference;
 
 import com.diplomska.prof_rank.entities.Attribute;
+import com.diplomska.prof_rank.entities.AttributeReferenceInstance;
 import com.diplomska.prof_rank.entities.Reference;
+import com.diplomska.prof_rank.entities.ReferenceInstance;
 import com.diplomska.prof_rank.pages.*;
+import com.diplomska.prof_rank.services.AttributeHibernate;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
+import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Persist;
@@ -11,7 +15,9 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Aleksandar on 01-Oct-16.
@@ -27,6 +33,15 @@ public class CreateReference {
 
     @Inject
     ReferenceHibernate referenceHibernate;
+
+    @Property
+    private ReferenceInstance referenceInstance;
+
+    @Inject
+    ReferenceInstanceHibernate referenceInstanceHibernate;
+
+    @Inject
+    AttributeHibernate attributeHibernate;
 
     @InjectPage
     private com.diplomska.prof_rank.pages.Index index;
@@ -51,8 +66,19 @@ public class CreateReference {
         return attribute.getInputType().equals("text") ? true :false;
     }
 
+    public boolean isNumAttributes() {
+        return getAttributes().size() > 0 ? true :false;
+    }
+
     @Property
     private String testVal;
+
+    @Property
+    private Integer loopIndex;
+
+    @Persist
+    @Property
+    private Map<String, String> testMap;
 
     void onActivate(Long referenceId) {
         this.referenceId = referenceId;
@@ -64,16 +90,22 @@ public class CreateReference {
 
     void setupRender() throws Exception {
         this.reference = referenceHibernate.getById(referenceId);
+        testMap = new HashMap<String, String>();
     }
-    
+
+    @CommitAfter
     void onPrepareForSubmit() throws Exception {
         // Instantiate a Person for the form data to overlay.
-        reference = new Reference();
+        referenceInstance = new ReferenceInstance();
+        referenceInstance.setReference(reference);
+        referenceInstanceHibernate.store(referenceInstance);
     }
 
     @CommitAfter
     Object onSuccess() {
-        referenceHibernate.store(reference);
+        for (Attribute attribute: getAttributes()) {
+            referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, testMap.get(attribute.getId()));
+        }
 
         return index;
     }
