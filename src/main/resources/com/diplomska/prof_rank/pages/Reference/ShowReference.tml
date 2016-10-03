@@ -1,0 +1,107 @@
+<html t:type="layout" title="Reference Show"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<head>
+    <style>
+        a
+        {
+            text-decoration: none ;
+            color: #0f0f0f;
+        }
+
+        a:link {
+            text-decoration: none;
+            color: #0f0f0f;
+        }
+
+        a:hover
+        {
+            text-decoration: none;
+        }
+
+        a:active {
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+        }
+
+        .truncate
+        {
+            width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        th
+        {
+            text-align: right;
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+
+        th, td
+        {
+            padding-bottom: 5px;;
+            padding-top: 5px;;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #eaeaea;
+        }
+
+        table
+        {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<div class="container">
+
+    <div>
+        <h2>${reference.getName()}</h2>
+    </div>
+
+    <hr/>
+
+    <div>
+        <t:loop source="referenceInstances" value="referenceInstance">
+            <t:delegate to="block:referenceElement"/>
+        </t:loop>
+
+    </div>
+
+</div>
+
+<t:block id="referenceElement">
+
+    <a data-toggle="collapse" href="#${referenceInstance.getId()}" aria-expanded="false" aria-controls="collapseExample">
+        <div style="background-color: #dbdbdb; padding: 15px; margin-top: 10px;">
+            <h4 style="margin: 0px">${displayName}</h4>
+        </div>
+    </a>
+    <div class="collapse" id="${referenceInstance.getId()}">
+        <div class="card card-block" style="background-color: #dbdbdb; padding-top: 0px;">
+            <table>
+                <tbody>
+                <t:loop source="attributeValues" value="ari">
+                    <tr>
+                        <th class="col-md-3">${ari.getAttribute().getName()}:</th>
+                        <td class="col-md-9">${ari.getValue()}</td>
+                    </tr>
+                    <!--<p>${ari.getAttribute().getName()}: ${ari.getValue()}</p>-->
+                </t:loop>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</t:block>
+
+
+</html>

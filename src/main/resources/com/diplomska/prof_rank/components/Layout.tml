@@ -32,6 +32,7 @@
                         <t:pagelink page="prop:pageName">${pageName}</t:pagelink>
                     </t:any>
                 </t:loop>
+                <li><t:pagelink page="reference/index">References</t:pagelink></li>
             </ul>
             <span class="navbar-right">
                 <li>

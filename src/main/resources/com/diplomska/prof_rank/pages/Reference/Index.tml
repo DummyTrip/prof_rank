@@ -1,4 +1,4 @@
-<html t:type="layout" title="Reference Index"
+<html t:type="layout" title="Reference Show"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
       xmlns:p="tapestry:parameter">
 
@@ -10,8 +10,21 @@
             color: #0f0f0f;
         }
 
+        a:link {
+            text-decoration: none;
+            color: #0f0f0f;
+        }
+
         a:hover
         {
+            text-decoration: none;
+        }
+
+        a:active {
+            text-decoration: none;
+        }
+
+        a:visited {
             text-decoration: none;
         }
 
@@ -49,46 +62,53 @@
 
 <div class="container">
 
-    <div>
-        <h2>${reference.getName()}</h2>
-    </div>
+    <!--<div>-->
+        <!--<h2>${reference.getName()}</h2>-->
+    <!--</div>-->
 
     <hr/>
 
     <div>
-        <t:loop source="referenceInstances" value="referenceInstance">
-            <t:delegate to="block:referenceElement"/>
+        <t:loop source="references" value="reference">
+            <!--<t:delegate to="block:referenceElement"/>-->
+            <div class="row" style="background-color: #dbdbdb; padding: 10px; margin-top: 10px;">
+                <div class="col-md-9">
+                    <h4 style="margin: 0px">${reference.getName()}</h4>
+                </div>
+                <div class="col-md-2"><t:pagelink page="reference/showreference" context="reference.id" class="btn btn-default">Прикажи</t:pagelink></div>
+                <div class="col-md-1"><t:pagelink page="reference/createreference" context="reference.id" class="btn btn-default">Додај</t:pagelink></div>
+            </div>
         </t:loop>
 
     </div>
 
 </div>
 
-<t:block id="referenceElement">
+<!--<t:block id="referenceElement">-->
 
-    <a data-toggle="collapse" href="#${referenceInstance.getId()}" aria-expanded="false" aria-controls="collapseExample">
-        <div style="background-color: #dbdbdb; padding: 15px; margin-top: 10px;">
-            <h4 style="margin: 0px">${displayName}</h4>
-        </div>
-    </a>
-    <div class="collapse" id="${referenceInstance.getId()}">
-        <div class="card card-block" style="background-color: #dbdbdb; padding-top: 0px;">
-            <table>
-                <tbody>
-                <t:loop source="attributeValues" value="ari">
-                    <tr>
-                        <th class="col-md-3">${ari.getAttribute().getName()}:</th>
-                        <td class="col-md-9">${ari.getValue()}</td>
-                    </tr>
-                    <!--<p>${ari.getAttribute().getName()}: ${ari.getValue()}</p>-->
-                </t:loop>
-                </tbody>
-            </table>
+    <!--<a data-toggle="collapse" href="#${referenceInstance.getId()}" aria-expanded="false" aria-controls="collapseExample">-->
+        <!--<div style="background-color: #dbdbdb; padding: 15px; margin-top: 10px;">-->
+            <!--<h4 style="margin: 0px">${displayName}</h4>-->
+        <!--</div>-->
+    <!--</a>-->
+    <!--<div class="collapse" id="${referenceInstance.getId()}">-->
+        <!--<div class="card card-block" style="background-color: #dbdbdb; padding-top: 0px;">-->
+            <!--<table>-->
+                <!--<tbody>-->
+                <!--<t:loop source="attributeValues" value="ari">-->
+                    <!--<tr>-->
+                        <!--<th class="col-md-3">${ari.getAttribute().getName()}:</th>-->
+                        <!--<td class="col-md-9">${ari.getValue()}</td>-->
+                    <!--</tr>-->
+                    <!--&lt;!&ndash;<p>${ari.getAttribute().getName()}: ${ari.getValue()}</p>&ndash;&gt;-->
+                <!--</t:loop>-->
+                <!--</tbody>-->
+            <!--</table>-->
 
-        </div>
-    </div>
+        <!--</div>-->
+    <!--</div>-->
 
-</t:block>
+<!--</t:block>-->
 
 
 </html>

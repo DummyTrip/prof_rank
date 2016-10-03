@@ -23,7 +23,7 @@ public class AttributeHibernate {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
-        session.persist(attribute);
+        session.save(attribute);
     }
 
     public List<Attribute> getAll() {

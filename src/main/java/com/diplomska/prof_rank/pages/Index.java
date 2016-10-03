@@ -13,6 +13,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +36,21 @@ public class Index
 
     @Property
     Reference reference;
+//
+//    @Property
+//    Reference popularReferenceForUser;
 
-    public List<Reference> getReferences() {
-        return referenceHibernate.getAll(9);
+    public List<Reference> getPopularReferences() {
+        return referenceHibernate.getPopular(9);
+    }
+
+    public List<Reference> getPopularReferencesForUser() {
+        User user = userHibernate.getById(Long.valueOf(1));
+        if (user != null) {
+            return referenceHibernate.getPopularByUser(user, 9);
+        } else {
+            return new ArrayList<Reference>();
+        }
     }
 
     public Section getSection() {
@@ -45,15 +58,36 @@ public class Index
     }
 
     public Integer getNumberOfReferenceInstances() {
-        User user = userHibernate.getById(Long.valueOf(1));
-//        List<ReferenceInstance> referenceInstancesOfCurrentReference = referenceInstanceHibernate.getByReferenceAndUser(reference, user);
         List<ReferenceInstance> referenceInstancesOfCurrentReference = referenceInstanceHibernate.getByReference(reference);
 
         return referenceInstancesOfCurrentReference.size();
     }
 
+    public Integer getNumberOfReferenceInstancesForUser() {
+        User user = userHibernate.getById(Long.valueOf(1));
+        List<ReferenceInstance> referenceInstancesOfCurrentReference = referenceInstanceHibernate.getByReferenceAndUser(reference, user);
+//        List<ReferenceInstance> referenceInstancesOfCurrentReference = referenceInstanceHibernate.getByReference(reference);
+
+        return referenceInstancesOfCurrentReference.size();
+    }
+
+    public boolean isPopularReferencesNull() {
+        return getPopularReferences().size() > 0 ? true : false;
+    }
+
+    public boolean isPopularReferencesForUserNull() {
+        return getPopularReferencesForUser().size() > 0 ? true : false;
+    }
+
     @CommitAfter
     void onActionFromAddReferencesFromExcel() throws Exception{
+        User user = new User();
+        user.setFirstName("TestFirstName");
+        user.setFatherName("TestFatherName");
+        user.setLastName("TestLastName");
+        user.setEmail("TestEmail");
+        userHibernate.store(user);
+
         String fileName = "poi_test.xlsx";
 
         excelWorkbook.readCategorySpreadsheet(fileName, 1);

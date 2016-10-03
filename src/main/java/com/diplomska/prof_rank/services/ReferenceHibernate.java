@@ -8,8 +8,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.hibernate.criterion.Restrictions.eq;
 
@@ -26,6 +25,9 @@ public class ReferenceHibernate {
     @Inject
     ReferenceTypeHibernate referenceTypeHibernate;
 
+    @Inject
+    UserHibernate userHibernate;
+
     @CommitAfter
     public void store(Reference reference) {
         if (reference == null) {
@@ -41,6 +43,66 @@ public class ReferenceHibernate {
 
     public List<Reference> getAll(Integer limit) {
         return session.createCriteria(Reference.class).addOrder(Order.desc("id")).setMaxResults(limit).list();
+    }
+
+    public List<Reference> getPopular(Integer limit) {
+        List<ReferenceInstance> allReferenceInstances = session.createCriteria(ReferenceInstance.class).list();
+
+        return getSortedReferences(allReferenceInstances, limit);
+    }
+
+    public List<Reference> getPopularByUser(User user, Integer limit) {
+        List<ReferenceInstance> allReferenceInstances = userHibernate.getReferenceInstances(user);
+
+        return getSortedReferences(allReferenceInstances, limit);
+    }
+
+    private List<Reference> getSortedReferences(List<ReferenceInstance> allReferenceInstances, Integer limit) {
+        List<Reference> sortedReferences = new ArrayList<Reference>();
+
+        Map<Reference, Integer> unsortedReferenceMap = new HashMap<Reference, Integer>();
+
+        for (ReferenceInstance referenceInstance : allReferenceInstances) {
+            Reference reference = referenceInstance.getReference();
+
+            if (!unsortedReferenceMap.containsKey(reference)) {
+                unsortedReferenceMap.put(reference, 0);
+            }
+
+            unsortedReferenceMap.put(reference, unsortedReferenceMap.get(reference) + 1);
+        }
+
+        Map<Reference, Integer> sortedReferencesMap = sortMapByValue(unsortedReferenceMap);
+
+        int i = 0;
+        for (Reference reference : sortedReferencesMap.keySet()) {
+            if (i > limit) {
+                break;
+            }
+            sortedReferences.add(reference);
+            i+=1;
+        }
+
+        return sortedReferences;
+    }
+
+    private Map<Reference, Integer> sortMapByValue(Map<Reference, Integer> unsortedMap) {
+        List<Map.Entry<Reference, Integer>> list =
+                new LinkedList<Map.Entry<Reference, Integer>>(unsortedMap.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<Reference, Integer>>() {
+            public int compare(Map.Entry<Reference, Integer> o1,
+                               Map.Entry<Reference, Integer> o2) {
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
+
+        Map<Reference, Integer> sortedMap = new LinkedHashMap<Reference, Integer>();
+        for (Map.Entry<Reference, Integer> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
     }
 
     @CommitAfter
