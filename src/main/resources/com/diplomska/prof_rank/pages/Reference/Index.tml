@@ -57,58 +57,56 @@
         {
             width: 100%;
         }
+
+        .div-shadow
+        {
+            /*box-shadow: 10px 10px 10px rgb(237, 237, 240);*/
+            box-shadow: 2px 2px 5px #dbdbdb;
+        }
+
+        h4, i
+        {
+            color: #286090;
+        }
     </style>
 </head>
 
 <div class="container">
 
-    <!--<div>-->
-        <!--<h2>${reference.getName()}</h2>-->
-    <!--</div>-->
-
-    <hr/>
-
-    <div>
-        <t:loop source="references" value="reference">
-            <!--<t:delegate to="block:referenceElement"/>-->
-            <div class="row" style="background-color: #dbdbdb; padding: 10px; margin-top: 10px;">
-                <div class="col-md-9">
-                    <h4 style="margin: 0px">${reference.getName()}</h4>
-                </div>
-                <div class="col-md-2"><t:pagelink page="reference/showreference" context="reference.id" class="btn btn-default">Прикажи</t:pagelink></div>
-                <div class="col-md-1"><t:pagelink page="reference/createreference" context="reference.id" class="btn btn-default">Додај</t:pagelink></div>
+    <div class="col-md-offset-2 col-md-8">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Референци</h2>
             </div>
+        </div>
+
+        <hr/>
+
+        <t:loop source="references" value="reference">
+            <t:delegate to="block:referenceElement"/>
+
+
         </t:loop>
 
     </div>
 
 </div>
 
-<!--<t:block id="referenceElement">-->
+<t:block id="referenceElement">
 
-    <!--<a data-toggle="collapse" href="#${referenceInstance.getId()}" aria-expanded="false" aria-controls="collapseExample">-->
-        <!--<div style="background-color: #dbdbdb; padding: 15px; margin-top: 10px;">-->
-            <!--<h4 style="margin: 0px">${displayName}</h4>-->
-        <!--</div>-->
-    <!--</a>-->
-    <!--<div class="collapse" id="${referenceInstance.getId()}">-->
-        <!--<div class="card card-block" style="background-color: #dbdbdb; padding-top: 0px;">-->
-            <!--<table>-->
-                <!--<tbody>-->
-                <!--<t:loop source="attributeValues" value="ari">-->
-                    <!--<tr>-->
-                        <!--<th class="col-md-3">${ari.getAttribute().getName()}:</th>-->
-                        <!--<td class="col-md-9">${ari.getValue()}</td>-->
-                    <!--</tr>-->
-                    <!--&lt;!&ndash;<p>${ari.getAttribute().getName()}: ${ari.getValue()}</p>&ndash;&gt;-->
-                <!--</t:loop>-->
-                <!--</tbody>-->
-            <!--</table>-->
+    <div class="row div-shadow" style="background-color: #fff; padding: 10px; margin-top: 10px;">
+        <div class="col-md-11">
+            <t:pagelink page="reference/showreference" context="reference.id"><h4 style="margin: 0px">${reference.getName()}</h4></t:pagelink>
 
-        <!--</div>-->
-    <!--</div>-->
+        </div>
+        <div class="col-md-1">
+            <t:pagelink page="reference/createreference" context="reference.id">
+                <i class="fa fa-plus-square-o" style="font-size: 25px " aria-hidden="true"></i>
+            </t:pagelink>
+        </div>
+    </div>
 
-<!--</t:block>-->
+</t:block>
 
 
 </html>

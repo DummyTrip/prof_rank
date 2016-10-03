@@ -6,38 +6,31 @@
         <style>
             .truncate
             {
-                width: 250px;
+                width: 270px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
+
+            .div-shadow
+            {
+                /*box-shadow: 10px 10px 10px rgb(237, 237, 240);*/
+                box-shadow: 2px 2px 5px #dbdbdb;
+            }
+
+            a
+            {
+                border-color: #337ab7;
+            }
+
+            /*.test:hover h3 {*/
+                /*color: #337ab7;*/
+            /*}*/
+
         </style>
     </head>
 
     <div class="container">
-        <div>
-            <h2>Pages</h2>
-
-            <ul>
-                <li><t:pagelink page="admin/user/index">Users</t:pagelink></li>
-                <li><t:pagelink page="admin/role/index">Roles</t:pagelink></li>
-                <li><t:pagelink page="admin/rulebook/index">Rulebooks</t:pagelink></li>
-                <li><t:pagelink page="admin/section/index">Sections</t:pagelink></li>
-                <li><t:pagelink page="admin/reference/index">References</t:pagelink></li>
-                <li><t:pagelink page="admin/referencetype/index">Reference Types</t:pagelink></li>
-                <li><t:pagelink page="admin/attribute/index">Attributes</t:pagelink></li>
-                <li><t:pagelink page="admin/report/index">Reports</t:pagelink></li>
-                <li><t:pagelink page="admin/institution/index">Institutions</t:pagelink></li>
-                <li><t:pagelink page="admin/subjectdomain/index">Subject Domains</t:pagelink></li>
-            </ul>
-
-            <t:actionlink t:id="addReferencesFromExcel">Add References From Excel</t:actionlink>
-        </div>
-
-        <div class="row">
-            <h3>Поени од сите внесени референци</h3>
-            <h4>${points}</h4>
-        </div>
 
         <t:if test="popularReferencesForUserNull">
             <div class="row">
@@ -61,19 +54,48 @@
             </div>
         </t:if>
 
+        <hr/>
+        <div>
+            <t:actionlink t:id="addReferencesFromExcel">Add References From Excel</t:actionlink>
+        </div>
+
+        <div>
+            <h2>Pages</h2>
+
+            <ul>
+                <li><t:pagelink page="admin/user/index">Users</t:pagelink></li>
+                <li><t:pagelink page="admin/role/index">Roles</t:pagelink></li>
+                <li><t:pagelink page="admin/rulebook/index">Rulebooks</t:pagelink></li>
+                <li><t:pagelink page="admin/section/index">Sections</t:pagelink></li>
+                <li><t:pagelink page="admin/reference/index">References</t:pagelink></li>
+                <li><t:pagelink page="admin/referencetype/index">Reference Types</t:pagelink></li>
+                <li><t:pagelink page="admin/attribute/index">Attributes</t:pagelink></li>
+                <li><t:pagelink page="admin/report/index">Reports</t:pagelink></li>
+                <li><t:pagelink page="admin/institution/index">Institutions</t:pagelink></li>
+                <li><t:pagelink page="admin/subjectdomain/index">Subject Domains</t:pagelink></li>
+            </ul>
+
+        </div>
+
     </div>
 
     <t:block id="referenceForUserElement">
-        <div class="col-md-4" style="padding-right: 0px">
-            <div style="background-color: #dbdbdb; padding: 15px; margin-top: 15px;">
-                <h4 class="truncate" style="margin-top: 0px">${reference.getName()}</h4>
+        <div class="col-md-4" style="padding-left: 0px">
+            <div class="div-shadow" style="background-color: #fff; padding: 15px; margin-top: 15px;">
+                <h3 class="truncate" style="margin-top: 0px">${reference.getName()}</h3>
                 <div class="row">
                     <!--<div class="col-md-6"><div>Категорија:</div>    <p>${section.getName()}</p></div>-->
                     <div class="col-md-6"><div>Број инстанци:</div> <p>${numberOfReferenceInstancesForUser}</p></div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6"><t:pagelink page="reference/showreference" context="reference.id" class="btn btn-default">Прикажи &raquo;</t:pagelink></div>
-                    <div class="col-md-6"><t:pagelink page="reference/createreference" context="reference.id" class="btn btn-default">Додај &raquo;</t:pagelink></div>
+                    <div class="col-md-8">
+                        <t:pagelink page="reference/showreference" context="reference.id" class="btn btn-default">Прикажи</t:pagelink>
+                    </div>
+                    <div class="col-md-4">
+                        <t:pagelink page="reference/createreference" context="reference.id" class="btn btn-default">
+                            <i class="fa fa-plus-square-o" style="font-size: 14px" aria-hidden="true"/> Додај
+                        </t:pagelink>
+                    </div>
                 </div>
             </div>
         </div>
@@ -81,16 +103,22 @@
 
 
     <t:block id="referenceElement">
-        <div class="col-md-4" style="padding-right: 0px">
-            <div style="background-color: #dbdbdb; padding: 15px; margin-top: 15px;">
+        <div class="col-md-4" style="padding-left: 0px">
+            <div class="div-shadow" style="background-color: #fff; padding: 15px; margin-top: 15px;">
                 <h4 class="truncate" style="margin-top: 0px">${reference.getName()}</h4>
                 <div class="row">
                     <!--<div class="col-md-6"><div>Категорија:</div>    <p>${section.getName()}</p></div>-->
                     <div class="col-md-6"><div>Број инстанци:</div> <p>${numberOfReferenceInstances}</p></div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6"><t:pagelink page="reference/showreference" context="reference.id" class="btn btn-default">Прикажи &raquo;</t:pagelink></div>
-                    <div class="col-md-6"><t:pagelink page="reference/createreference" context="reference.id" class="btn btn-default">Додај &raquo;</t:pagelink></div>
+                    <div class="col-md-8">
+                        <t:pagelink page="reference/showreference" context="reference.id" class="btn btn-default">Прикажи</t:pagelink>
+                    </div>
+                    <div class="col-md-4">
+                        <t:pagelink page="reference/createreference" context="reference.id" class="btn btn-default">
+                            <i class="fa fa-plus-square-o" style="font-size: 14px" aria-hidden="true"/> Додај
+                        </t:pagelink>
+                    </div>
                 </div>
             </div>
         </div>

@@ -10,11 +10,23 @@
     <meta name="author" content=""/>
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="${asset:context:/favicon.ico}"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700"/>
+
+
+    <style>
+        body {
+            background-color: rgb(244, 244, 246);
+        }
+
+    </style>
 </head>
 
 <body>
 
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<!--<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">-->
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
 	    <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -28,13 +40,13 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <t:loop source="pageNames" value="pageName">
-                    <t:any element="li" class="prop:classForPageName">
+                    <t:any element="li" class="prop:classForPageName" >
                         <t:pagelink page="prop:pageName">${pageName}</t:pagelink>
                     </t:any>
                 </t:loop>
                 <li><t:pagelink page="reference/index">References</t:pagelink></li>
             </ul>
-            <span class="navbar-right">
+            <span class="nav navbar-right">
                 <li>
                     <t:pagelink page="login" class="btn btn-default navbar-btn">Sign in</t:pagelink>
                	</li>
