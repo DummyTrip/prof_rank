@@ -103,8 +103,10 @@ public class CreateReference {
 
     @CommitAfter
     Object onSuccess() {
-        for (Attribute attribute: getAttributes()) {
-            referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, testMap.get(attribute.getId()));
+        for (String attributeId : testMap.keySet()) {
+            Attribute attribute = attributeHibernate.getById(Long.valueOf(attributeId));
+
+            referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, testMap.get(attributeId));
         }
 
         return index;

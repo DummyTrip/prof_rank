@@ -34,7 +34,7 @@
             <t:actionlink t:id="addReferencesFromExcel">Add References From Excel</t:actionlink>
         </div>
 
-        <t:if test="popularReferencesNull">
+        <t:if test="popularReferencesForUserNull">
             <div class="row">
                 <h3>Најпопуларни корисник</h3>
 
@@ -45,7 +45,7 @@
             </div>
         </t:if>
 
-        <t:if test="popularReferencesForUserNull">
+        <t:if test="popularReferencesNull">
             <div class="row">
                 <h3>Најпопуларни</h3>
 
