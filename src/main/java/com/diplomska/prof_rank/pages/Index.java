@@ -36,9 +36,21 @@ public class Index
 
     @Property
     Reference reference;
-//
-//    @Property
-//    Reference popularReferenceForUser;
+
+    public Float getPoints() {
+        Float points = 0f;
+
+        List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getAll();
+
+        for (ReferenceInstance referenceInstance : referenceInstances) {
+            Float referencePoints = referenceInstance.getReference().getPoints();
+            if (referencePoints != null) {
+                points += referenceInstance.getReference().getPoints();
+            }
+        }
+
+        return points;
+    }
 
     public List<Reference> getPopularReferences() {
         return referenceHibernate.getPopular(9);

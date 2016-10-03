@@ -187,7 +187,7 @@ public class ExcelWorkbook {
             } else {
                 List<String> rowValues = new ArrayList<String>();
 
-                ReferenceInstance referenceInstance = createReferenceInstance("Настава");
+                ReferenceInstance referenceInstance = createReferenceInstance("Одржување на настава - од прв циклус студии");
 
                 rowValues = getNastavaAttributeValues(row, rowValues, referenceInstance);
 

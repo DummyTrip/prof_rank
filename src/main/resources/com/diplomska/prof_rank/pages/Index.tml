@@ -34,9 +34,14 @@
             <t:actionlink t:id="addReferencesFromExcel">Add References From Excel</t:actionlink>
         </div>
 
+        <div class="row">
+            <h3>Поени од сите внесени референци</h3>
+            <h4>${points}</h4>
+        </div>
+
         <t:if test="popularReferencesForUserNull">
             <div class="row">
-                <h3>Најпопуларни корисник</h3>
+                <h3>Најпопуларни референци за корисник со ID 1</h3>
 
                 <t:loop source="popularReferencesForUser" value="reference">
                     <t:delegate to="block:referenceForUserElement"/>
