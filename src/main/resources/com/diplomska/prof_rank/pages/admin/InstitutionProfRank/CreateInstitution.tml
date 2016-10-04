@@ -1,15 +1,15 @@
-<html t:type="layout" title="Edit Institution"
+<html t:type="layout" title="Create New Institution"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
 
-<!--<t:beaneditform object="institution" submitLabel="Edit Institution"/>-->
+<!--<t:beaneditform object="institutionProfRank" submitLabel="Create InstitutionProfRank"/>-->
 
-<t:form t:id="form" class="form-horizontal" validate="institution">
+<t:form t:id="form" class="form-horizontal" validate="institutionProfRank">
     <t:errors globalOnly="true"/>
 
     <div class="form-group">
         <t:label for="name" class="col-sm-3"/>
         <div class="col-sm-3">
-            <t:textfield t:id="name" value="institution.name"/>
+            <t:textfield t:id="name" value="institutionProfRank.name"/>
         </div>
         <div class="col-sm-6">
             <p class="form-control-static">
@@ -20,7 +20,7 @@
     <div class="form-group">
         <t:label for="city" class="col-sm-3"/>
         <div class="col-sm-3">
-            <t:textfield t:id="city" value="institution.city"/>
+            <t:textfield t:id="city" value="institutionProfRank.city"/>
         </div>
         <div class="col-sm-6">
             <p class="form-control-static">
@@ -31,7 +31,7 @@
     <div class="form-group">
         <t:label for="country" class="col-sm-3"/>
         <div class="col-sm-3">
-            <t:textfield t:id="country" t:mixins="autocomplete" value="institution.country"/>
+            <t:textfield t:id="country" t:mixins="autocomplete" value="institutionProfRank.country"/>
         </div>
         <div class="col-sm-6">
             <p class="form-control-static">
@@ -42,7 +42,7 @@
     <div class="form-group">
         <div class="col-sm-3 col-sm-offset-3">
             <t:submit value="Save"/>
-            <t:pagelink page="admin/institution/index" class="btn btn-default">Cancel</t:pagelink>
+            <t:pagelink page="admin/institutionProfRank/index" class="btn btn-default">Cancel</t:pagelink>
         </div>
     </div>
 

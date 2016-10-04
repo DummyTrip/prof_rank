@@ -5,7 +5,7 @@
 <div>
     <h2>Institution</h2>
 
-    <t:beandisplay object="institution"/>
+    <t:beandisplay object="institutionProfRank"/>
 
 </div>
 

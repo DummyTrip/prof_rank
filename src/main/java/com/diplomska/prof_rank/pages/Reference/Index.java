@@ -4,9 +4,14 @@ import com.diplomska.prof_rank.entities.*;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import com.diplomska.prof_rank.services.UserHibernate;
+import com.oracle.webservices.internal.api.message.PropertySet;
+import org.apache.tapestry5.Link;
+import org.apache.tapestry5.annotations.ActivationRequestParameter;
+import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.PageRenderLinkSource;
 
 import java.util.List;
 
@@ -19,24 +24,41 @@ public class Index {
 
     @Property
     Reference reference;
-//
-//    @Persist
-//    @Property
-//    Long referenceId;
+
+    @Property
+    String referenceName;
+
+    @ActivationRequestParameter(value = "name")
+    private String referenceNameQueryString;
+
+    @Inject
+    private PageRenderLinkSource pageRenderLinkSource;
+
+    public String getReferenceNameQueryString() {
+        return referenceNameQueryString;
+    }
 
     public List<Reference> getReferences() {
-        return referenceHibernate.getAll();
+        if (referenceNameQueryString != null) {
+            return referenceHibernate.getByColumn("name", referenceNameQueryString);
+        } else {
+            return referenceHibernate.getAll();
+        }
     }
-//
-//    void onActivate(Long referenceId) {
-//        this.referenceId = referenceId;
-//    }
-//
-//    Long passivate() {
-//        return referenceId;
-//    }
-//
-//    void setupRender() throws Exception {
-//        this.reference = referenceHibernate.getById(referenceId);
-//    }
+
+    public Link set(String referenceName) {
+        this.referenceNameQueryString = referenceName;
+
+        return pageRenderLinkSource.createPageRenderLink(this.getClass());
+    }
+
+    void setupRender() {
+        this.referenceName = referenceNameQueryString;
+    }
+
+    public Object onSuccessFromForm() {
+        Link link = this.set(referenceName);
+
+        return link;
+    }
 }

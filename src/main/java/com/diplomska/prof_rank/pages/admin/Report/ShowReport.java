@@ -44,10 +44,10 @@ public class ShowReport {
     private User addUser;
 
     @Property
-    private Institution institution;
+    private InstitutionProfRank institutionProfRank;
 
     @Property
-    private Institution addInstitution;
+    private InstitutionProfRank addInstitutionProfRank;
 
     @Property
     private SubjectDomain subjectDomain;
@@ -65,10 +65,10 @@ public class ShowReport {
     private BeanModel<User> addUserBeanModel;
 
     @Property
-    private BeanModel<Institution> institutionBeanModel;
+    private BeanModel<InstitutionProfRank> institutionBeanModel;
 
     @Property
-    private BeanModel<Institution> addInstitutionBeanModel;
+    private BeanModel<InstitutionProfRank> addInstitutionBeanModel;
 
     @Property
     private BeanModel<SubjectDomain> subjectDomainBeanModel;
@@ -99,11 +99,11 @@ public class ShowReport {
         return userHibernate.getAll();
     }
 
-    public List<Institution> getInstitutions() {
+    public List<InstitutionProfRank> getInstitutions() {
         return reportHibernate.getInstitutions(report);
     }
 
-    public List<Institution> getAddInstitutions() {
+    public List<InstitutionProfRank> getAddInstitutions() {
         return institutionHibernate.getAll();
     }
 
@@ -145,16 +145,16 @@ public class ShowReport {
         addUserBeanModel.add("userEmail", pcs.create(User.class, "email"));
         addUserBeanModel.add("add", null);
 
-        institutionBeanModel = beanModelSource.createDisplayModel(Institution.class, messages);
-        institutionBeanModel.add("institutionName", pcs.create(Institution.class, "name"));
-        institutionBeanModel.add("institutionCountry", pcs.create(Institution.class, "country"));
-        institutionBeanModel.add("institutionCity", pcs.create(Institution.class, "city"));
+        institutionBeanModel = beanModelSource.createDisplayModel(InstitutionProfRank.class, messages);
+        institutionBeanModel.add("institutionName", pcs.create(InstitutionProfRank.class, "name"));
+        institutionBeanModel.add("institutionCountry", pcs.create(InstitutionProfRank.class, "country"));
+        institutionBeanModel.add("institutionCity", pcs.create(InstitutionProfRank.class, "city"));
         institutionBeanModel.add("delete", null);
 
-        addInstitutionBeanModel = beanModelSource.createDisplayModel(Institution.class, messages);
-        addInstitutionBeanModel.add("subjectDomainName", pcs.create(Institution.class, "name"));
-        addInstitutionBeanModel.add("institutionCountry", pcs.create(Institution.class, "country"));
-        addInstitutionBeanModel.add("institutionCity", pcs.create(Institution.class, "city"));
+        addInstitutionBeanModel = beanModelSource.createDisplayModel(InstitutionProfRank.class, messages);
+        addInstitutionBeanModel.add("subjectDomainName", pcs.create(InstitutionProfRank.class, "name"));
+        addInstitutionBeanModel.add("institutionCountry", pcs.create(InstitutionProfRank.class, "country"));
+        addInstitutionBeanModel.add("institutionCity", pcs.create(InstitutionProfRank.class, "city"));
         addInstitutionBeanModel.add("add", null);
 
         subjectDomainBeanModel = beanModelSource.createDisplayModel(SubjectDomain.class, messages);
@@ -190,14 +190,14 @@ public class ShowReport {
 
     @CommitAfter
     void onActionFromAddInstitution(Long id) {
-        Institution entity = institutionHibernate.getById(id);
+        InstitutionProfRank entity = institutionHibernate.getById(id);
 
         reportHibernate.setInstitution(report, entity);
     }
 
     @CommitAfter
     void onActionFromDeleteInstitution(Long id) {
-        Institution entity = institutionHibernate.getById(id);
+        InstitutionProfRank entity = institutionHibernate.getById(id);
 
         reportHibernate.deleteInstitution(report, entity);
     }

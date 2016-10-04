@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class InstitutionReport {
     private Long id;
 
-    private Institution institution;
+    private InstitutionProfRank institutionProfRank;
 
     private Report report;
 
@@ -28,12 +28,12 @@ public class InstitutionReport {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "institution_id")
-    public Institution getInstitution() {
-        return institution;
+    public InstitutionProfRank getInstitutionProfRank() {
+        return institutionProfRank;
     }
 
-    public void setInstitution(Institution institution) {
-        this.institution = institution;
+    public void setInstitutionProfRank(InstitutionProfRank institutionProfRank) {
+        this.institutionProfRank = institutionProfRank;
     }
 
     @ManyToOne(cascade = CascadeType.ALL)

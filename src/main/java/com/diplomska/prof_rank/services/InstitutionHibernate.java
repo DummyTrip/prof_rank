@@ -1,6 +1,6 @@
 package com.diplomska.prof_rank.services;
 
-import com.diplomska.prof_rank.entities.Institution;
+import com.diplomska.prof_rank.entities.InstitutionProfRank;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
@@ -18,51 +18,51 @@ public class InstitutionHibernate {
     Session session;
 
     @CommitAfter
-    public void store(Institution institution) {
-        if (institution == null) {
+    public void store(InstitutionProfRank institutionProfRank) {
+        if (institutionProfRank == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
-        session.persist(institution);
+        session.persist(institutionProfRank);
     }
 
-    public List<Institution> getAll() {
-        return session.createCriteria(Institution.class).list();
-    }
-
-    @CommitAfter
-    public void update(Institution institution) {
-        if (institution == null) {
-            throw new IllegalArgumentException("Cannot remove null value.");
-        }
-
-        session.update(institution);
+    public List<InstitutionProfRank> getAll() {
+        return session.createCriteria(InstitutionProfRank.class).list();
     }
 
     @CommitAfter
-    public void delete(Institution institution) {
-        if (institution == null) {
+    public void update(InstitutionProfRank institutionProfRank) {
+        if (institutionProfRank == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
         }
 
-        session.delete(institution);
+        session.update(institutionProfRank);
     }
 
-    public Institution getById(Long id) {
+    @CommitAfter
+    public void delete(InstitutionProfRank institutionProfRank) {
+        if (institutionProfRank == null) {
+            throw new IllegalArgumentException("Cannot remove null value.");
+        }
+
+        session.delete(institutionProfRank);
+    }
+
+    public InstitutionProfRank getById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        return (Institution) session.get(Institution.class, id);
+        return (InstitutionProfRank) session.get(InstitutionProfRank.class, id);
     }
 
-    public List<Institution> getByColumn(String column, String value) {
+    public List<InstitutionProfRank> getByColumn(String column, String value) {
         if (column == null || value == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        Criteria criteria = session.createCriteria(Institution.class);
-        List<Institution> entities = criteria.add(eq(column, value)).list();
+        Criteria criteria = session.createCriteria(InstitutionProfRank.class);
+        List<InstitutionProfRank> entities = criteria.add(eq(column, value)).list();
 
         return entities;
     }

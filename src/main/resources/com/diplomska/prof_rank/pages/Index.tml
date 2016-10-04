@@ -71,7 +71,7 @@
                 <li><t:pagelink page="admin/referencetype/index">Reference Types</t:pagelink></li>
                 <li><t:pagelink page="admin/attribute/index">Attributes</t:pagelink></li>
                 <li><t:pagelink page="admin/report/index">Reports</t:pagelink></li>
-                <li><t:pagelink page="admin/institution/index">Institutions</t:pagelink></li>
+                <li><t:pagelink page="admin/institutionProfRank/index">Institutions</t:pagelink></li>
                 <li><t:pagelink page="admin/subjectdomain/index">Subject Domains</t:pagelink></li>
             </ul>
 

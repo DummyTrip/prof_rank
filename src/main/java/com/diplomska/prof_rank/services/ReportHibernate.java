@@ -83,45 +83,45 @@ public class ReportHibernate {
         userHibernate.setReport(user, report);
     }
 
-    public List<Institution> getInstitutions(Report report) {
+    public List<InstitutionProfRank> getInstitutions(Report report) {
         if (report == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
         List<InstitutionReport> institutionReports = report.getInstitutionReports();
-        List<Institution> institutions = new ArrayList<Institution>();
+        List<InstitutionProfRank> institutionProfRanks = new ArrayList<InstitutionProfRank>();
 
         for (InstitutionReport institutionReport : institutionReports) {
-            institutions.add(institutionReport.getInstitution());
+            institutionProfRanks.add(institutionReport.getInstitutionProfRank());
         }
 
-        return institutions;
+        return institutionProfRanks;
     }
 
     @CommitAfter
-    public void setInstitution(Report report, Institution institution) {
-        if (report == null || institution == null) {
+    public void setInstitution(Report report, InstitutionProfRank institutionProfRank) {
+        if (report == null || institutionProfRank == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
         InstitutionReport institutionReport = new InstitutionReport();
 
         institutionReport.setReport(report);
-        institutionReport.setInstitution(institution);
+        institutionReport.setInstitutionProfRank(institutionProfRank);
 
         session.saveOrUpdate(institutionReport);
     }
 
 
     @CommitAfter
-    public void deleteInstitution(Report report, Institution institution) {
-        if (report == null || institution == null) {
+    public void deleteInstitution(Report report, InstitutionProfRank institutionProfRank) {
+        if (report == null || institutionProfRank == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
         Criteria criteria = session.createCriteria(InstitutionReport.class);
         List<InstitutionReport> entities = criteria
                 .add(eq("report", report))
-                .add(eq("institution", institution))
+                .add(eq("institutionProfRank", institutionProfRank))
                 .list();
 
         if (entities.size() < 1) {

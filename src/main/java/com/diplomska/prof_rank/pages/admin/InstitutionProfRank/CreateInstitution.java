@@ -1,6 +1,6 @@
-package com.diplomska.prof_rank.pages.admin.Institution;
+package com.diplomska.prof_rank.pages.admin.InstitutionProfRank;
 
-import com.diplomska.prof_rank.entities.Institution;
+import com.diplomska.prof_rank.entities.InstitutionProfRank;
 import com.diplomska.prof_rank.services.CountryNames;
 import com.diplomska.prof_rank.services.InstitutionHibernate;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class CreateInstitution {
     @Property
-    private Institution institution;
+    private InstitutionProfRank institutionProfRank;
 
     @Inject
     private InstitutionHibernate institutionHibernate;
@@ -48,18 +48,18 @@ public class CreateInstitution {
     void onPrepareForRender() throws Exception {
         // If fresh start, make sure there's a Person object available.
         if (form.isValid()) {
-            institution = new Institution();
+            institutionProfRank = new InstitutionProfRank();
         }
     }
 
     void onPrepareForSubmit() throws Exception {
         // Instantiate a Person for the form data to overlay.
-        institution = new Institution();
+        institutionProfRank = new InstitutionProfRank();
     }
 
     @CommitAfter
     Object onSuccess() {
-        institutionHibernate.store(institution);
+        institutionHibernate.store(institutionProfRank);
 
         return index;
     }

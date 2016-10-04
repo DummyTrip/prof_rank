@@ -1,3 +1,4 @@
+
 package com.diplomska.prof_rank.pages.admin.Attribute;
 
 import com.diplomska.prof_rank.entities.Attribute;

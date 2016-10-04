@@ -1,6 +1,6 @@
-package com.diplomska.prof_rank.pages.admin.Institution;
+package com.diplomska.prof_rank.pages.admin.InstitutionProfRank;
 
-import com.diplomska.prof_rank.entities.Institution;
+import com.diplomska.prof_rank.entities.InstitutionProfRank;
 import com.diplomska.prof_rank.services.CountryNames;
 import com.diplomska.prof_rank.services.InstitutionHibernate;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -22,7 +22,7 @@ public class EditInstitution {
     private Long institutionId;
 
     @Property
-    private Institution institution;
+    private InstitutionProfRank institutionProfRank;
 
     @InjectComponent
     private Form form;
@@ -59,21 +59,21 @@ public class EditInstitution {
 
     void onPrepareForRender() throws Exception {
         if (form.isValid()) {
-            institution = findInstitution(institutionId);
+            institutionProfRank = findInstitution(institutionId);
 
-            if (institution == null) {
-                throw new Exception("Institution " + institutionId + " does not exist.");
+            if (institutionProfRank == null) {
+                throw new Exception("InstitutionProfRank " + institutionId + " does not exist.");
             }
         }
     }
 
     void onPrepareForSubmit() {
-        institution = findInstitution(institutionId);
+        institutionProfRank = findInstitution(institutionId);
 
-        if (institution == null) {
+        if (institutionProfRank == null) {
             form.recordError("Person has been deleted by another process.");
-            // Instantiate an empty institution to avoid NPE in the BeanEditForm.
-            institution = new Institution();
+            // Instantiate an empty institutionProfRank to avoid NPE in the BeanEditForm.
+            institutionProfRank = new InstitutionProfRank();
         }
     }
 
@@ -87,7 +87,7 @@ public class EditInstitution {
 
     @CommitAfter
     Object onSuccess() {
-        institutionHibernate.update(institution);
+        institutionHibernate.update(institutionProfRank);
 
         return index;
     }
@@ -96,13 +96,13 @@ public class EditInstitution {
         // By doing nothing the page will be displayed afresh.
     }
 
-    private Institution findInstitution(Long institutionId) {
-        Institution institution = institutionHibernate.getById(institutionId);
+    private InstitutionProfRank findInstitution(Long institutionId) {
+        InstitutionProfRank institutionProfRank = institutionHibernate.getById(institutionId);
 
-        if (institution == null) {
+        if (institutionProfRank == null) {
             throw new IllegalStateException("No data in database.");
         }
 
-        return institution;
+        return institutionProfRank;
     }
 }

@@ -1,4 +1,4 @@
-package com.diplomska.prof_rank.pages.admin.Institution;
+package com.diplomska.prof_rank.pages.admin.InstitutionProfRank;
 
 import com.diplomska.prof_rank.entities.*;
 import com.diplomska.prof_rank.services.InstitutionHibernate;
@@ -19,7 +19,7 @@ public class ShowInstitution {
 
     @Persist
     @Property
-    private Institution institution;
+    private InstitutionProfRank institutionProfRank;
 
     void onActivate(Long institutionId) {
         this.institutionId = institutionId;
@@ -30,6 +30,6 @@ public class ShowInstitution {
     }
 
     void setupRender() throws Exception {
-        this.institution = institutionHibernate.getById(institutionId);
+        this.institutionProfRank = institutionHibernate.getById(institutionId);
     }
 }

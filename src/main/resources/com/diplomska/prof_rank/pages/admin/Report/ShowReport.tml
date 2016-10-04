@@ -17,9 +17,9 @@
 
 
     <h3>Institutions</h3>
-    <t:grid source="institutions" row="institution" model="institutionBeanModel">
+    <t:grid source="institutionProfRanks" row="institutionProfRank" model="institutionBeanModel">
         <p:deleteCell>
-            <t:actionlink t:id="deleteInstitution" context="institution.id">Delete</t:actionlink>
+            <t:actionlink t:id="deleteInstitution" context="institutionProfRank.id">Delete</t:actionlink>
         </p:deleteCell>
     </t:grid>
 

@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Aleksandar on 23-Sep-16.
  */
 @Entity
-public class Institution {
+public class InstitutionProfRank {
     private Long id;
 
     private String name;

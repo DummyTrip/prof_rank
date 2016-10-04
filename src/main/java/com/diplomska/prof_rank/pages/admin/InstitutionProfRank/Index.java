@@ -1,6 +1,6 @@
-package com.diplomska.prof_rank.pages.admin.Institution;
+package com.diplomska.prof_rank.pages.admin.InstitutionProfRank;
 
-import com.diplomska.prof_rank.entities.Institution;
+import com.diplomska.prof_rank.entities.InstitutionProfRank;
 import com.diplomska.prof_rank.services.InstitutionHibernate;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
@@ -20,10 +20,10 @@ public class Index {
     private InstitutionHibernate institutionHibernate;
 
     @Property
-    private Institution institution;
+    private InstitutionProfRank institutionProfRank;
 
     @Property
-    private BeanModel<Institution> institutionBeanModel;
+    private BeanModel<InstitutionProfRank> institutionBeanModel;
 
     @Inject
     private BeanModelSource beanModelSource;
@@ -34,12 +34,12 @@ public class Index {
     @Inject
     private PropertyConduitSource pcs;
 
-    public List<Institution> getInstitutions() {
+    public List<InstitutionProfRank> getInstitutionProfRanks() {
         return institutionHibernate.getAll();
     }
 
     void setupRender() {
-        institutionBeanModel = beanModelSource.createDisplayModel(Institution.class, messages);
+        institutionBeanModel = beanModelSource.createDisplayModel(InstitutionProfRank.class, messages);
         institutionBeanModel.include("name", "city", "country");
         institutionBeanModel.add("show", null);
         institutionBeanModel.add("edit", null);
@@ -48,7 +48,7 @@ public class Index {
 
     @CommitAfter
     void onActionFromDelete(Long institutionId) {
-        institution = institutionHibernate.getById(institutionId);
-        institutionHibernate.delete(institution);
+        institutionProfRank = institutionHibernate.getById(institutionId);
+        institutionHibernate.delete(institutionProfRank);
     }
 }
