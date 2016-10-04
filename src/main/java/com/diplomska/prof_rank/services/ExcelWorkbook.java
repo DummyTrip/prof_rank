@@ -187,11 +187,14 @@ public class ExcelWorkbook {
             } else {
                 List<String> rowValues = new ArrayList<String>();
 
-                ReferenceInstance referenceInstance = createReferenceInstance("Одржување на настава - од прв циклус студии");
-
-                rowValues = getNastavaAttributeValues(row, rowValues, referenceInstance);
+                rowValues = getNastavaAttributeValues(row, rowValues);
 
                 if (rowValues.size() == attributes.size()) {
+                    ReferenceInstance referenceInstance = createReferenceInstance("Одржување на настава - од прв циклус студии");
+                    for (String cellValue : rowValues) {
+                        Attribute attribute = attributes.get(rowValues.indexOf(cellValue));
+                        referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, cellValue);
+                    }
                     categoryValues.add(rowValues);
                 }
             }
@@ -221,7 +224,7 @@ public class ExcelWorkbook {
         return rowValues;
     }
 
-    private List<String> getNastavaAttributeValues(Row row, List<String> rowValues, ReferenceInstance referenceInstance) {
+    private List<String> getNastavaAttributeValues(Row row, List<String> rowValues) {
         Iterator<Cell> cellIterator = row.cellIterator();
         while (cellIterator.hasNext()) {
             Cell cell = cellIterator.next();
@@ -231,10 +234,10 @@ public class ExcelWorkbook {
             }
 
             String cellValue = parseNastavaCell(cell);
+            if (cellValue.equals("ВКУПНО")){
+                return new ArrayList<String>();
+            }
             rowValues.add(cellValue);
-
-            Attribute attribute = attributes.get(rowValues.size() - 1);
-            referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, cellValue);
         }
 
         return rowValues;

@@ -5,6 +5,7 @@ import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class ReferenceInstanceHibernate {
     }
 
     public List<ReferenceInstance> getAll() {
-        return session.createCriteria(ReferenceInstance.class).list();
+        return session.createCriteria(ReferenceInstance.class).addOrder(Order.desc("id")).list();
     }
 
     @CommitAfter
@@ -59,6 +60,39 @@ public class ReferenceInstanceHibernate {
         }
 
         session.delete(referenceInstance);
+    }
+
+    public List<String> getAllDisplayNames() {
+        List<String> displayNames = new ArrayList<String>();
+        List<ReferenceInstance> referenceInstances = getAll();
+
+        for (ReferenceInstance referenceInstance : referenceInstances) {
+            displayNames.add(getDisplayName(referenceInstance));
+        }
+
+        return displayNames;
+    }
+
+    public String getDisplayName(ReferenceInstance referenceInstance) {
+        String displayName = "";
+        List<AttributeReferenceInstance> attributeReferenceInstances = referenceInstance.getAttributeReferenceInstances();
+        List<Attribute> attributes = getAttributeValues(referenceInstance);
+
+        for (AttributeReferenceInstance attributeReferenceInstance : attributeReferenceInstances) {
+            String attributeName = attributeReferenceInstance.getAttribute().getName();
+            if (attributeName.equals("Наслов") ||
+                    attributeName.equals("Предмет") ||
+                    attributeName.equals("Име на проектот") ||
+                    attributeName.startsWith("Период") ||
+                    attributeName.equals("Година")) {
+                if (displayName.length() > 0) {
+                    displayName += ", ";
+                }
+                displayName += attributeReferenceInstance.getValue();
+            }
+        }
+
+        return displayName;
     }
 
     public ReferenceInstance getById(Long id) {

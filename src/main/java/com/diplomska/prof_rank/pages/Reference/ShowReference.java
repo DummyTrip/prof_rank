@@ -51,6 +51,9 @@ public class ShowReference {
     @Inject
     private PageRenderLinkSource pageRenderLinkSource;
 
+    @Persist
+    private List<String> displayNames;
+
     public List<ReferenceInstance> getReferenceInstances() {
         User user = userHibernate.getById(Long.valueOf(1));
         if (user != null) {
@@ -64,25 +67,7 @@ public class ShowReference {
     }
 
     public String getDisplayName() {
-        String displayName = "";
-        List<AttributeReferenceInstance> attributeReferenceInstances = referenceInstance.getAttributeReferenceInstances();
-        List<Attribute> attributes = referenceInstanceHibernate.getAttributeValues(referenceInstance);
-
-        for (AttributeReferenceInstance attributeReferenceInstance : attributeReferenceInstances) {
-            String attributeName = attributeReferenceInstance.getAttribute().getName();
-            if (attributeName.equals("Наслов") ||
-                    attributeName.equals("Предмет") ||
-                    attributeName.equals("Име на проектот") ||
-                    attributeName.startsWith("Период") ||
-                    attributeName.equals("Година")) {
-                if (displayName.length() > 0) {
-                    displayName += ", ";
-                }
-                displayName += attributeReferenceInstance.getValue();
-            }
-        }
-
-        return displayName;
+        return referenceInstanceHibernate.getDisplayName(referenceInstance);
     }
 
     public List<AttributeReferenceInstance> getAttributeValues() {
@@ -96,6 +81,20 @@ public class ShowReference {
     Long passivate() {
         return referenceId;
     }
+
+    List<String> onProvideCOmpletionsFromSearchName(String partial) {
+        List<String> matches = new ArrayList<String>();
+        partial = partial.toUpperCase();
+
+        for (String name : displayNames) {
+            if (name.toUpperCase().startsWith(partial)) {
+                matches.add(name);
+            }
+        }
+
+        return matches;
+    }
+
 
     public Link set(String referenceName) {
         this.referenceNameQueryString = referenceName;
@@ -112,6 +111,7 @@ public class ShowReference {
     void setupRender() throws Exception {
         this.reference = referenceHibernate.getById(referenceId);
         this.referenceName = referenceNameQueryString;
+        this.displayNames = referenceInstanceHibernate.getAllDisplayNames();
     }
 
 }

@@ -38,7 +38,7 @@ public class ReferenceHibernate {
     }
 
     public List<Reference> getAll() {
-        return session.createCriteria(Reference.class).list();
+        return session.createCriteria(Reference.class).addOrder(Order.desc("id")).list();
     }
 
     public List<Reference> getAll(Integer limit) {
