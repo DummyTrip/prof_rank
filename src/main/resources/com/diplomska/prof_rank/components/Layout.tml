@@ -39,10 +39,8 @@
                 </t:loop>
                 <li><t:pagelink page="reference/index">References</t:pagelink></li>
             </ul>
-            <span class="nav navbar-right">
-                <li>
-                    <t:pagelink page="login" class="btn btn-default navbar-btn">Sign in</t:pagelink>
-               	</li>
+            <span class="navbar-right">
+                <t:pagelink page="login" class="btn btn-default navbar-btn">Sign in</t:pagelink>
             </span>
 
         </div><!--/.nav-collapse -->

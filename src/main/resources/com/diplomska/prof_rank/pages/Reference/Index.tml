@@ -2,12 +2,12 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
       xmlns:p="tapestry:parameter">
 
-    <div class="col-md-4 no-padding-left">
-        <h3>Пребарај</h3>
+<div class="row">
+    <div class="col-md-4">
         <div class="row">
             <t:form t:id="form">
                 <div class="col-md-9">
-                    <t:textfield t:id="searchName" t:mixins="autocomplete" value="referenceName"/>
+                    <t:textfield t:id="searchName" t:mixins="autocomplete" value="referenceName" placeholder="Пребарај..."/>
                 </div>
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-default">
@@ -40,12 +40,14 @@
         </t:loop>
 
     </div>
-
+</div>
 <t:block id="referenceElement">
 
     <div class="row div-shadow white-background ref-list-padding">
         <div class="col-md-11">
-            <t:pagelink page="reference/showreference" context="reference.id" class="reference-link"><h4 class="ref-text-color no-margin">${reference.getName()}</h4></t:pagelink>
+            <t:pagelink page="reference/showreference" context="reference.id" class="reference-link">
+                <h4 class="ref-text-color no-margin truncate-ref-link">${reference.getName()}</h4>
+            </t:pagelink>
 
         </div>
         <div class="col-md-1">

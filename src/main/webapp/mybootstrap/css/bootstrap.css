@@ -3042,17 +3042,27 @@ fieldset[disabled] .btn {
 }
 .btn-default {
   color: #333;
+  /*color: #286090;*/
   background-color: #fff;
   border-color: #ccc;
+  /*border-color: #286090;*/
 }
+.btn-default.navbar-btn:hover {
+  color: #000;
+  background-color: #FFF488;
+  border-color: #adadad;
+}
+
 .btn-default:hover,
 .btn-default:focus,
 .btn-default.focus,
 .btn-default:active,
 .btn-default.active,
 .open > .dropdown-toggle.btn-default {
-  color: #333;
-  background-color: #e6e6e6;
+  /*color: #333;*/
+  color: #fff;
+  /*background-color: #e6e6e6;*/
+  background-color: #286090;
   border-color: #adadad;
 }
 .btn-default:active,
@@ -3097,8 +3107,10 @@ fieldset[disabled] .btn-default.active {
 .btn-primary.active,
 .open > .dropdown-toggle.btn-primary {
   color: #fff;
+  /*color: #000;*/
   background-color: #286090;
-  border-color: #204d74;
+  /*background-color: #FFF488;*/
+  border-color: #2e6da4;
 }
 .btn-primary:active,
 .btn-primary.active,
@@ -4396,33 +4408,43 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-default {
-  background-color: #f8f8f8;
-  border-color: #e7e7e7;
+  /*background-color: #f8f8f8;*/
+  /*border-color: #e7e7e7;*/
+  background-color: #286090;
+  border-color: #163753;
 }
 .navbar-default .navbar-brand {
-  color: #777;
+  color: #FFF;
 }
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {
-  color: #5e5e5e;
+  color: #FFF488;
   background-color: transparent;
 }
 .navbar-default .navbar-text {
   color: #777;
 }
 .navbar-default .navbar-nav > li > a {
-  color: #777;
+  /*color: #777;*/
+  color: #fff;
 }
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
-  color: #333;
-  background-color: transparent;
+  /*color: #333;*/
+  /*background-color: transparent;*/
+  color: #FFF488;
+  background-color: #3978AC;
 }
 .navbar-default .navbar-nav > .active > a,
-.navbar-default .navbar-nav > .active > a:hover,
 .navbar-default .navbar-nav > .active > a:focus {
-  color: #555;
-  background-color: #e7e7e7;
+  /*color: #555;*/
+  /*background-color: #e7e7e7;*/
+  color: #fff ;
+  background-color: #5597CD;
+}
+.navbar-default .navbar-nav > .active > a:hover {
+  color: #FFF488 ;
+  background-color: #5597CD;
 }
 .navbar-default .navbar-nav > .disabled > a,
 .navbar-default .navbar-nav > .disabled > a:hover,

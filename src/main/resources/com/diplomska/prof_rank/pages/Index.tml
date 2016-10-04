@@ -52,10 +52,17 @@
     <t:block id="referenceForUserElement">
         <div class="col-md-4 no-padding-left">
             <div class="div-shadow white-background ref-box-padding">
-                <h3 class="truncate no-margin-top">${reference.getName()}</h3>
-                <div class="row">
-                    <!--<div class="col-md-6"><div>Категорија:</div>    <p>${section.getName()}</p></div>-->
-                    <div class="col-md-6"><div>Број инстанци:</div> <p>${numberOfReferenceInstancesForUser}</p></div>
+                <div class="col-md-10 no-padding-left">
+                    <h4 class="truncate no-margin-top">${reference.getName()}</h4>
+                </div>
+                <div class="col-md-2">
+                    <b>${numberOfReferenceInstancesForUser}</b>
+                </div>
+                <div class="row ref-info-row-padding">
+                    <div class="col-md-12">
+                        <div>Nauchno obrazovna dejnost</div>
+                        <!--<div>${section.getName()}</div>-->
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-8">
@@ -77,12 +84,17 @@
     <t:block id="referenceElement">
         <div class="col-md-4 no-padding-left">
             <div class="div-shadow white-background ref-box-padding">
-                <h4 class="truncate no-margin-top">${reference.getName()}</h4>
-                <div class="row">
-                    <!--<div class="col-md-6"><div>Категорија:</div>    <p>${section.getName()}</p></div>-->
-                    <div class="col-md-6"><div>Број инстанци:</div> <p>${numberOfReferenceInstances}</p></div>
+                <div class="col-md-10 no-padding-left">
+                    <h4 class="truncate no-margin-top">${reference.getName()}</h4>
                 </div>
-                <div class="row">
+                <div class="col-md-2">
+                    <b>${numberOfReferenceInstances}</b>
+                </div>
+                <div class="row ref-info-row-padding">
+                    <div class="col-md-12"><div>Nauchno obrazovna dejnost</div></div>
+                    <!--<div>${section.getName()}</div>-->
+                </div>
+                <div class="row ">
                     <div class="col-md-8">
                         <t:pagelink page="reference/showreference" context="reference.id" class="btn btn-default">
                             <i class="fa fa-list ref-box-icon-size" aria-hidden="true"></i> Прикажи

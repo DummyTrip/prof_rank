@@ -1,3 +1,7 @@
+/*colors*/
+/*http://paletton.com/#uid=a3y1q0koOs0n1yCk9Jbo8lLp9g4*/
+
+
 .body-background-color {
     background-color: rgb(244, 244, 246);
 }
@@ -128,3 +132,74 @@
 {
     padding-top: 0px;
 }
+
+.ref-info-row-padding
+{
+    padding-bottom: 15px;
+}
+
+.text-right
+{
+    text-align: right;
+}
+
+.margin-left-danger
+{
+    margin-left: 15px;
+}
+
+.float-right
+{
+    float: right;
+}
+
+.truncate-ref-link
+{
+    width: 540px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+/*.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {*/
+    /*!*background-color: #FFEF4E;*!*/
+    /*!*background-color: #FFF488;*!*/
+    /*color: #FFF488;  !*Sets the text hover color on navbar*!*/
+/*}*/
+
+/*.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active >*/
+/*a:hover, .navbar-default .navbar-nav > .active > a:focus {*/
+    /*color: #fff ;*/
+    /*!*BACKGROUND color for active*!*/
+    /*background-color: #5597CD;*/
+/*}*/
+
+/*.navbar-default {*/
+    /*background-color: #286090;*/
+    /*border-color: #163753;*/
+/*}*/
+
+/*!*.dropdown-menu > li > a:hover,*!*/
+/*!*.dropdown-menu > li > a:focus {*!*/
+    /*!*color: #262626;*!*/
+    /*!*text-decoration: none;*!*/
+    /*!*background-color: #66CCFF;  !*change color of links in drop down here*!*!*/
+/*!*}*!*/
+
+/*!*.nav > li > a:hover,*!*/
+/*!*.nav > li > a:focus {*!*/
+    /*!*text-decoration: none;*!*/
+    /*!*background-color: #FFEF4E; !*Change rollover cell color here*!*!*/
+/*!*}*!*/
+
+
+/*.navbar-default .navbar-nav > li > a {*/
+    /*color: white; !*Change active text color here*!*/
+/*}*/
+
+/*.navbar-default .navbar-brand*/
+/*{*/
+    /*color: #fff;*/
+/*}*/

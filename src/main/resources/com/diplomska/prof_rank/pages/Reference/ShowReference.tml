@@ -2,14 +2,15 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
       xmlns:p="tapestry:parameter">
 
-    <div class="col-md-4 no-padding-left">
-        <h3>Пребарај</h3>
+<div class="row">
+
+    <div class="col-md-4">
         <div class="row">
             <t:form t:id="form">
                 <div class="col-md-9">
-                    <t:textfield t:id="searchName" t:mixins="autocomplete" value="referenceName"/>
+                    <t:textfield t:id="searchName" t:mixins="autocomplete" value="referenceName" placeholder="Пребарај..." />
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 no-padding-left">
                     <button type="submit" class="btn btn-default">
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
@@ -34,8 +35,8 @@
         <hr/>
 
         <div class="row margin-bottom-15px">
-            <div class="col-md-2 no-padding-left">
-                <t:pagelink page="reference/createreference" context="reference.id" class="btn btn-default reference-link add-ref-ins-text-size ref-text-color">
+            <div class="no-padding-left float-right">
+                <t:pagelink page="reference/createreference" context="reference.id" class="btn btn-default add-ref-ins-text-size">
                     <i class="fa fa-plus-square-o add-ref-ins-text-size" aria-hidden="true"/> Додај
                 </t:pagelink>
             </div>
@@ -46,12 +47,13 @@
         </t:loop>
 
     </div>
+</div>
 
 <t:block id="referenceElement">
     <a data-toggle="collapse" href="#${referenceInstance.getId()}" aria-expanded="false" aria-controls="collapseExample" class="reference-link">
         <div class="row div-shadow white-background ref-list-padding">
             <div class="col-md-11">
-                <h4 class="no-margin">${displayName}</h4>
+                <h4 class="no-margin truncate-ref-link">${displayName}</h4>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-chevron-down chevron-icon-size" aria-hidden="true"></i>
