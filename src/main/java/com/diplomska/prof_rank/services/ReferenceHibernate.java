@@ -45,6 +45,17 @@ public class ReferenceHibernate {
         return session.createCriteria(Reference.class).addOrder(Order.desc("id")).setMaxResults(limit).list();
     }
 
+    public List<String> getAllNames() {
+        List<Reference> references = getAll();
+        List<String> referenceNames = new ArrayList<String>();
+
+        for (Reference reference : references) {
+            referenceNames.add(reference.getName());
+        }
+
+        return referenceNames;
+    }
+
     public List<Reference> getPopular(Integer limit) {
         List<ReferenceInstance> allReferenceInstances = session.createCriteria(ReferenceInstance.class).list();
 

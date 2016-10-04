@@ -29,7 +29,7 @@ public class CreateInstitution {
     @InjectComponent
     private Form form;
 
-       @Inject
+    @Inject
     private CountryNames countryNames;
 
     List<String> onProvideCOmpletionsFromCountry(String partial) {

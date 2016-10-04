@@ -4,7 +4,6 @@ import com.diplomska.prof_rank.entities.*;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import com.diplomska.prof_rank.services.UserHibernate;
-import com.oracle.webservices.internal.api.message.PropertySet;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.ActivationRequestParameter;
 import org.apache.tapestry5.annotations.InjectPage;
@@ -13,6 +12,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +34,9 @@ public class Index {
     @Inject
     private PageRenderLinkSource pageRenderLinkSource;
 
+    @Persist
+    private List<String> referenecNames;
+
     public String getReferenceNameQueryString() {
         return referenceNameQueryString;
     }
@@ -46,6 +49,19 @@ public class Index {
         }
     }
 
+    List<String> onProvideCOmpletionsFromSearchName(String partial) {
+        List<String> matches = new ArrayList<String>();
+        partial = partial.toUpperCase();
+
+        for (String name : referenecNames) {
+            if (name.toUpperCase().startsWith(partial)) {
+                matches.add(name);
+            }
+        }
+
+        return matches;
+    }
+
     public Link set(String referenceName) {
         this.referenceNameQueryString = referenceName;
 
@@ -54,6 +70,7 @@ public class Index {
 
     void setupRender() {
         this.referenceName = referenceNameQueryString;
+        this.referenecNames = referenceHibernate.getAllNames();
     }
 
     public Object onSuccessFromForm() {

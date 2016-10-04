@@ -4,9 +4,12 @@ import com.diplomska.prof_rank.entities.*;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import com.diplomska.prof_rank.services.UserHibernate;
+import org.apache.tapestry5.Link;
+import org.apache.tapestry5.annotations.ActivationRequestParameter;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.PageRenderLinkSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +42,21 @@ public class ShowReference {
     @Property
     Long referenceId;
 
+    @Property
+    String referenceName;
+
+    @ActivationRequestParameter(value = "name")
+    private String referenceNameQueryString;
+
+    @Inject
+    private PageRenderLinkSource pageRenderLinkSource;
+
     public List<ReferenceInstance> getReferenceInstances() {
         User user = userHibernate.getById(Long.valueOf(1));
         if (user != null) {
 //            return referenceInstanceHibernate.getByReferenceAndUser(reference, user);
-            return referenceInstanceHibernate.getByReference(reference);
+            List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getByReference(reference);
+            return referenceInstances;
         } else {
             return new ArrayList<ReferenceInstance>();
         }
@@ -84,8 +97,21 @@ public class ShowReference {
         return referenceId;
     }
 
+    public Link set(String referenceName) {
+        this.referenceNameQueryString = referenceName;
+
+        return pageRenderLinkSource.createPageRenderLink(this.getClass());
+    }
+
+    public Object onSuccessFromForm() {
+        Link link = this.set(referenceName);
+
+        return link;
+    }
+
     void setupRender() throws Exception {
         this.reference = referenceHibernate.getById(referenceId);
+        this.referenceName = referenceNameQueryString;
     }
 
 }
