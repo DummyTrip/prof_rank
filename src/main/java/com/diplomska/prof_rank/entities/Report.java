@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.entities;
 
+import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.beaneditor.NonVisual;
 
 import javax.persistence.*;
@@ -35,6 +36,8 @@ public class Report {
     private List<ReferenceInstanceReport> referenceInstanceReports = new ArrayList<ReferenceInstanceReport>();
 
     private User user;
+
+    private Person person;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -113,5 +116,14 @@ public class Report {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

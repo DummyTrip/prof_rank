@@ -1,0 +1,74 @@
+<html t:type="layout" title="Create New Person"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
+
+<!--<t:beaneditform object="person" submitLabel="Create Person"/>-->
+
+<t:form t:id="form" class="form-horizontal" validate="person">
+    <t:errors globalOnly="true"/>
+
+    <div class="form-group">
+        <t:label for="firstName" class="col-sm-3"/>
+        <div class="col-sm-3">
+            <t:textfield t:id="firstName" value="person.firstName"/>
+        </div>
+        <div class="col-sm-6">
+            <p class="form-control-static">
+                (required)
+            </p>
+        </div>
+    </div>
+    <div class="form-group">
+        <t:label for="middleName" class="col-sm-3"/>
+        <div class="col-sm-3">
+            <t:textfield t:id="middleName" value="person.middleName"/>
+        </div>
+        <div class="col-sm-6">
+            <p class="form-control-static">
+                (required)
+            </p>
+        </div>
+    </div>
+    <div class="form-group">
+        <t:label for="lastName" class="col-sm-3"/>
+        <div class="col-sm-3">
+            <t:textfield t:id="lastName" value="person.lastName"/>
+        </div>
+        <div class="col-sm-6">
+            <p class="form-control-static">
+                (required)
+            </p>
+        </div>
+    </div>
+    <div class="form-group">
+        <t:label for="email" class="col-sm-3"/>
+        <div class="col-sm-3">
+            <t:textfield t:id="email" value="person.email"/>
+        </div>
+        <div class="col-sm-6">
+            <p class="form-control-static">
+                (required)
+            </p>
+        </div>
+    </div>
+    <!--<div class="form-group">-->
+        <!--<t:label for="role" class="col-sm-3"/>-->
+        <!--<div class="col-sm-3">-->
+            <!--&lt;!&ndash;<t:select t:id="role" value="person.role" model="roleSelectModel"/>&ndash;&gt;-->
+            <!--<t:selectobject t:id="role" list="roles" value="role" labelField="literal:name"/>-->
+        <!--</div>-->
+        <!--<div class="col-sm-6">-->
+            <!--<p class="form-control-static">-->
+                <!--(required)-->
+            <!--</p>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="form-group">
+        <div class="col-sm-3 col-sm-offset-3">
+            <t:submit value="Save"/>
+            <t:pagelink page="admin/person/index" class="btn btn-default">Cancel</t:pagelink>
+        </div>
+    </div>
+
+</t:form>
+
+</html>

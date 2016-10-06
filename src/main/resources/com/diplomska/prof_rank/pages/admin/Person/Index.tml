@@ -1,0 +1,26 @@
+<html t:type="layout" title="Person Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter" xmlns:T="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+
+<div>
+    <h2>Persons</h2>
+
+    <t:grid source="persons" row="person" model="personBeanModel">
+        <p:showCell>
+            <t:pagelink page="admin/person/showperson" context="person.personId">Show</t:pagelink>
+        </p:showCell>
+        <p:editCell>
+            <t:pagelink page="admin/person/editperson" context="person.personId">Edit</t:pagelink>
+        </p:editCell>
+        <p:deleteCell>
+            <t:actionlink t:id="delete" context="person.personId">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+    <p><t:pagelink page="admin/person/createperson">Create new person</t:pagelink></p>
+
+    <hr/>
+
+</div>
+
+</html>

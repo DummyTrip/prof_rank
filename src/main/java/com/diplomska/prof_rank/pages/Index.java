@@ -5,10 +5,8 @@ import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.entities.ReferenceInstance;
 import com.diplomska.prof_rank.entities.Section;
 import com.diplomska.prof_rank.entities.User;
-import com.diplomska.prof_rank.services.ExcelWorkbook;
-import com.diplomska.prof_rank.services.ReferenceHibernate;
-import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
-import com.diplomska.prof_rank.services.UserHibernate;
+import com.diplomska.prof_rank.services.*;
+import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
@@ -34,6 +32,9 @@ public class Index
 
     @Inject
     UserHibernate userHibernate;
+
+    @Inject
+    PersonHibernate personHibernate;
 
     @Property
     Reference reference;
@@ -100,6 +101,13 @@ public class Index
         user.setLastName("TestLastName");
         user.setEmail("TestEmail");
         userHibernate.store(user);
+
+        Person person = new Person();
+        person.setFirstName("TestFirstName");
+        person.setMiddleName("TestMiddleName");
+        person.setLastName("TestLastName");
+        person.setEmail("TestEmail");
+        personHibernate.store(person);
 
         String fileName = "poi_test.xlsx";
 

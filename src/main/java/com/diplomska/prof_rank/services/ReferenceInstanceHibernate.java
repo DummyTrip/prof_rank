@@ -198,5 +198,4 @@ public class ReferenceInstanceHibernate {
         attributeReferenceInstance.setReferenceInstance(null);
         referenceInstance.getAttributeReferenceInstances().remove(attributeReferenceInstance);
     }
-
 }

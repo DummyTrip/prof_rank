@@ -35,6 +35,7 @@
 
             <ul>
                 <li><t:pagelink page="admin/user/index">Users</t:pagelink></li>
+                <li><t:pagelink page="admin/person/index">Persons</t:pagelink></li>
                 <li><t:pagelink page="admin/role/index">Roles</t:pagelink></li>
                 <li><t:pagelink page="admin/rulebook/index">Rulebooks</t:pagelink></li>
                 <li><t:pagelink page="admin/section/index">Sections</t:pagelink></li>

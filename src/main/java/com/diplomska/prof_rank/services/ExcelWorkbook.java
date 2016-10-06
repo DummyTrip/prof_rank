@@ -1,6 +1,7 @@
 package com.diplomska.prof_rank.services;
 
 import com.diplomska.prof_rank.entities.*;
+import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -29,6 +30,9 @@ public class ExcelWorkbook {
 
     @Inject
     UserHibernate userHibernate;
+
+    @Inject
+    PersonHibernate personHibernate;
     
     // helper variable. remembers parent name for category names
     private String parentCategoryName = "";
@@ -377,8 +381,12 @@ public class ExcelWorkbook {
         ReferenceInstance referenceInstance = new ReferenceInstance();
         referenceInstance.setReference(reference);
         referenceInstanceHibernate.store(referenceInstance);
+
         User user = userHibernate.getById(Long.valueOf(1));
         userHibernate.setReferenceInstance(user, referenceInstance);
+
+//        Person person = personHibernate.getById(Long.valueOf(1));
+//        personHibernate.setReferenceInstance(person, referenceInstance);
 
         return referenceInstance;
     }
