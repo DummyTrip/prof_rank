@@ -1,17 +1,18 @@
 package com.diplomska.prof_rank.services;
 
-import com.diplomska.prof_rank.entities.ReferenceInstance;
-import com.diplomska.prof_rank.entities.ReferenceInstancePerson;
-import com.diplomska.prof_rank.entities.Report;
+import com.diplomska.prof_rank.entities.*;
+import mk.ukim.finki.isis.model.entities.Instructor;
 import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hibernate.criterion.Restrictions.*;
 import static org.hibernate.criterion.Restrictions.eq;
 
 /**
@@ -60,6 +61,11 @@ public class PersonHibernate {
         return (Person) session.get(Person.class, id);
     }
 
+    public Person getPersonByUsername(String username) {
+        return (Person) session.createCriteria(Person.class)
+                .add(eq("userName", username)).uniqueResult();
+    }
+
     public List<Person> getByColumn(String column, String value) {
         if (column == null || value == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
@@ -69,6 +75,11 @@ public class PersonHibernate {
         List<Person> entities = criteria.add(eq(column, value)).list();
 
         return entities;
+    }
+
+    public List<Instructor> getInstructorsByPersonId (Long personId) {
+        return session.createCriteria(Instructor.class)
+                .add(eq("person.personId", personId)).list();
     }
 
     public List<ReferenceInstance> getReferenceInstances(Person person) {
@@ -160,5 +171,77 @@ public class PersonHibernate {
         }
 
         report.setPerson(null);
+    }
+
+    public List<Person> getPersonByRole(Role role) {
+        if (role == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        return session.createCriteria(PersonRole.class)
+                .add(eq("role", role)).list();
+    }
+
+    public Role getRole(Person person) {
+        if (person == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        List<PersonRole> personRoles = session.createCriteria(PersonRole.class)
+                .add(eq("person", person)).list();
+
+        // Sometimes a person has no role.
+        if (personRoles.size() > 0) {
+            return personRoles.get(0).getRole();
+        } else {
+            return null;
+        }
+    }
+
+    public Role getRoleByPersonId(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        Person person = getById(id);
+
+        return getRole(person);
+    }
+
+    public void setRole(Person person, Role role) {
+        if (person == null || role == null) {
+            throw new IllegalArgumentException("Cannot persist by null value.");
+        }
+
+        List<PersonRole> personRoles = session.createCriteria(PersonRole.class)
+                .add(eq("person", person)).list();
+        PersonRole personRole;
+
+        if (personRoles.size() > 0) {
+            personRole = personRoles.get(0);
+            personRole.setRole(role);
+        } else {
+            personRole = new PersonRole();
+            personRole.setPerson(person);
+            personRole.setRole(role);
+            session.saveOrUpdate(personRole);
+        }
+    }
+
+    public void deleteRole(Person person) {
+        if (person == null) {
+            throw new IllegalArgumentException("Cannot persist by null value.");
+        }
+
+        List<PersonRole> personRoles = session.createCriteria(PersonRole.class)
+                .add(eq("person", person)).list();
+        PersonRole personRole;
+
+        if (personRoles.size() > 0) {
+            personRole = personRoles.get(0);
+            personRole.setRole(null);
+            personRole.setPerson(null);
+            session.delete(personRole);
+        }
     }
 }

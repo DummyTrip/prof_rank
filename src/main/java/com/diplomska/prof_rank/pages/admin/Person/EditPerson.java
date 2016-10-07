@@ -35,8 +35,8 @@ public class EditPerson {
     @Inject
     private PersonHibernate personHibernate;
 
-//    @Inject
-//    private RoleHibernate roleHibernate;
+    @Inject
+    private RoleHibernate roleHibernate;
 
     @Inject
     private ReferenceHibernate referenceHibernate;
@@ -44,8 +44,8 @@ public class EditPerson {
     @InjectPage
     private com.diplomska.prof_rank.pages.admin.Person.Index index;
 
-//    @Property
-//    private SelectModel roleSelectModel;
+    @Property
+    private SelectModel roleSelectModel;
 
     @Property
     private SelectModel referenceSelectModel;
@@ -54,20 +54,20 @@ public class EditPerson {
     SelectModelFactory selectModelFactory;
 
     void setupRender() {
-//        List<Role> roles = roleHibernate.getAll();
+        List<Role> roles = roleHibernate.getAll();
         List<Reference> references = referenceHibernate.getAll();
 
-//        roleSelectModel = selectModelFactory.create(roles, "name");
+        roleSelectModel = selectModelFactory.create(roles, "name");
         referenceSelectModel = selectModelFactory.create(references, "name");
     }
 
-//    @Property
-//    private Role role;
-//    private List<Role> roles;
-//
-//    public List<Role> getRoles() {
-//        return roleHibernate.getAll();
-//    }
+    @Property
+    private Role role;
+    private List<Role> roles;
+
+    public List<Role> getRoles() {
+        return roleHibernate.getAll();
+    }
 
     void onActivate(Long personId) {
         this.personId = personId;
@@ -83,6 +83,11 @@ public class EditPerson {
 
             if (person == null) {
                 throw new Exception("Person " + personId + " does not exist.");
+            }
+
+            role = personHibernate.getRole(person);
+            if (role == null) {
+                role = new Role();
             }
         }
     }
@@ -107,7 +112,12 @@ public class EditPerson {
 
     @CommitAfter
     Object onSuccess() {
-//        person.setUloga(uloga);
+        if (role == null) {
+            personHibernate.deleteRole(person);
+        } else {
+            personHibernate.setRole(person, role);
+        }
+
         personHibernate.update(person);
 
         return index;

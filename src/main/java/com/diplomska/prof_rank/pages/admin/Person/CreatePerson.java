@@ -36,11 +36,11 @@ public class CreatePerson {
     @Property
     private Role role;
 
-//    private List<Role> roles;
-//
-//    public List<Role> getRoles() {
-//        return roleHibernate.getAll();
-//    }
+    private List<Role> roles;
+
+    public List<Role> getRoles() {
+        return roleHibernate.getAll();
+    }
 
     void onPrepareForRender() throws Exception {
         // If fresh start, make sure there's a Person object available.
@@ -58,9 +58,9 @@ public class CreatePerson {
     Object onSuccess() {
         personHibernate.store(person);
 
-//        if (role != null){
-//            personHibernate.setRole(person, role);
-//        }
+        if (role != null){
+            personHibernate.setRole(person, role);
+        }
 
         return index;
     }
