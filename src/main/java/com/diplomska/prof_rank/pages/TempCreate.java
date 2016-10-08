@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.pages;
 
+import com.diplomska.prof_rank.annotations.PublicPage;
 import com.diplomska.prof_rank.entities.User;
 import com.diplomska.prof_rank.services.UserHibernate;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -12,6 +13,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 /**
  * Created by Aleksandar on 23-Sep-16.
  */
+@PublicPage
 public class TempCreate {
     @Property
     private User temp;

@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.pages.admin.Report;
 
+import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.*;
 import com.diplomska.prof_rank.services.*;
 import org.apache.tapestry5.annotations.Persist;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Created by Aleksandar on 25-Sep-16.
  */
+@AdministratorPage
 public class ShowReport {
     @Persist
     @Property

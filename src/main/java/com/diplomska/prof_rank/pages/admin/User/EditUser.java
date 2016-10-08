@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.pages.admin.User;
 
+import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.entities.Role;
 import com.diplomska.prof_rank.entities.User;
@@ -21,6 +22,7 @@ import java.util.List;
 /**
  * Created by Aleksandar on 24-Sep-16.
  */
+@AdministratorPage
 public class EditUser {
     @Persist
     private Long userId;

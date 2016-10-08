@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.pages.admin.ReferenceInstance;
 
+import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.AttributeReferenceInstance;
 import com.diplomska.prof_rank.entities.ReferenceInstance;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Created by Aleksandar on 28-Sep-16.
  */
+@AdministratorPage
 public class ShowReferenceInstance {
     @Property
     @Persist

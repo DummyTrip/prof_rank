@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.pages;
 
+import com.diplomska.prof_rank.annotations.PublicPage;
 import com.diplomska.prof_rank.entities.*;
 import com.diplomska.prof_rank.services.ExcelWorkbook;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Created by Aleksandar on 23-Sep-16.
  */
+@PublicPage
 public class Temp {
     @Property
     private Reference tmp;

@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.pages.admin.Rulebook;
 
+import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.Rulebook;
 import com.diplomska.prof_rank.services.RulebookHibernate;
 import org.apache.tapestry5.annotations.Property;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  * Created by Aleksandar on 24-Sep-16.
  */
+@AdministratorPage
 public class Index {
     @Inject
     private RulebookHibernate rulebookHibernate;

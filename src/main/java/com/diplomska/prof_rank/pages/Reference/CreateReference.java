@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.pages.Reference;
 
+import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.entities.Attribute;
 import com.diplomska.prof_rank.entities.AttributeReferenceInstance;
 import com.diplomska.prof_rank.entities.Reference;
@@ -22,6 +23,7 @@ import java.util.Map;
 /**
  * Created by Aleksandar on 01-Oct-16.
  */
+@InstructorPage
 public class CreateReference {
     @Persist
     @Property

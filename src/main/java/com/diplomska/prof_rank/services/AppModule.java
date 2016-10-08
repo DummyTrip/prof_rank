@@ -31,6 +31,8 @@ public class AppModule
         // Use service builder methods (example below) when the implementation
         // is provided inline, or requires more initialization than simply
         // invoking the constructor.
+        binder.bind(AccessController.class).withId("AccessController");
+
         binder.bind(UserHibernate.class);
         binder.bind(RoleHibernate.class);
         binder.bind(RulebookHibernate.class);
@@ -159,5 +161,12 @@ public class AppModule
         // within the pipeline.
 
         configuration.add("Timing", filter);
+    }
+
+    public static final void contributeComponentRequestHandler(
+            OrderedConfiguration<ComponentRequestFilter> configuration,
+            ComponentRequestFilter accessController,
+            ApplicationStateManager asm, ComponentSource componentSource) {
+        configuration.add("AccessController", accessController, "before:*");
     }
 }

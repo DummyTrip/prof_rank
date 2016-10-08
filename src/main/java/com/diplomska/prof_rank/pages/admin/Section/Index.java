@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.pages.admin.Section;
 
+import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.RulebookSection;
 import com.diplomska.prof_rank.entities.Section;
 import com.diplomska.prof_rank.services.RulebookHibernate;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Created by Aleksandar on 24-Sep-16.
  */
+@AdministratorPage
 public class Index {
     @Inject
     private SectionHibernate sectionHibernate;

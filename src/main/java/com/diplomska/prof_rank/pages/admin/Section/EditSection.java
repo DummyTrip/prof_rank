@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.pages.admin.Section;
 
+import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.Section;
 import com.diplomska.prof_rank.services.SectionHibernate;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -13,6 +14,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 /**
  * Created by Aleksandar on 24-Sep-16.
  */
+@AdministratorPage
 public class EditSection {
     @Persist
     private Long sectionId;

@@ -1,5 +1,7 @@
 package com.diplomska.prof_rank.pages.Reference;
 
+import com.diplomska.prof_rank.annotations.AdministratorPage;
+import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.entities.*;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
@@ -17,6 +19,7 @@ import java.util.List;
 /**
  * Created by Aleksandar on 03-Oct-16.
  */
+@InstructorPage
 public class ShowReference {
 
     @Inject

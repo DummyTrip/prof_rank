@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.pages.admin.ReferenceType;
 
+import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.Attribute;
 import com.diplomska.prof_rank.entities.ReferenceType;
 import com.diplomska.prof_rank.services.AttributeHibernate;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Created by Aleksandar on 24-Sep-16.
  */
+@AdministratorPage
 public class Index {
     @Inject
     private ReferenceTypeHibernate referenceTypeHibernate;

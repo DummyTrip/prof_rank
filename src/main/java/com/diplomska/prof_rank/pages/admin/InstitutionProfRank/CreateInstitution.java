@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.pages.admin.InstitutionProfRank;
 
+import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.InstitutionProfRank;
 import com.diplomska.prof_rank.services.CountryNames;
 import com.diplomska.prof_rank.services.InstitutionHibernate;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Created by Aleksandar on 24-Sep-16.
  */
+@AdministratorPage
 public class CreateInstitution {
     @Property
     private InstitutionProfRank institutionProfRank;

@@ -1,6 +1,7 @@
 package com.diplomska.prof_rank.pages;
 
 
+import com.diplomska.prof_rank.annotations.PublicPage;
 import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.entities.ReferenceInstance;
 import com.diplomska.prof_rank.entities.Section;
@@ -19,6 +20,7 @@ import java.util.List;
 /**
  * Start page of application prof_rank.
  */
+@PublicPage
 public class Index
 {
     @Inject

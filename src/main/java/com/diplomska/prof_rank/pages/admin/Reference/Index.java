@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.pages.admin.Reference;
 
+import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.services.ExcelWorkbook;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Created by Aleksandar on 24-Sep-16.
  */
+@AdministratorPage
 public class Index {
     @Inject
     private ReferenceHibernate referenceHibernate;

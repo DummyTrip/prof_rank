@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.pages.admin.Section;
 
+import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.Rulebook;
 import com.diplomska.prof_rank.entities.RulebookSection;
 import com.diplomska.prof_rank.entities.Reference;
@@ -20,6 +21,7 @@ import java.util.List;
 /**
  * Created by Aleksandar on 25-Sep-16.
  */
+@AdministratorPage
 public class ShowSection {
     @Persist
     @Property

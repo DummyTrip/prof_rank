@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.pages.admin.Report;
 
+import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.Report;
 import com.diplomska.prof_rank.services.RoleHibernate;
 import com.diplomska.prof_rank.services.ReportHibernate;
@@ -13,6 +14,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 /**
  * Created by Aleksandar on 24-Sep-16.
  */
+@AdministratorPage
 public class CreateReport {
     @Property
     private Report report;

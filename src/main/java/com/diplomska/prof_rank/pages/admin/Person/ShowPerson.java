@@ -1,5 +1,6 @@
 package com.diplomska.prof_rank.pages.admin.Person;
 
+import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.*;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import com.diplomska.prof_rank.services.ReportHibernate;
@@ -20,6 +21,7 @@ import java.util.List;
 /**
  * Created by Aleksandar on 06-Oct-16.
  */
+@AdministratorPage
 public class ShowPerson {
     @Persist
     @Property
