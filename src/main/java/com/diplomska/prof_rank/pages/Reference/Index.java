@@ -96,7 +96,12 @@ public class Index {
         Thread.sleep(200);
 
         int size = refs.size();
-        List<Reference> newInstances = referenceHibernate.getAll(first, PageSize);
+        List<Reference> newInstances;
+        if (referenceNameQueryString != null) {
+            newInstances = referenceHibernate.getByColumn("name", referenceNameQueryString);
+        } else {
+            newInstances = referenceHibernate.getAll();
+        }
         refs.addAll(newInstances);
 
         return refs;
