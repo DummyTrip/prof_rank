@@ -1,6 +1,7 @@
 package com.diplomska.prof_rank.services;
 
 import java.io.IOException;
+import java.net.URL;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.annotations.InstructorPage;
@@ -112,7 +113,9 @@ public class AccessController implements ComponentRequestFilter {
             logger.error("handlePageRender: ACCESS DENIED TO "
                     + parameters.getLogicalPageName());
 
-            response.sendRedirect(linkSource.createPageRenderLink(Login.class));
+//            response.sendRedirect(linkSource.createPageRenderLink(Login.class));
+            response.sendRedirect("https://velkoski-pc:8443/cas/login?service=http://localhost:9999/prof_rank/");
+
 //            response.sendRedirect(linkSource.createPageRenderLink(Index.class));
         }
     }

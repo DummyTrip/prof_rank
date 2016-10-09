@@ -46,7 +46,7 @@ public class Index {
 
     void setupRender() {
         personBeanModel = beanModelSource.createDisplayModel(Person.class, messages);
-        personBeanModel.include("firstName", "middleName", "lastName", "email");
+        personBeanModel.include("userName", "firstName", "middleName", "lastName", "email");
         personBeanModel.add("show", null);
         personBeanModel.add("edit", null);
         personBeanModel.add("delete", null);

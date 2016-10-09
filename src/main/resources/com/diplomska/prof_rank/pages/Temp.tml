@@ -2,14 +2,14 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
       xmlns:p="tapestry:parameter" xmlns:T="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
 
-<div>
-    <h2>Pages</h2>
+<!--<div>-->
+    <!--<h2>Pages</h2>-->
 
-    <ul>
-        <!--<li><t:pagelink page="address/create">Create new address</t:pagelink></li>-->
+    <!--<ul>-->
+        <!--&lt;!&ndash;<li><t:pagelink page="address/create">Create new address</t:pagelink></li>&ndash;&gt;-->
 
-    </ul>
-</div>
+    <!--</ul>-->
+<!--</div>-->
 
 <!--<div>-->
     <!--<t:grid source="temp" row="tmp"/>-->
@@ -36,11 +36,49 @@
 
 <!--</div>-->
 
-<div>
-    <t:loop source="poi" value="po">
-        <p>${p}</p>
-    </t:loop>
+<!--<div>-->
+    <!--<t:loop source="poi" value="po">-->
+        <!--<p>${p}</p>-->
+    <!--</t:loop>-->
 
+<!--</div>-->
+
+<div t:type='jquery/pagescroll' row='value' scroller='scroller' zone='zone' pageNumber="pageNumber">
+    <t:delegate to="block:referenceElement"/>
 </div>
+<div class='zone' t:type='zone' t:id="zone"></div>
+<div id='scroller'></div>
+
+
+
+<t:block id="referenceElement">
+    <a data-toggle="collapse" href="#${value.getId()}" aria-expanded="false" aria-controls="collapseExample" class="reference-link">
+        <div class="row div-shadow white-background ref-list-padding">
+            <div class="col-md-11">
+                <h4 class="no-margin truncate-ref-link">${displayName}</h4>
+            </div>
+            <div class="col-md-1">
+                <i class="ref-link-icon fa fa-chevron-down chevron-icon-size" aria-hidden="true"></i>
+            </div>
+        </div>
+    </a>
+    <div class="row collapse div-shadow" id="${value.getId()}">
+        <div class="card card-block white-background no-padding-top">
+            <table class="table-full-width">
+                <tbody>
+                <t:loop source="attributeValues" value="ari">
+                    <tr class="table-row">
+                        <th class="col-md-3 table-header th-td-padding">${ari.getAttribute().getName()}:</th>
+                        <td class="col-md-9 th-td-padding">${ari.getValue()}</td>
+                    </tr>
+                </t:loop>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</t:block>
+
 
 </html>

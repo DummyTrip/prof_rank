@@ -3,7 +3,7 @@
       xmlns:p="tapestry:parameter">
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4 fixed-position">
         <div class="row">
             <t:form t:id="form">
                 <div class="col-md-9">
@@ -24,7 +24,7 @@
 
     </div>
 
-    <div class="col-md-8">
+    <div class="col-md-offset-4 col-md-8">
         <div class="row">
             <div class="col-md-12">
                 <h2>Референци</h2>
@@ -33,11 +33,16 @@
 
         <hr/>
 
-        <t:loop source="references" value="reference">
+        <div t:type='pagescroll' row='reference' scroller='scroller' zone='zone' pageNumber="pageNumber">
             <t:delegate to="block:referenceElement"/>
+        </div>
 
+        <div class='zone' t:type='zone' t:id="zone"></div>
+        <div id='scroller' class="margin-top-80px"></div>
 
-        </t:loop>
+        <!--<t:loop source="references" value="reference">-->
+            <!--<t:delegate to="block:referenceElement"/>-->
+        <!--</t:loop>-->
 
     </div>
 </div>

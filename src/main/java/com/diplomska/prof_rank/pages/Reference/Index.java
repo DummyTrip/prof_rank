@@ -6,10 +6,7 @@ import com.diplomska.prof_rank.services.ReferenceHibernate;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import com.diplomska.prof_rank.services.UserHibernate;
 import org.apache.tapestry5.Link;
-import org.apache.tapestry5.annotations.ActivationRequestParameter;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 
@@ -73,11 +70,34 @@ public class Index {
     void setupRender() {
         this.referenceName = referenceNameQueryString;
         this.referenecNames = referenceHibernate.getAllNames();
+
+        refs = new ArrayList<Reference>();
     }
 
     public Object onSuccessFromForm() {
         Link link = this.set(referenceName);
 
         return link;
+    }
+
+    @Property
+    int pageNumber;
+
+    private static final Integer PageSize = 15;
+
+    @Persist
+    @Property
+    List<Reference> refs;
+
+    @OnEvent("nextPage")
+    List<Reference> moreValues() throws InterruptedException {
+        Integer first = Integer.valueOf(pageNumber) * PageSize;
+        Thread.sleep(200);
+
+        int size = refs.size();
+        List<Reference> newInstances = referenceHibernate.getAll(first, PageSize);
+        refs.addAll(newInstances);
+
+        return refs;
     }
 }

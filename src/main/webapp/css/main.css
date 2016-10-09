@@ -161,6 +161,24 @@
     text-overflow: ellipsis;
 }
 
+.fixed-position.col-md-4
+{
+    position: fixed;
+    width: 20%;
+}
+
+.margin-top-80px
+{
+    padding-top: 80px;
+}
+
+
+div.scrollExtend-loading {
+    /*height: 80px;*/
+    background: url("../images/ripple.gif") no-repeat center bottom;
+    background-size: 60px 60px;
+}
+
 
 
 /*.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {*/

@@ -44,6 +44,10 @@ public class ReferenceInstanceHibernate {
         return session.createCriteria(ReferenceInstance.class).addOrder(Order.desc("id")).list();
     }
 
+    public List<ReferenceInstance> getAll(Integer offset, Integer limit) {
+        return session.createCriteria(ReferenceInstance.class).addOrder(Order.desc("id")).setFirstResult(offset).setMaxResults(limit).list();
+    }
+
     @CommitAfter
     public void update(ReferenceInstance referenceInstance) {
         if (referenceInstance == null) {
@@ -115,16 +119,13 @@ public class ReferenceInstanceHibernate {
     }
 
     public List<ReferenceInstance> getByReference(Reference reference) {
-        List<ReferenceInstance> referenceInstances = getAll();
-        List<ReferenceInstance> referenceInstancesOfSpecificReference = new ArrayList<ReferenceInstance>();
+        return session.createCriteria(ReferenceInstance.class)
+                .add(eq("reference", reference)).addOrder(Order.desc("id")).list();
+    }
 
-        for (ReferenceInstance referenceInstance : referenceInstances) {
-            if (referenceInstance.getReference().getId().equals(reference.getId())) {
-                referenceInstancesOfSpecificReference.add(referenceInstance);
-            }
-        }
-
-        return referenceInstancesOfSpecificReference;
+    public List<ReferenceInstance> getByReference(Reference reference, Integer offset, Integer limit) {
+        return session.createCriteria(ReferenceInstance.class)
+                .add(eq("reference", reference)).addOrder(Order.desc("id")).setFirstResult(offset).setMaxResults(limit).list();
     }
 
     public List<ReferenceInstance> getByReferenceAndUser(Reference reference, User user) {
@@ -138,6 +139,27 @@ public class ReferenceInstanceHibernate {
         }
 
         return referenceInstancesOfSpecificReference;
+    }
+
+    public List<ReferenceInstance> getByReferenceAndUser(Reference reference, User user, Integer offset, Integer limit) {
+        List<ReferenceInstance> referenceInstances = userHibernate.getReferenceInstances(user);
+        List<ReferenceInstance> referenceInstancesOfSpecificReference = new ArrayList<ReferenceInstance>();
+
+        limit = limit + offset > referenceInstances.size() ? referenceInstances.size() : limit + offset;
+
+//        for (int i = offset; i < limit ; i++){
+//            if (referenceInstances.get(i).getReference().getId().equals(reference.getId())) {
+//                referenceInstancesOfSpecificReference.add(referenceInstances.get(i));
+//            }
+//        }
+
+        for (ReferenceInstance referenceInstance : referenceInstances) {
+            if (referenceInstance.getReference().getId().equals(reference.getId())) {
+                referenceInstancesOfSpecificReference.add(referenceInstance);
+            }
+        }
+
+        return referenceInstancesOfSpecificReference.subList(offset, offset + limit);
     }
 
     public List<Attribute> getAttributes(ReferenceInstance referenceInstance) {

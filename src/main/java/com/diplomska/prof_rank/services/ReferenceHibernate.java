@@ -41,8 +41,8 @@ public class ReferenceHibernate {
         return session.createCriteria(Reference.class).addOrder(Order.desc("id")).list();
     }
 
-    public List<Reference> getAll(Integer limit) {
-        return session.createCriteria(Reference.class).addOrder(Order.desc("id")).setMaxResults(limit).list();
+    public List<Reference> getAll(Integer offset, Integer limit) {
+        return session.createCriteria(Reference.class).addOrder(Order.desc("id")).setFirstResult(offset).setMaxResults(limit).list();
     }
 
     public List<String> getAllNames() {

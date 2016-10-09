@@ -6,12 +6,17 @@ import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.entities.ReferenceInstance;
 import com.diplomska.prof_rank.entities.Section;
 import com.diplomska.prof_rank.entities.User;
+import com.diplomska.prof_rank.model.UserInfo;
 import com.diplomska.prof_rank.services.*;
 import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.annotations.Import;
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SessionState;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.RequestGlobals;
+import org.slf4j.Logger;
 
 import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
@@ -40,6 +45,15 @@ public class Index
 
     @Property
     Reference reference;
+
+    @SessionState
+    UserInfo userInfo;
+
+    @Inject
+    RequestGlobals requestGlobals;
+
+    @Inject
+    Logger logger;
 
     public Float getPoints() {
         Float points = 0f;

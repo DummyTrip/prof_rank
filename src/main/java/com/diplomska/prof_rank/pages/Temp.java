@@ -2,16 +2,16 @@ package com.diplomska.prof_rank.pages;
 
 import com.diplomska.prof_rank.annotations.PublicPage;
 import com.diplomska.prof_rank.entities.*;
-import com.diplomska.prof_rank.services.ExcelWorkbook;
-import com.diplomska.prof_rank.services.ReferenceHibernate;
-import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
-import com.diplomska.prof_rank.services.UserHibernate;
+import com.diplomska.prof_rank.services.*;
+import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Session;
 import org.w3c.dom.Attr;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -82,4 +82,57 @@ public class Temp {
 //
 //        return excelWorkbook.readNastavaSpreadsheet(fileName, 4);
     }
+
+    @Property
+    int pageNumber;
+
+    private static final int PageSize = 30;
+
+    @Property
+    private ReferenceInstance value;
+
+    @Inject
+    Session session;
+
+    @Persist
+    @Property
+    List<ReferenceInstance> values;
+
+    @Inject
+    ReferenceInstanceHibernate referenceInstanceHibernate;
+
+    @Property
+    AttributeReferenceInstance ari;
+
+    public String getDisplayName() {
+        return referenceInstanceHibernate.getDisplayName(value);
+    }
+
+    public List<AttributeReferenceInstance> getAttributeValues() {
+        return value.getAttributeReferenceInstances();
+    }
+
+    public void setupRender() {
+        values = new ArrayList<ReferenceInstance>();
+    }
+
+    public String getZone() {
+        if (pageNumber > 0) {
+            return "zone" + pageNumber;
+        } else {
+            return "zone";
+        }
+    }
+
+    @OnEvent("nextPage")
+    List<ReferenceInstance> moreValues() throws InterruptedException {
+        int first = Integer.valueOf(pageNumber) * PageSize;
+
+        Thread.sleep(2000);
+
+        values.addAll(referenceInstanceHibernate.getAll(first, PageSize));
+
+        return values;
+    }
+
 }

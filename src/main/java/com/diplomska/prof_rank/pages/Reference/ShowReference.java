@@ -7,11 +7,12 @@ import com.diplomska.prof_rank.services.ReferenceHibernate;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import com.diplomska.prof_rank.services.UserHibernate;
 import org.apache.tapestry5.Link;
-import org.apache.tapestry5.annotations.ActivationRequestParameter;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PageRenderLinkSource;
+import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
+import org.hibernate.Session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
  * Created by Aleksandar on 03-Oct-16.
  */
 @InstructorPage
+@Import(library={"context:js/main.js"})
 public class ShowReference {
 
     @Inject
@@ -115,6 +117,29 @@ public class ShowReference {
         this.reference = referenceHibernate.getById(referenceId);
         this.referenceName = referenceNameQueryString;
         this.displayNames = referenceInstanceHibernate.getAllDisplayNames();
+
+        refInstances = new ArrayList<ReferenceInstance>();
+    }
+
+    @Property
+    int pageNumber;
+
+    private static final Integer PageSize = 15;
+
+    @Persist
+    @Property
+    List<ReferenceInstance> refInstances;
+
+    @OnEvent("nextPage")
+    List<ReferenceInstance> moreValues() throws InterruptedException {
+        Integer first = Integer.valueOf(pageNumber) * PageSize;
+        Thread.sleep(200);
+
+        int size = refInstances.size();
+        List<ReferenceInstance> newInstances = referenceInstanceHibernate.getByReference(reference, first, PageSize);
+        refInstances.addAll(newInstances);
+
+        return refInstances;
     }
 
 }

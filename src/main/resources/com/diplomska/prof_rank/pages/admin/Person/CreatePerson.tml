@@ -7,6 +7,17 @@
     <t:errors globalOnly="true"/>
 
     <div class="form-group">
+        <t:label for="userName" class="col-sm-3"/>
+        <div class="col-sm-3">
+            <t:textfield t:id="userName" value="person.userName"/>
+        </div>
+        <div class="col-sm-6">
+            <p class="form-control-static">
+                (required)
+            </p>
+        </div>
+    </div>
+    <div class="form-group">
         <t:label for="firstName" class="col-sm-3"/>
         <div class="col-sm-3">
             <t:textfield t:id="firstName" value="person.firstName"/>

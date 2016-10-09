@@ -40,7 +40,8 @@
                 <li><t:pagelink page="reference/index">References</t:pagelink></li>
             </ul>
             <span class="navbar-right">
-                <t:pagelink page="login" class="btn btn-default navbar-btn">Sign in</t:pagelink>
+                <!--<t:pagelink page="login" class="btn btn-default navbar-btn">Sign in</t:pagelink>-->
+                <a href="https://velkoski-pc:8443/cas/login" class="btn btn-default navbar-btn">Sign in</a>
             </span>
 
         </div><!--/.nav-collapse -->

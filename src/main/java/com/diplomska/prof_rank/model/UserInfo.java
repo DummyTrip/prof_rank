@@ -68,9 +68,9 @@ public class UserInfo {
 
             if (personId != null) {
                 role = personHibernate.getRoleByPersonId(personId);
-                if (role.getName().equals("Admin")) {
+                if (role.getName().toLowerCase().equals("admin")) {
                     userRoles.add(UserRole.ADMINISTRATOR);
-                } else if (role.getName().equals("Instructor")) {
+                } else if (role.getName().toLowerCase().equals("instructor")) {
                     userRoles.add(UserRole.INSTRUCTOR);
                 }
                 roleCount++;
