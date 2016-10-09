@@ -48,7 +48,7 @@ public class Index {
         }
     }
 
-    List<String> onProvideCOmpletionsFromSearchName(String partial) {
+    List<String> onProvideCompletionsFromSearchName(String partial) {
         List<String> matches = new ArrayList<String>();
         partial = partial.toUpperCase();
 
@@ -83,12 +83,13 @@ public class Index {
     @Property
     int pageNumber;
 
-    private static final Integer PageSize = 15;
+    private static final Integer PageSize = 20;
 
     @Persist
     @Property
     List<Reference> refs;
 
+    // ajax call, used fpr paging of References
     @OnEvent("nextPage")
     List<Reference> moreValues() throws InterruptedException {
         Integer first = Integer.valueOf(pageNumber) * PageSize;

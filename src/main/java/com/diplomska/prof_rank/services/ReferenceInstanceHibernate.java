@@ -5,10 +5,10 @@ import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Order;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.hibernate.criterion.Restrictions.eq;
 
@@ -147,12 +147,6 @@ public class ReferenceInstanceHibernate {
 
         limit = limit + offset > referenceInstances.size() ? referenceInstances.size() : limit + offset;
 
-//        for (int i = offset; i < limit ; i++){
-//            if (referenceInstances.get(i).getReference().getId().equals(reference.getId())) {
-//                referenceInstancesOfSpecificReference.add(referenceInstances.get(i));
-//            }
-//        }
-
         for (ReferenceInstance referenceInstance : referenceInstances) {
             if (referenceInstance.getReference().getId().equals(reference.getId())) {
                 referenceInstancesOfSpecificReference.add(referenceInstance);
@@ -160,6 +154,23 @@ public class ReferenceInstanceHibernate {
         }
 
         return referenceInstancesOfSpecificReference.subList(offset, offset + limit);
+    }
+
+    public List<ReferenceInstance> getByReferenceAndFilter(Reference reference, Map<String, String> filterMap, Integer offset, Integer limit) {
+        List<ReferenceInstance> referenceInstances = new ArrayList<ReferenceInstance>();
+
+        Criteria criteria = session.createCriteria(ReferenceInstance.class, "referenceInstance");
+        criteria.add(eq("reference", reference));
+        criteria.createAlias("referenceInstance.attributeReferenceInstances", "ari");
+        criteria.createAlias("ari.attribute", "attribute");
+
+        for (String key : filterMap.keySet()) {
+            criteria.add(eq("attribute.name", key));
+            criteria.add(eq("ari.value", filterMap.get(key)));
+        }
+
+        criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+        return criteria.addOrder(Order.desc("referenceInstance.id")).setFirstResult(offset).setMaxResults(limit).list();
     }
 
     public List<Attribute> getAttributes(ReferenceInstance referenceInstance) {

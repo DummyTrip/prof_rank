@@ -11,13 +11,13 @@
                 </div>
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-default">
-                        <i class="fa fa-search ref-text-color" aria-hidden="true"></i>
+                        <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                 </div>
             </t:form>
         </div>
 
-        <h3>Филтрирај:</h3>
+        <h3 class="padding-top-20px">Филтрирај:</h3>
         <ul>
             <li>Sekcii</li>
         </ul>
@@ -48,17 +48,17 @@
 </div>
 <t:block id="referenceElement">
 
-    <t:pagelink page="reference/showreference" context="reference.id" class="reference-link">
-        <!--<div class="row div-shadow white-background ref-list-padding reference-link" onclick="location.href='/prof_rank/reference/showreference/${reference.id}'">-->
-        <div class="row div-shadow white-background ref-list-padding reference-link">
+    <t:pagelink page="reference/showreference" context="reference.id">
+        <!--<div class="row div-shadow white-background ref-list-padding" onclick="location.href='/prof_rank/reference/showreference/${reference.id}'">-->
+        <div class="row div-shadow white-background ref-list-padding">
 
             <div class="col-md-11">
-                <h4 class="ref-text-color no-margin truncate-ref-link">${reference.getName()}</h4>
+                <h4 class="no-margin truncate-ref-link black-color">${reference.getName()}</h4>
             </div>
 
             <div class="col-md-1">
-                <t:pagelink page="reference/createreference" context="reference.id">
-                    <i class="fa fa-plus-square-o ref-text-color ref-list-icon-size" aria-hidden="true"></i>
+                <t:pagelink page="reference/createreference" context="reference.id" class="black-color">
+                    <i class="fa fa-plus-square-o ref-list-icon-size black-color" aria-hidden="true"></i>
                 </t:pagelink>
             </div>
         </div>

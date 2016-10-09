@@ -12,6 +12,11 @@
     color: #FFF488;
 }
 
+.black-color
+{
+    color: #333;
+}
+
 .body-background-color {
     background-color: rgb(244, 244, 246);
 }
@@ -66,27 +71,28 @@
     font-size: 25px;
 }
 
-.reference-link
+.link-decoration
 {
     text-decoration: none ;
-    color: #286090;
+    /*color: #286090;*/
 }
 
-.reference-link:link {
+.link-decoration:link {
     text-decoration: none;
-    color: #286090;
+    /*color: #286090;*/
 }
 
-.reference-link:hover
+.link-decoration:hover
 {
     text-decoration: none;
+    color: #286090;
 }
 
-.reference-link:active {
+.link-decoration:active {
     text-decoration: none;
 }
 
-.reference-link:visited {
+.link-decoration:visited {
     text-decoration: none;
 }
 
@@ -179,6 +185,21 @@
 .padding-top-80px
 {
     padding-top: 80px;
+}
+
+.padding-top-30px
+{
+    padding-top: 30px;
+}
+
+.padding-top-20px
+{
+    padding-top: 20px;
+}
+
+.padding-top-15px
+{
+    padding-top: 15px;
 }
 
 .margin-top-20px

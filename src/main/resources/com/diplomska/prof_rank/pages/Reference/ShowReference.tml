@@ -3,19 +3,50 @@
       xmlns:p="tapestry:parameter">
 
 <div class="row">
-    <div class="col-md-4 fixed-position margin-top-20px">
+    <div class="col-md-3 margin-top-20px">
         <div class="row">
             <t:form t:id="form">
-                <div class="col-md-9">
+                <div class="col-md-10">
                     <t:textfield t:id="searchName" t:mixins="autocomplete" value="referenceName" placeholder="Пребарај..." />
                 </div>
-                <div class="col-md-2 no-padding-left">
+                <div class="col-md-1 no-padding-left">
                     <button type="submit" class="btn btn-default">
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                 </div>
             </t:form>
         </div>
+
+        <h3 class="padding-top-20px">Филтрирај:</h3>
+
+
+        <div class="row margin-top-20px">
+            <t:form t:id="filterForm">
+                <t:loop source="attributes" value="attribute">
+
+                    <div class="col-md-12">
+                        <label class="control-label">${attribute.getName()}</label>
+                    </div>
+
+                    <div class="col-md-12">
+                        <t:if test="textInput">
+                            <div class="">
+                                <t:mapfield key="${attribute.getName()}" t:map="testMap"/>
+                            </div>
+                        </t:if>
+                    </div>
+
+                </t:loop>
+                <div class="col-md-12 padding-top-15px">
+                    <div class="form-group">
+                        <div class="">
+                            <t:submit value="Филтрирај" class="btn btn-default"/>
+                        </div>
+                    </div>
+                </div>
+            </t:form>
+        </div>
+
 
         <!--<h3>Филтрирај:</h3>-->
         <!--<ul>-->
@@ -24,10 +55,14 @@
 
     </div>
 
-    <div class="col-md-offset-4 col-md-8">
+    <div class="col-md-offset-1 col-md-8">
         <div class="row">
             <div class="col-md-12">
-                <h2>${reference.getName()}</h2>
+                <h2>
+                    <t:pagelink page="reference/showreference" context="reference.id" class="link-decoration black-color">
+                        ${reference.getName()}
+                    </t:pagelink>
+                </h2>
             </div>
         </div>
 
@@ -44,11 +79,11 @@
 
         <div t:type='pagescroll' row='referenceInstance' scroller='scroller' zone='zone' pageNumber="pageNumber">
             <t:delegate to="block:referenceElement"/>
+
         </div>
 
         <div class='zone' t:type='zone' t:id="zone"></div>
         <div id='scroller' class="padding-top-80px"></div>
-
 
         <!--<t:loop source="referenceInstances" value="referenceInstance">-->
             <!--<t:delegate to="block:referenceElement"/>-->
@@ -59,20 +94,20 @@
 
 <t:block id="referenceElement">
         <div class="row div-shadow white-background ref-list-padding">
-            <a data-toggle="collapse" href="#${referenceInstance.getId()}" aria-expanded="false" aria-controls="collapseExample" class="reference-link">
+            <a data-toggle="collapse" href="#${referenceInstance.getId()}" aria-expanded="false" aria-controls="collapseExample">
 
 
                 <div class="col-md-10">
-                    <h4 class="no-margin truncate-ref-link">${displayName}</h4>
+                    <h4 class="no-margin truncate-ref-link black-color link-decoration">${displayName}</h4>
                 </div>
                 <div class="col-md-1">
-                    <i class="ref-link-icon reference-link fa fa-chevron-down chevron-icon-size" aria-hidden="true"></i>
+                    <i class="ref-link-icon fa fa-chevron-down chevron-icon-size black-color link-decoration" aria-hidden="true"></i>
                 </div>
             </a>
 
             <div class="col-md-1">
                 <t:pagelink page="reference/editreference" context="referenceInstance.id" class="main-color">
-                    <i class="ref-link-icon fa fa-pencil chevron-icon-size" aria-hidden="true"></i>
+                    <i class="ref-link-icon fa fa-pencil chevron-icon-size black-color link-decoration" aria-hidden="true"></i>
                 </t:pagelink>
             </div>
         </div>
