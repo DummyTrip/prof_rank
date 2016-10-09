@@ -1,9 +1,9 @@
-<html t:type="layout" title="Reference Show"
+<html t:type="layout" title="Reference Index"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
       xmlns:p="tapestry:parameter">
 
 <div class="row">
-    <div class="col-md-4 fixed-position">
+    <div class="col-md-4 fixed-position margin-top-20px">
         <div class="row">
             <t:form t:id="form">
                 <div class="col-md-9">
@@ -38,7 +38,7 @@
         </div>
 
         <div class='zone' t:type='zone' t:id="zone"></div>
-        <div id='scroller' class="margin-top-80px"></div>
+        <div id='scroller' class="padding-top-80px"></div>
 
         <!--<t:loop source="references" value="reference">-->
             <!--<t:delegate to="block:referenceElement"/>-->
@@ -48,19 +48,21 @@
 </div>
 <t:block id="referenceElement">
 
-    <div class="row div-shadow white-background ref-list-padding">
-        <div class="col-md-11">
-            <t:pagelink page="reference/showreference" context="reference.id" class="reference-link">
-                <h4 class="ref-text-color no-margin truncate-ref-link">${reference.getName()}</h4>
-            </t:pagelink>
+    <t:pagelink page="reference/showreference" context="reference.id" class="reference-link">
+        <!--<div class="row div-shadow white-background ref-list-padding reference-link" onclick="location.href='/prof_rank/reference/showreference/${reference.id}'">-->
+        <div class="row div-shadow white-background ref-list-padding reference-link">
 
+            <div class="col-md-11">
+                <h4 class="ref-text-color no-margin truncate-ref-link">${reference.getName()}</h4>
+            </div>
+
+            <div class="col-md-1">
+                <t:pagelink page="reference/createreference" context="reference.id">
+                    <i class="fa fa-plus-square-o ref-text-color ref-list-icon-size" aria-hidden="true"></i>
+                </t:pagelink>
+            </div>
         </div>
-        <div class="col-md-1">
-            <t:pagelink page="reference/createreference" context="reference.id">
-                <i class="fa fa-plus-square-o ref-text-color ref-list-icon-size" aria-hidden="true"></i>
-            </t:pagelink>
-        </div>
-    </div>
+    </t:pagelink>
 
 </t:block>
 

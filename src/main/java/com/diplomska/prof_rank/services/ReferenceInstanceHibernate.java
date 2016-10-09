@@ -191,7 +191,18 @@ public class ReferenceInstanceHibernate {
         if (referenceInstance == null || attribute == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
-        AttributeReferenceInstance attributeReferenceInstance = new AttributeReferenceInstance();
+
+        AttributeReferenceInstance attributeReferenceInstance;
+        List<AttributeReferenceInstance> aris = session.createCriteria(AttributeReferenceInstance.class)
+                .add(eq("referenceInstance", referenceInstance))
+                .add(eq("attribute", attribute))
+                .list();
+
+        if (aris.size() > 0) {
+            attributeReferenceInstance = aris.get(0);
+        } else {
+         attributeReferenceInstance = new AttributeReferenceInstance();
+        }
 
         attributeReferenceInstance.setReferenceInstance(referenceInstance);
         attributeReferenceInstance.setAttribute(attribute);

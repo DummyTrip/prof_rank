@@ -2,7 +2,7 @@
  * Created by Aleksandar on 08-Oct-16.
  */
 $('.reference-link').click(function () {
-    var icon = $(this).find('i');
+    var icon = $(this).find('.ref-link-icon');
     // setTimeout(changeChevronIcon, 300, icon);
     changeChevronIcon(icon)
 });

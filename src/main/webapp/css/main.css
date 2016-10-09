@@ -2,6 +2,16 @@
 /*http://paletton.com/#uid=a3y1q0koOs0n1yCk9Jbo8lLp9g4*/
 
 
+.main-color
+{
+    color: #286090;
+}
+
+.contrast-color
+{
+    color: #FFF488;
+}
+
 .body-background-color {
     background-color: rgb(244, 244, 246);
 }
@@ -16,7 +26,6 @@
 
 .div-shadow
 {
-    /*box-shadow: 10px 10px 10px rgb(237, 237, 240);*/
     box-shadow: 2px 2px 5px #dbdbdb;
 }
 
@@ -155,7 +164,7 @@
 
 .truncate-ref-link
 {
-    width: 540px;
+    width: 500px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -167,11 +176,15 @@
     width: 20%;
 }
 
-.margin-top-80px
+.padding-top-80px
 {
     padding-top: 80px;
 }
 
+.margin-top-20px
+{
+    margin-top: 20px;
+}
 
 div.scrollExtend-loading {
     /*height: 80px;*/

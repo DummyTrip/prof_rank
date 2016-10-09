@@ -1,9 +1,9 @@
-<html t:type="layout" title="Reference Create"
+<html t:type="layout" title="Reference Edit"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
       xmlns:p="tapestry:parameter" xmlns:T="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
 
 <div>
-    <h4>${reference}</h4>
+    <h4>${referenceInstance.reference.getName()}</h4>
 
     <hr/>
 
