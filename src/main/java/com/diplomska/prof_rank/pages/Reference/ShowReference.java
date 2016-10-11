@@ -1,6 +1,5 @@
 package com.diplomska.prof_rank.pages.Reference;
 
-import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.entities.*;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
@@ -8,12 +7,8 @@ import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import com.diplomska.prof_rank.services.UserHibernate;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.*;
-import org.apache.tapestry5.corelib.components.Zone;
-import org.apache.tapestry5.internal.structure.Page;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PageRenderLinkSource;
-import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
-import org.hibernate.Session;
 
 import java.util.ArrayList;
 import java.util.HashMap;

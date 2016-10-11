@@ -2,7 +2,6 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
         >
 
-
         <t:if test="popularReferencesForUserNull">
             <div class="row">
                 <h3>Најпопуларни референци за корисник со ID 1</h3>

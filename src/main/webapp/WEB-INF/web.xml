@@ -33,23 +33,7 @@
     </context-param>
 
 
-    <!-- Filter configuration -->
-    <filter>
-        <filter-name>app</filter-name>
-        <filter-class>org.apache.tapestry5.TapestryFilter</filter-class>
-    </filter>
 
-    <filter-mapping>
-        <filter-name>app</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>ERROR</dispatcher>
-    </filter-mapping>
-
-    <error-page>
-        <error-code>404</error-code>
-        <location>/error404</location>
-    </error-page>
 
 
 
@@ -117,5 +101,27 @@
     <listener>
         <listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
     </listener>
+
+
+
+
+    <!-- Filter configuration -->
+    <filter>
+        <filter-name>app</filter-name>
+        <filter-class>org.apache.tapestry5.TapestryFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>app</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error404</location>
+    </error-page>
+
 
 </web-app>

@@ -1,6 +1,8 @@
 package com.diplomska.prof_rank.pages;
 
 
+import com.diplomska.prof_rank.annotations.AdministratorPage;
+import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.annotations.PublicPage;
 import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.entities.ReferenceInstance;
@@ -18,14 +20,13 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.RequestGlobals;
 import org.slf4j.Logger;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Start page of application prof_rank.
  */
-@PublicPage
+@InstructorPage
 public class Index
 {
     @Inject
@@ -45,9 +46,6 @@ public class Index
 
     @Property
     Reference reference;
-
-    @SessionState
-    UserInfo userInfo;
 
     @Inject
     RequestGlobals requestGlobals;

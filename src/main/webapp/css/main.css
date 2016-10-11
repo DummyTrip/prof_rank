@@ -17,6 +17,11 @@
     color: #333;
 }
 
+.white-color
+{
+    color: #fff;
+}
+
 .body-background-color {
     background-color: rgb(244, 244, 246);
 }
@@ -200,6 +205,11 @@
 .padding-top-15px
 {
     padding-top: 15px;
+}
+
+.padding-top-5px
+{
+    padding-top: 5px;
 }
 
 .margin-top-20px

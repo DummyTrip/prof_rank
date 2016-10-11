@@ -34,7 +34,9 @@ public class UserInfo {
 
     public UserInfo(@Inject PersonHibernate personHibernate,
 //                    @Inject GenericService genericService,
-                    @Inject RequestGlobals requestGlobals, @Inject Logger logger)
+                    @Inject RequestGlobals requestGlobals
+//                    ,@Inject Logger logger
+    )
             throws Exception {
         this.personHibernate = personHibernate;
 //        this.genericService = genericService;
@@ -56,12 +58,12 @@ public class UserInfo {
 
     private void setupUser() throws Exception {
         if (userName != null) {
-            logger.info("Logged in user: " + userName);
+//            logger.info("Logged in user: " + userName);
             userRoles = new ArrayList<UserRole>();
             person = personHibernate.getPersonByUsername(userName);
 
             if (person == null) {
-                throw new Exception("No such user in system");
+                throw new Exception("No such person in system. Username: " + userName);
             }
 
             this.personId = new Long(person.getPersonId());
@@ -76,9 +78,9 @@ public class UserInfo {
                 roleCount++;
 
                 selectedRole = userRoles.get(0);
-                logger.info("Logged in user: " + userName
-                        + " has only one role: " + selectedRole
-                        + ", so the role is activated.");
+//                logger.info("Logged in user: " + userName
+//                        + " has only one role: " + selectedRole
+//                        + ", so the role is activated.");
 
                 if (selectedRole == UserRole.INSTRUCTOR) {
                     setUserRoleInstructor(personId);
@@ -104,10 +106,6 @@ public class UserInfo {
         return roleCount;
     }
 
-    public Long getInstitutionId() {
-        return institutionId;
-    }
-
     public boolean isInstructor() {
         return selectedRole == UserRole.INSTRUCTOR;
     }
@@ -125,18 +123,14 @@ public class UserInfo {
     }
 
     public void setUserRoleInstructor(long instructorId) {
-//        selectedRole = UserRole.INSTRUCTOR;
         setNullAllRolesId();
-//        institutionId = genericService.getByPK(Instructor.class, instructorId)
-//                .getInstitution().getInstitutionId();
+
         this.instructorId = instructorId;
     }
 
     public void setUserRoleAdmin(long staffId) {
-//        selectedRole = UserRole.ADMINISTRATOR;
         setNullAllRolesId();
-//        institutionId = genericService.getByPK(Staff.class, staffId)
-//                .getInstitution().getInstitutionId();
+
         this.adminId = staffId;
     }
 

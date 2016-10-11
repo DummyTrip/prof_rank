@@ -61,7 +61,7 @@ public class AccessController implements ComponentRequestFilter {
                 .getAnnotation(AdministratorPage.class) != null;
 
         hasAccessAnnotation = publicPage | instructorPage | adminPage;
-        UserInfo userInfo = applicationStateManager.getIfExists(UserInfo.class);
+        UserInfo userInfo = applicationStateManager.get(UserInfo.class);
 
         boolean canAccess = true;
         if (publicPage) {
@@ -71,11 +71,16 @@ public class AccessController implements ComponentRequestFilter {
         if (userInfo == null) {
             canAccess = false;
         } else {
+            // admin can access every page.
+            if (userInfo.isAdmin()) {
+                return true;
+            }
+
             if (instructorPage && canAccess) {
-                canAccess = canAccess || userInfo.isInstructor();
+                canAccess = userInfo.isInstructor();
             }
             if (adminPage && canAccess) {
-                canAccess = canAccess || userInfo.isAdmin();
+                canAccess = userInfo.isAdmin();
             }
         }
 
@@ -114,9 +119,9 @@ public class AccessController implements ComponentRequestFilter {
                     + parameters.getLogicalPageName());
 
 //            response.sendRedirect(linkSource.createPageRenderLink(Login.class));
-            response.sendRedirect("https://velkoski-pc:8443/cas/login?service=http://localhost:9999/prof_rank/");
-
-//            response.sendRedirect(linkSource.createPageRenderLink(Index.class));
+//            response.sendRedirect("https://velkoski-pc:8443/cas/login?service=http://localhost:9999/prof_rank/");
+//
+            response.sendRedirect(linkSource.createPageRenderLink(Index.class));
         }
     }
 }
