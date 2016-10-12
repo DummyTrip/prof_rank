@@ -7,7 +7,7 @@
         <div class="row">
             <t:form t:id="form">
                 <div class="col-md-10">
-                    <t:textfield t:id="searchName" t:mixins="autocomplete" value="referenceName" placeholder="Пребарај..." />
+                    <t:textfield t:id="searchName" t:mixins="autocomplete" value="referenceName" placeholder="Пребарај TODO..." />
                 </div>
                 <div class="col-md-1 no-padding-left">
                     <button type="submit" class="btn btn-default">
