@@ -10,10 +10,7 @@ import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Aleksandar on 03-Oct-16.
@@ -74,6 +71,10 @@ public class ShowReference {
     @Persist
     @Property
     Map<String, String> filterMap;
+
+    @Persist
+    @Property
+    List<ReferenceInstance> allReferenceInstances;
 
     public List<ReferenceInstance> getReferenceInstances() {
         User user = userHibernate.getById(Long.valueOf(1));
@@ -172,6 +173,95 @@ public class ShowReference {
         firstPageRefInstances = new ArrayList<ReferenceInstance>();
 
         filterMap = filterQueryStringToMap(filtersQueryString);
+
+        if (filterMap.keySet().size() > 0) {
+            allReferenceInstances = sortReferenceInstaces(filterMap);
+        } else {
+            allReferenceInstances = sortReferenceInstaces();
+        }
+    }
+
+    private List<ReferenceInstance> sortReferenceInstaces() {
+        List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getByReference(reference);
+
+        return getSortedReferenceInstances(referenceInstances);
+    }
+
+    private List<ReferenceInstance> sortReferenceInstaces(Map<String, String> filterMap) {
+        List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getByReferenceAndFilter(reference, filterMap, 0, Integer.MAX_VALUE);
+
+        return getSortedReferenceInstances(referenceInstances);
+    }
+
+    private List<ReferenceInstance> getSortedReferenceInstances(List<ReferenceInstance> referenceInstances) {
+
+        Attribute orderAttribute = getOrderAttribute();
+
+        if (orderAttribute == null) {
+            return referenceInstances;
+        }
+
+        Map<ReferenceInstance, String> unsortedMap = getUnsortedMapOfReferenceInstaces(referenceInstances, orderAttribute);
+
+        Map<ReferenceInstance, String> sortedMap = sortMapByValue(unsortedMap);
+        referenceInstances = new ArrayList<ReferenceInstance>();
+
+        for (ReferenceInstance ri : sortedMap.keySet()) {
+            referenceInstances.add(ri);
+        }
+
+        return referenceInstances;
+    }
+
+    private Attribute getOrderAttribute() {
+        List<Attribute> attributes = referenceHibernate.getAttributeValues(reference);
+        Attribute orderAttribute = null;
+
+        for (Attribute attribute : attributes) {
+            String attributeName = attribute.getName();
+            if (attributeName.startsWith("Период") ||
+                    attributeName.equals("Год.") ||
+                    attributeName.equals("Година")) {
+                orderAttribute = attribute;
+                break;
+            }
+        }
+
+        return orderAttribute;
+    }
+
+    private Map<ReferenceInstance, String> getUnsortedMapOfReferenceInstaces(List<ReferenceInstance> referenceInstances, Attribute orderAttribute) {
+        Map<ReferenceInstance, String> unsortedMap = new HashMap<ReferenceInstance, String>();
+
+        for (ReferenceInstance refInstance : referenceInstances) {
+            for (AttributeReferenceInstance ari: refInstance.getAttributeReferenceInstances()) {
+                if (ari.getAttribute().equals(orderAttribute)) {
+                    unsortedMap.put(refInstance, ari.getValue());
+                    break;
+                }
+            }
+        }
+
+        return unsortedMap;
+    }
+
+    private Map<ReferenceInstance, String> sortMapByValue(Map<ReferenceInstance, String> unsortedMap) {
+        List<Map.Entry<ReferenceInstance, String>> list =
+                new LinkedList<Map.Entry<ReferenceInstance, String>>(unsortedMap.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<ReferenceInstance, String>>() {
+            public int compare(Map.Entry<ReferenceInstance, String> o1,
+                               Map.Entry<ReferenceInstance, String> o2) {
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
+
+        Map<ReferenceInstance, String> sortedMap = new LinkedHashMap<ReferenceInstance, String>();
+        for (Map.Entry<ReferenceInstance, String> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
     }
 
     // Write the contents of the query string to a map.
@@ -206,19 +296,16 @@ public class ShowReference {
     // ajax call, used fpr paging of ReferenceInstances
     @OnEvent("nextPage")
     List<ReferenceInstance> moreValues() throws InterruptedException {
-        Integer first = pageNumber * PageSize;
+        Integer allReferenceInstancesSize = allReferenceInstances.size();
+        // make sure first is not larger than the size of all instances
+        Integer first = allReferenceInstancesSize > pageNumber * PageSize ? pageNumber * PageSize : allReferenceInstancesSize;
+        // make sure last element index is not larger than the size of all instances
+        Integer last = allReferenceInstancesSize > first + PageSize ? first + PageSize : allReferenceInstancesSize;
         // Delays the ajax call.
         // Sometimes the call returns almost instantly, which is a bad user experience.
         Thread.sleep(200);
 
-        List<ReferenceInstance> newInstances;
-
-        // filter map contains filters from query string
-        if (filterMap.keySet().size() > 0) {
-            newInstances = referenceInstanceHibernate.getByReferenceAndFilter(reference, filterMap, first, PageSize);
-        } else {
-            newInstances = referenceInstanceHibernate.getByReference(reference, first, PageSize);
-        }
+        List<ReferenceInstance> newInstances = allReferenceInstances.subList(first, last);
 
         // This if/else is a fix.
         // When items in page 0 are fewer than PageSize, the items get duplicated.

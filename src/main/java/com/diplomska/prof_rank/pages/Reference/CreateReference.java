@@ -10,12 +10,20 @@ import com.diplomska.prof_rank.services.AttributeHibernate;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
+import org.apache.tapestry5.SelectModel;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.SelectModelFactory;
+import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +36,10 @@ public class CreateReference {
     @Persist
     @Property
     private Long referenceId;
+
+    @Persist
+    @Property
+    private Long oldReferenceId;
 
     @Persist
     @Property
@@ -59,9 +71,11 @@ public class CreateReference {
     private ReferenceTypeHibernate referenceTypeHibernate;
 
     public List<Attribute> getAttributes() {
-        return referenceHibernate.getAttributeValues(reference);
-//        ReferenceType referenceType = referenceHibernate.getReferenceType(reference);
-//        return referenceTypeHibernate.getAttributes(referenceType);
+        List<Attribute> attributes = new ArrayList<Attribute>();
+        for (String attributeId : testMap.keySet()) {
+            attributes.add(attributeHibernate.getById(Long.valueOf(attributeId)));
+        }
+        return attributes;
     }
 
     public boolean isTextInput() {
@@ -91,26 +105,130 @@ public class CreateReference {
     }
 
     void setupRender() throws Exception {
+        if (!referenceId.equals(oldReferenceId)) {
+            clearPersistetObjects();
+            oldReferenceId = referenceId;
+        }
+
         this.reference = referenceHibernate.getById(referenceId);
-        testMap = new HashMap<String, String>();
+        if (testMap == null) {
+            testMap = new HashMap<String, String>();
+
+            List<Attribute> attributes = referenceHibernate.getAttributeValues(this.reference);
+
+            for (Attribute attribute : attributes) {
+                testMap.put(String.valueOf(attribute.getId()), "");
+            }
+        }
+
+        List<Attribute> atts = getAtts();
+        if (attributeSelectModel == null) {
+            attributeSelectModel = selectModelFactory.create(atts, "name");
+        }
+
     }
 
+    void onSuccessFromForm() {
+        if (newAttributeMap == null) {
+            newAttributeMap = new HashMap<String, String>();
+        }
+
+        if (this.att != null) {
+            newAttributeMap.put(String.valueOf(this.att.getId()), "");
+        }
+
+        if (request.isXHR()) {
+            ajaxResponseRenderer.addRender(newAttributesZone);
+        }
+
+    }
+
+
+
+
+
+    @Property
+    Attribute newAttribute;
+
+    public List<Attribute> getNewAttributes() {
+        List<Attribute> newAttributes = new ArrayList<Attribute>();
+
+        for (String key: newAttributeMap.keySet()) {
+            newAttributes.add(attributeHibernate.getById(Long.valueOf(key)));
+        }
+
+        return newAttributes;
+    }
+
+    @Persist
+    @Property
+    Attribute att;
+
+    public List<Attribute> getAtts() {
+        return attributeHibernate.getAll();
+    }
+
+    @Persist
+    @Property
+    Map<String, String> newAttributeMap;
+
+    public boolean isNewAttributesPopulated() {
+        return getSize() > 0 ? true : false;
+    }
+
+    public Integer getSize() {
+        if (newAttributeMap != null) {
+            return newAttributeMap.keySet().size();
+        }
+        return 0;
+    }
+
+    @Inject
+    private Request request;
+
+    @InjectComponent
+    private Zone newAttributesZone;
+
+    @Property
+    private SelectModel attributeSelectModel;
+
+    @Inject
+    SelectModelFactory selectModelFactory;
+
+    @Inject
+    AjaxResponseRenderer ajaxResponseRenderer;
+
+    @InjectComponent
+    Form testform;
+
     @CommitAfter
-    void onPrepareForSubmit() throws Exception {
-        // Instantiate a Person for the form data to overlay.
+    Object onSuccessFromTestform() {
         referenceInstance = new ReferenceInstance();
         referenceInstance.setReference(reference);
         referenceInstanceHibernate.store(referenceInstance);
-    }
 
-    @CommitAfter
-    Object onSuccess() {
+        for (String attributeId : newAttributeMap.keySet()) {
+            testMap.put(attributeId, newAttributeMap.get(attributeId));
+        }
+
         for (String attributeId : testMap.keySet()) {
             Attribute attribute = attributeHibernate.getById(Long.valueOf(attributeId));
 
             referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, testMap.get(attributeId));
         }
 
+        clearPersistetObjects();
+
         return index;
+    }
+
+    void onActionFromCancel() {
+        clearPersistetObjects();
+    }
+
+    private void clearPersistetObjects() {
+        newAttributeMap = null;
+        testMap = null;
+        att = null;
     }
 }

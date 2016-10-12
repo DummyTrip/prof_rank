@@ -167,6 +167,6 @@ public class AppModule
             OrderedConfiguration<ComponentRequestFilter> configuration,
             ComponentRequestFilter accessController,
             ApplicationStateManager asm, ComponentSource componentSource) {
-        configuration.add("AccessController", accessController, "before:*");
+//        configuration.add("AccessController", accessController, "before:*");
     }
 }

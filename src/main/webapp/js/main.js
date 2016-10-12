@@ -14,3 +14,7 @@ function changeChevronIcon(icon) {
         icon.addClass('fa-chevron-down').removeClass('fa-chevron-up')
     }
 }
+
+$('#btnAddAttribute').click(function () {
+    document.getElementsByClassName('input-area').innerHTML = '<ol><li>html data</li></ol>';
+});

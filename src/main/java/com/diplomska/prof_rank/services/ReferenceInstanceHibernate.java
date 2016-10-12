@@ -88,6 +88,8 @@ public class ReferenceInstanceHibernate {
                     attributeName.equals("Предмет") ||
                     attributeName.equals("Име на проектот") ||
                     attributeName.startsWith("Период") ||
+                    attributeName.equals("Год.") ||
+                    attributeName.startsWith("Позиција") ||
                     attributeName.equals("Година")) {
                 if (displayName.length() > 0) {
                     displayName += ", ";
