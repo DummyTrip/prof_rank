@@ -1,13 +1,14 @@
 package com.diplomska.prof_rank.pages.Reference;
 
 import com.diplomska.prof_rank.annotations.InstructorPage;
-import com.diplomska.prof_rank.entities.*;
-import com.diplomska.prof_rank.services.PersonHibernate;
+import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
-import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import com.diplomska.prof_rank.services.UserHibernate;
 import org.apache.tapestry5.Link;
-import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.annotations.ActivationRequestParameter;
+import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.Persist;
+import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 
@@ -15,10 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Aleksandar on 01-Oct-16.
+ * Created by Aleksandar on 12-Oct-16.
  */
 @InstructorPage
-public class Index {
+public class AddReference {
     @Inject
     ReferenceHibernate referenceHibernate;
 
@@ -104,7 +105,7 @@ public class Index {
         if (referenceNameQueryString != null) {
             newInstances = referenceHibernate.getByColumn("name", referenceNameQueryString);
         } else {
-            newInstances = referenceHibernate.getPopularByUser(userHibernate.getById(Long.valueOf(1)), Integer.MAX_VALUE);
+            newInstances = referenceHibernate.getAll(first, PageSize);
         }
         refs.addAll(newInstances);
 

@@ -223,6 +223,10 @@ div.scrollExtend-loading {
     background-size: 60px 60px;
 }
 
+.word-wrap
+{
+    word-wrap: break-word;
+}
 
 
 /*.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {*/

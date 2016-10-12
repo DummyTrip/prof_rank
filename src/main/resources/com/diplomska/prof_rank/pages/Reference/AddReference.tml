@@ -33,14 +33,6 @@
 
         <hr/>
 
-        <div class="row margin-bottom-15px">
-            <div class="no-padding-left float-right">
-                <t:pagelink page="reference/addreference" class="btn btn-default add-ref-ins-text-size">
-                    <i class="fa fa-plus-square-o add-ref-ins-text-size" aria-hidden="true"/> Додај
-                </t:pagelink>
-            </div>
-        </div>
-
         <div t:type='pagescroll' row='reference' scroller='scroller' zone='zone' pageNumber="pageNumber">
             <t:delegate to="block:referenceElement"/>
         </div>
@@ -49,7 +41,7 @@
         <div id='scroller' class="padding-top-80px"></div>
 
         <!--<t:loop source="references" value="reference">-->
-            <!--<t:delegate to="block:referenceElement"/>-->
+        <!--<t:delegate to="block:referenceElement"/>-->
         <!--</t:loop>-->
 
     </div>
@@ -60,12 +52,18 @@
         <!--<div class="row div-shadow white-background ref-list-padding" onclick="location.href='/prof_rank/reference/showreference/${reference.id}'">-->
         <div class="row div-shadow white-background ref-list-padding">
 
-            <div class="col-md-11">
+            <div class="col-md-10">
                 <h4 class="no-margin truncate-ref-link black-color">${reference.getName()}</h4>
             </div>
 
             <div class="col-md-1">
                 <i class="fa fa-list ref-list-icon-size black-color" aria-hidden="true"></i>
+            </div>
+
+            <div class="col-md-1">
+                <t:pagelink page="reference/createreference" context="reference.id" class="black-color">
+                    <i class="fa fa-plus-square-o ref-list-icon-size black-color" aria-hidden="true"></i>
+                </t:pagelink>
             </div>
         </div>
     </t:pagelink>
