@@ -9,12 +9,20 @@ import com.diplomska.prof_rank.services.AttributeHibernate;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
+import org.apache.tapestry5.SelectModel;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.SelectModelFactory;
+import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +35,10 @@ public class EditReference {
     @Persist
     @Property
     private Long referenceInstanceId;
+
+    @Persist
+    @Property
+    private Long oldReferenceInstanceId;
 
     @Persist
     @Property
@@ -45,7 +57,11 @@ public class EditReference {
     private Attribute attribute;
 
     public List<Attribute> getAttributes() {
-        return referenceInstanceHibernate.getAttributeValues(referenceInstance);
+        List<Attribute> attributes = new ArrayList<Attribute>();
+        for (String attributeId : testMap.keySet()) {
+            attributes.add(attributeHibernate.getById(Long.valueOf(attributeId)));
+        }
+        return attributes;
     }
 
     public boolean isTextInput() {
@@ -75,11 +91,22 @@ public class EditReference {
     }
 
     void setupRender() throws Exception {
-        this.referenceInstance = referenceInstanceHibernate.getById(referenceInstanceId);
-        testMap = new HashMap<String, String>();
+        if (!referenceInstanceId.equals(oldReferenceInstanceId)) {
+            testMap = null;
+            oldReferenceInstanceId = referenceInstanceId;
+        }
 
-        for (AttributeReferenceInstance ari: referenceInstance.getAttributeReferenceInstances()) {
-            testMap.put(String.valueOf(ari.getAttribute().getId()), ari.getValue());
+        this.referenceInstance = referenceInstanceHibernate.getById(referenceInstanceId);
+        if (testMap == null) {
+            testMap = new HashMap<String, String>();
+
+            for (AttributeReferenceInstance ari: referenceInstance.getAttributeReferenceInstances()) {
+                testMap.put(String.valueOf(ari.getAttribute().getId()), ari.getValue());
+            }
+        }
+
+        if (attributeSelectModel == null) {
+            attributeSelectModel = selectModelFactory.create(getNewAttributes(), "name");
         }
     }
 
@@ -92,7 +119,7 @@ public class EditReference {
 //    }
 
     @CommitAfter
-    Object onSuccess() {
+    Object onSuccessFromForm() {
         referenceInstance = referenceInstanceHibernate.getById(referenceInstanceId);
 
         for (String attributeId : testMap.keySet()) {
@@ -101,6 +128,64 @@ public class EditReference {
             referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, testMap.get(attributeId));
         }
 
+        testMap = null;
+
         return showReference;
     }
+
+
+
+
+
+    @Property
+    Attribute newAttribute;
+
+    public List<Attribute> getNewAttributes() {
+        return attributeHibernate.getAll();
+    }
+
+    public boolean isTestMapPopulated() {
+        return getSize() > 0 ? true : false;
+    }
+
+    public Integer getSize() {
+        if (testMap != null) {
+            return testMap.keySet().size();
+        }
+        return 0;
+    }
+
+    @Inject
+    private Request request;
+
+    @InjectComponent
+    private Zone newAttributesZone;
+
+    @Property
+    private SelectModel attributeSelectModel;
+
+    @Inject
+    SelectModelFactory selectModelFactory;
+
+    @Inject
+    AjaxResponseRenderer ajaxResponseRenderer;
+
+    @InjectComponent
+    Form testform;
+
+
+    void onSuccessFromTestform() {
+        if (newAttribute != null) {
+            testMap.put(String.valueOf(newAttribute.getId()), "");
+        }
+
+        if (request.isXHR()) {
+            ajaxResponseRenderer.addRender(newAttributesZone);
+        }
+    }
+
+    void onActionFromCancel() {
+        testMap = null;
+    }
+
 }

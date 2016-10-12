@@ -8,26 +8,46 @@
     <hr/>
 
     <t:form t:id="form" class="form-horizontal">
-        <t:loop source="attributes" value="attribute" index="loopIndex">
-            <div class="form-group">
-                <label class="control-label col-sm-3">${attribute.getName()}</label>
-                <t:if test="textInput">
-                    <div class="col-sm-9">
-                        <t:mapfield key="${attribute.getId()}" t:map="testMap"/>
+
+        <t:zone t:id="newAttributesZone" id="newAttributesZone">
+            <t:if test="testMapPopulated">
+                <t:loop source="attributes" value="attribute" index="loopIndex">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">${attribute.getName()}</label>
+                        <t:if test="textInput">
+                            <div class="col-sm-9">
+                                <t:mapfield key="${attribute.getId()}" t:map="testMap"/>
+                            </div>
+                        </t:if>
                     </div>
-                </t:if>
-            </div>
-        </t:loop>
+                </t:loop>
+            </t:if>
+        </t:zone>
 
         <t:if test="numAttributes">
             <div class="form-group">
                 <div class="col-sm-3 col-sm-offset-3">
                     <t:submit value="Save"/>
-                    <t:pagelink page="reference/editreference" class="btn btn-danger margin-left-danger">Cancel</t:pagelink>
+                    <t:actionlink t:id="cancel" class="btn btn-danger margin-left-danger">Cancel</t:actionlink>
                 </div>
             </div>
         </t:if>
 
+
+    </t:form>
+
+
+    <t:form t:id="testform" class="form-horizontal">
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-3">
+                <t:select t:id="newAttributes" value="newAttribute" model="attributeSelectModel" zone="newAttributesZone"/>
+            </div>
+
+            <div class="col-sm-3">
+                <t:submit t:id="addAttribute" zone="newAttributesZone" class="btn btn-default" value="Add Attribute"/>
+            </div>
+        </div>
 
     </t:form>
 

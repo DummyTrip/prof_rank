@@ -106,7 +106,7 @@ public class CreateReference {
 
     void setupRender() throws Exception {
         if (!referenceId.equals(oldReferenceId)) {
-            clearPersistetObjects();
+            testMap = null;
             oldReferenceId = referenceId;
         }
 
@@ -121,28 +121,28 @@ public class CreateReference {
             }
         }
 
-        List<Attribute> atts = getAtts();
         if (attributeSelectModel == null) {
-            attributeSelectModel = selectModelFactory.create(atts, "name");
+            attributeSelectModel = selectModelFactory.create(getNewAttributes(), "name");
         }
 
     }
 
-    void onSuccessFromForm() {
-        if (newAttributeMap == null) {
-            newAttributeMap = new HashMap<String, String>();
+    @CommitAfter
+    Object onSuccessFromForm() {
+        referenceInstance = new ReferenceInstance();
+        referenceInstance.setReference(reference);
+        referenceInstanceHibernate.store(referenceInstance);
+
+        for (String attributeId : testMap.keySet()) {
+            Attribute attribute = attributeHibernate.getById(Long.valueOf(attributeId));
+
+            referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, testMap.get(attributeId));
         }
 
-        if (this.att != null) {
-            newAttributeMap.put(String.valueOf(this.att.getId()), "");
-        }
+        testMap = null;
 
-        if (request.isXHR()) {
-            ajaxResponseRenderer.addRender(newAttributesZone);
-        }
-
+        return index;
     }
-
 
 
 
@@ -151,34 +151,16 @@ public class CreateReference {
     Attribute newAttribute;
 
     public List<Attribute> getNewAttributes() {
-        List<Attribute> newAttributes = new ArrayList<Attribute>();
-
-        for (String key: newAttributeMap.keySet()) {
-            newAttributes.add(attributeHibernate.getById(Long.valueOf(key)));
-        }
-
-        return newAttributes;
-    }
-
-    @Persist
-    @Property
-    Attribute att;
-
-    public List<Attribute> getAtts() {
         return attributeHibernate.getAll();
     }
 
-    @Persist
-    @Property
-    Map<String, String> newAttributeMap;
-
-    public boolean isNewAttributesPopulated() {
+    public boolean isTestMapPopulated() {
         return getSize() > 0 ? true : false;
     }
 
     public Integer getSize() {
-        if (newAttributeMap != null) {
-            return newAttributeMap.keySet().size();
+        if (testMap != null) {
+            return testMap.keySet().size();
         }
         return 0;
     }
@@ -201,34 +183,18 @@ public class CreateReference {
     @InjectComponent
     Form testform;
 
-    @CommitAfter
-    Object onSuccessFromTestform() {
-        referenceInstance = new ReferenceInstance();
-        referenceInstance.setReference(reference);
-        referenceInstanceHibernate.store(referenceInstance);
 
-        for (String attributeId : newAttributeMap.keySet()) {
-            testMap.put(attributeId, newAttributeMap.get(attributeId));
+    void onSuccessFromTestform() {
+        if (newAttribute != null) {
+            testMap.put(String.valueOf(newAttribute.getId()), "");
         }
 
-        for (String attributeId : testMap.keySet()) {
-            Attribute attribute = attributeHibernate.getById(Long.valueOf(attributeId));
-
-            referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, testMap.get(attributeId));
+        if (request.isXHR()) {
+            ajaxResponseRenderer.addRender(newAttributesZone);
         }
-
-        clearPersistetObjects();
-
-        return index;
     }
 
     void onActionFromCancel() {
-        clearPersistetObjects();
-    }
-
-    private void clearPersistetObjects() {
-        newAttributeMap = null;
         testMap = null;
-        att = null;
     }
 }

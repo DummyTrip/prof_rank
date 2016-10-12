@@ -15,6 +15,7 @@ function changeChevronIcon(icon) {
     }
 }
 
-$('#btnAddAttribute').click(function () {
-    document.getElementsByClassName('input-area').innerHTML = '<ol><li>html data</li></ol>';
+$('#btn-create-ref-instance').click(function () {
+    $('#form-create-ref-instance1').submit();
+    $('#form-create-ref-instance2').submit();
 });
