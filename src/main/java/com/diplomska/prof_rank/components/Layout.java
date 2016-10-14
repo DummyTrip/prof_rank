@@ -2,6 +2,7 @@ package com.diplomska.prof_rank.components;
 
 import com.diplomska.prof_rank.model.UserInfo;
 import com.diplomska.prof_rank.pages.Index;
+import com.diplomska.prof_rank.util.AppConfig;
 import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.*;
 import org.apache.tapestry5.alerts.AlertManager;
@@ -10,6 +11,7 @@ import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.*;
 import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.SymbolConstants;
@@ -50,6 +52,9 @@ public class Layout
     @Property
     Person person;
 
+    @Inject
+    private Messages messages;
+
     public String getClassForPageName()
     {
     return resources.getPageName().equalsIgnoreCase(pageName)
@@ -82,7 +87,7 @@ public class Layout
             person = null;
         }
 
-        return new URL("https://velkoski-pc:8443/cas/logout?service=http://localhost:9999/prof_rank/");
+        return new URL(AppConfig.getString("cas.server")+"/cas/logout?service="+AppConfig.getString("app.server")+"/");
     }
 
 }

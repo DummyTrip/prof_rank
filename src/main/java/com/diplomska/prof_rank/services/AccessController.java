@@ -118,9 +118,6 @@ public class AccessController implements ComponentRequestFilter {
             logger.error("handlePageRender: ACCESS DENIED TO "
                     + parameters.getLogicalPageName());
 
-//            response.sendRedirect(linkSource.createPageRenderLink(Login.class));
-//            response.sendRedirect("https://velkoski-pc:8443/cas/login?service=http://localhost:9999/prof_rank/");
-//
             response.sendRedirect(linkSource.createPageRenderLink(Index.class));
         }
     }

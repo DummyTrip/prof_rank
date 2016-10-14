@@ -45,7 +45,7 @@
                     <t:actionlink t:id="signOut" class="btn btn-default navbar-btn">Sign out ${person.getUserName()}</t:actionlink>
 
                     <p:else>
-                        <a href="https://velkoski-pc:8443/cas/login" class="btn btn-default navbar-btn">Sign in</a>
+                        <a href="${cas.server}/cas/login" class="btn btn-default navbar-btn">Sign in</a>
                     </p:else>
                 </t:if>
             </span>

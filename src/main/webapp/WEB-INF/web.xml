@@ -39,18 +39,18 @@
 
     <context-param>
         <param-name>casServerLoginUrl</param-name>
-        <param-value>https://velkoski-pc:8443/cas/login
+        <param-value>${cas.server}/cas/login
         </param-value>
     </context-param>
-    <!--context-param> <param-name>serverName</param-name> <param-value>https://velkoski-pc:8443</param-value>
+    <!--context-param> <param-name>serverName</param-name> <param-value>${cas.server}</param-value>
         </context-param -->
     <context-param>
         <param-name>casServerUrlPrefix</param-name>
-        <param-value>https://velkoski-pc:8443/cas</param-value>
+        <param-value>${cas.server}/cas</param-value>
     </context-param>
     <context-param>
         <param-name>service</param-name>
-        <param-value>http://localhost:9999/prof_rank</param-value>
+        <param-value>${app.server}/prof_rank</param-value>
     </context-param>
 
     <filter>
