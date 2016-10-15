@@ -103,7 +103,7 @@ public class ShowReference {
     }
 
     public List<AttributeReferenceInstance> getAttributeValues() {
-        return referenceInstance.getAttributeReferenceInstances();
+        return referenceInstanceHibernate.getSortedAttributeReferenceInstance(referenceInstance);
     }
 
     void onActivate(Long referenceId) {

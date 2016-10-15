@@ -7,10 +7,12 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Order;
+import org.w3c.dom.Attr;
 
 import java.util.*;
 
 import static org.hibernate.criterion.Restrictions.eq;
+import static org.hibernate.criterion.Restrictions.in;
 
 /**
  * Created by Aleksandar on 27.09.2016.
@@ -30,6 +32,9 @@ public class ReferenceInstanceHibernate {
 
     @Inject
     UserHibernate userHibernate;
+
+    @Inject
+    AttributeHibernate attributeHibernate;
 
     @CommitAfter
     public void store(ReferenceInstance referenceInstance) {
@@ -84,13 +89,7 @@ public class ReferenceInstanceHibernate {
 
         for (AttributeReferenceInstance attributeReferenceInstance : attributeReferenceInstances) {
             String attributeName = attributeReferenceInstance.getAttribute().getName();
-            if (attributeName.equals("Наслов") ||
-                    attributeName.equals("Предмет") ||
-                    attributeName.equals("Име на проектот") ||
-                    attributeName.startsWith("Период") ||
-                    attributeName.equals("Год.") ||
-                    attributeName.startsWith("Позиција") ||
-                    attributeName.equals("Година")) {
+            if (attributeReferenceInstance.isDisplay()) {
                 if (displayName.length() > 0) {
                     displayName += ", ";
                 }
@@ -99,6 +98,22 @@ public class ReferenceInstanceHibernate {
         }
 
         return displayName;
+    }
+
+    public boolean isDisplayAttribute(ReferenceInstance referenceInstance, Attribute attribute) {
+        String attributeName = attribute.getName();
+        if (attributeName.equals("Наслов") ||
+                attributeName.equals("Предмет") ||
+                attributeName.equals("Име на проектот") ||
+                attributeName.startsWith("Период") ||
+                attributeName.equals("Год.") ||
+                attributeName.startsWith("Позиција") ||
+                attributeName.equals("Година"))
+        {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public ReferenceInstance getById(Long id) {
@@ -181,7 +196,29 @@ public class ReferenceInstanceHibernate {
         }
 
         Reference reference = referenceInstance.getReference();
-        return referenceHibernate.getAttributes(reference);
+        return referenceHibernate.getAttributeValues(reference);
+    }
+
+    public void updateAttributeReferenceInstances(ReferenceInstance referenceInstance, Map<String, String> newValues, List<Attribute> attributes) {
+        for (String attributeId: newValues.keySet()) {
+            Attribute attribute = attributeHibernate.getById(Long.valueOf(attributeId));
+
+            String mapValue = newValues.get(String.valueOf(attribute.getId()));
+            String value = mapValue == null ? "" : mapValue;
+
+            Integer index = -1;
+            for (int i = 0 ; i <attributes.size(); i++) {
+                Attribute attribute1 = attributes.get(i);
+
+                if (attribute1.getId().equals(attribute.getId())) {
+                    index = i;
+                }
+            }
+
+            boolean display = isDisplayAttribute(referenceInstance, attribute);
+
+            setAttributeValueIndexDisplay(referenceInstance, attribute, value, index, display);
+        }
     }
 
     public List<Attribute> getAttributeValues(ReferenceInstance referenceInstance) {
@@ -199,8 +236,28 @@ public class ReferenceInstanceHibernate {
         return attributes;
     }
 
-    @CommitAfter
-    public void setAttributeValue(ReferenceInstance referenceInstance, Attribute attribute, String value) {
+    public List<AttributeReferenceInstance> getSortedAttributeReferenceInstance(ReferenceInstance referenceInstance) {
+        if (referenceInstance == null ) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        return sortAttributeReferenceInstances(referenceInstance);
+    }
+
+    public List<AttributeReferenceInstance> sortAttributeReferenceInstances(ReferenceInstance referenceInstance) {
+        List<AttributeReferenceInstance> attributeReferenceInstances = referenceInstance.getAttributeReferenceInstances();
+
+        Collections.sort(attributeReferenceInstances, new Comparator<AttributeReferenceInstance>() {
+            @Override
+            public int compare(AttributeReferenceInstance o1, AttributeReferenceInstance o2) {
+                return o1.getIndex().compareTo(o2.getIndex());
+            }
+        });
+
+        return attributeReferenceInstances;
+    }
+
+    public AttributeReferenceInstance getOrCreateAttributeRefereneInstance(ReferenceInstance referenceInstance, Attribute attribute) {
         if (referenceInstance == null || attribute == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
@@ -214,7 +271,25 @@ public class ReferenceInstanceHibernate {
         if (aris.size() > 0) {
             attributeReferenceInstance = aris.get(0);
         } else {
-         attributeReferenceInstance = new AttributeReferenceInstance();
+            attributeReferenceInstance = new AttributeReferenceInstance();
+        }
+
+        return attributeReferenceInstance;
+    }
+
+    public void setAttributeValue(ReferenceInstance referenceInstance, Attribute attribute, String value) {
+        if (referenceInstance == null || attribute == null || value == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        AttributeReferenceInstance attributeReferenceInstance = getOrCreateAttributeRefereneInstance(referenceInstance, attribute);
+
+        setAttributeValue(attributeReferenceInstance, referenceInstance, attribute, value);
+    }
+
+    public void setAttributeValue(AttributeReferenceInstance attributeReferenceInstance, ReferenceInstance referenceInstance, Attribute attribute, String value) {
+        if (attributeReferenceInstance == null || referenceInstance == null || attribute == null || value == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
         }
 
         attributeReferenceInstance.setReferenceInstance(referenceInstance);
@@ -224,7 +299,66 @@ public class ReferenceInstanceHibernate {
         session.persist(attributeReferenceInstance);
     }
 
+    public void setAttributeIndex(ReferenceInstance referenceInstance, Attribute attribute, Integer index) {
+        if (referenceInstance == null || attribute == null || index == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        AttributeReferenceInstance attributeReferenceInstance = getOrCreateAttributeRefereneInstance(referenceInstance, attribute);
+
+        setAttributeIndex(attributeReferenceInstance, referenceInstance, attribute, index);
+    }
+
+    public void setAttributeIndex(AttributeReferenceInstance attributeReferenceInstance, ReferenceInstance referenceInstance, Attribute attribute, Integer index) {
+        if (attributeReferenceInstance == null || referenceInstance == null || attribute == null || index == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+        attributeReferenceInstance.setReferenceInstance(referenceInstance);
+        attributeReferenceInstance.setAttribute(attribute);
+        attributeReferenceInstance.setIndex(index);
+
+        session.persist(attributeReferenceInstance);
+    }
+
+    public void setAttributeDisplay(ReferenceInstance referenceInstance, Attribute attribute, boolean display) {
+        if (referenceInstance == null || attribute == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        AttributeReferenceInstance attributeReferenceInstance = getOrCreateAttributeRefereneInstance(referenceInstance, attribute);
+
+        setAttributeDisplay(attributeReferenceInstance, referenceInstance, attribute, display);
+    }
+
+    public void setAttributeDisplay(AttributeReferenceInstance attributeReferenceInstance, ReferenceInstance referenceInstance, Attribute attribute, boolean display) {
+        if (attributeReferenceInstance == null || referenceInstance == null || attribute == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        attributeReferenceInstance.setReferenceInstance(referenceInstance);
+        attributeReferenceInstance.setAttribute(attribute);
+        attributeReferenceInstance.setDisplay(display);
+
+        session.persist(attributeReferenceInstance);
+    }
+
     @CommitAfter
+    public void setAttributeValueIndexDisplay(ReferenceInstance referenceInstance, Attribute attribute, String value, Integer index, boolean display) {
+        if (referenceInstance == null || attribute == null || value == null || index == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        AttributeReferenceInstance attributeReferenceInstance = getOrCreateAttributeRefereneInstance(referenceInstance, attribute);
+
+        attributeReferenceInstance.setReferenceInstance(referenceInstance);
+        attributeReferenceInstance.setAttribute(attribute);
+        attributeReferenceInstance.setValue(value);
+        attributeReferenceInstance.setIndex(index);
+        attributeReferenceInstance.setDisplay(display);
+
+        session.persist(attributeReferenceInstance);
+    }
+
     public void deleteAttribute(ReferenceInstance referenceInstance, Attribute attribute) {
         if (referenceInstance == null || attribute == null) {
             throw new IllegalArgumentException("Cannot persist null value.");

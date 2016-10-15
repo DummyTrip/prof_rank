@@ -14,6 +14,10 @@ public class AttributeReferenceInstance {
 
     private String value;
 
+    private Integer index;
+
+    private boolean display = false;
+
     private Attribute attribute;
 
     private ReferenceInstance referenceInstance;
@@ -58,4 +62,19 @@ public class AttributeReferenceInstance {
         this.referenceInstance = referenceInstance;
     }
 
+    public Integer getIndex() {
+        return index;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
+
+    public boolean isDisplay() {
+        return display;
+    }
+
+    public void setDisplay(boolean display) {
+        this.display = display;
+    }
 }

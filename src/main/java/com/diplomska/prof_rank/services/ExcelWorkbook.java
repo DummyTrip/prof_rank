@@ -194,10 +194,15 @@ public class ExcelWorkbook {
                 rowValues = getNastavaAttributeValues(row, rowValues);
 
                 if (rowValues.size() == attributes.size()) {
-                    ReferenceInstance referenceInstance = createReferenceInstance("Одржување на настава - од прв циклус студии");
+                    Reference reference = getReference("Одржување на настава - од прв циклус студии");
+                    ReferenceInstance referenceInstance = createReferenceInstance(reference);
                     for (String cellValue : rowValues) {
-                        Attribute attribute = attributes.get(rowValues.indexOf(cellValue));
-                        referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, cellValue);
+                        Integer index = rowValues.indexOf(cellValue);
+                        Attribute attribute = attributes.get(index);
+                        boolean display = isDisplayAttribute(attribute);
+
+                        referenceHibernate.setAttributeDisplay(reference, attribute, display);
+                        referenceInstanceHibernate.setAttributeValueIndexDisplay(referenceInstance, attribute, cellValue, index, display);
                     }
                     categoryValues.add(rowValues);
                 }
@@ -205,6 +210,22 @@ public class ExcelWorkbook {
         }
 
         return categoryValues;
+    }
+
+    private boolean isDisplayAttribute(Attribute attribute) {
+        String attributeName = attribute.getName();
+        if (attributeName.equals("Наслов") ||
+                attributeName.equals("Предмет") ||
+                attributeName.equals("Име на проектот") ||
+                attributeName.startsWith("Период") ||
+                attributeName.equals("Год.") ||
+                attributeName.startsWith("Позиција") ||
+                attributeName.equals("Година"))
+        {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private List<Attribute> getNastavaAttributes(Row row) {
@@ -313,11 +334,15 @@ public class ExcelWorkbook {
                 if (rowValues.size() == attributes.size()) {
                     categoryValues.add(rowValues);
 
-                    ReferenceInstance referenceInstance = createReferenceInstance(referenceName);
+                    Reference reference = getReference(referenceName);
+                    ReferenceInstance referenceInstance = createReferenceInstance(reference);
 
                     for (int i = 0; i < rowValues.size() ; i++) {
                         Attribute attribute = attributes.get(i);
-                        referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, rowValues.get(i));
+                        boolean display = isDisplayAttribute(attribute);
+
+                        referenceHibernate.setAttributeDisplay(reference, attribute, display);
+                        referenceInstanceHibernate.setAttributeValueIndexDisplay(referenceInstance, attribute, rowValues.get(i), i, display);
                     }
                 }
             }
@@ -364,7 +389,7 @@ public class ExcelWorkbook {
         return attribute;
     }
 
-    private ReferenceInstance createReferenceInstance(String name) {
+    private Reference getReference(String name) {
         List<Reference> references = referenceHibernate.getByColumn("name", name);
         Reference reference;
         if (references.size() == 0) {
@@ -378,6 +403,11 @@ public class ExcelWorkbook {
         } else {
             reference = references.get(0);
         }
+
+        return reference;
+    }
+
+    private ReferenceInstance createReferenceInstance(Reference reference) {
         ReferenceInstance referenceInstance = new ReferenceInstance();
         referenceInstance.setReference(reference);
         referenceInstanceHibernate.store(referenceInstance);

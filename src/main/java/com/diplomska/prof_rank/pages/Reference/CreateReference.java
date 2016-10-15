@@ -20,10 +20,7 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.SelectModelFactory;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Aleksandar on 01-Oct-16.
@@ -67,20 +64,16 @@ public class CreateReference {
     @Inject
     private ReferenceTypeHibernate referenceTypeHibernate;
 
-    public List<Attribute> getAttributes() {
-        List<Attribute> attributes = new ArrayList<Attribute>();
-        for (String attributeId : testMap.keySet()) {
-            attributes.add(attributeHibernate.getById(Long.valueOf(attributeId)));
-        }
-        return attributes;
-    }
+    @Persist
+    @Property
+    List<Attribute> attributes;
 
     public boolean isTextInput() {
         return attribute.getInputType().equals("text") ? true :false;
     }
 
     public boolean isNumAttributes() {
-        return getAttributes().size() > 0 ? true :false;
+        return attributes.size() > 0 ? true :false;
     }
 
     @Property
@@ -104,14 +97,18 @@ public class CreateReference {
     void setupRender() throws Exception {
         if (!referenceId.equals(oldReferenceId)) {
             testMap = null;
+            attributes = null;
             oldReferenceId = referenceId;
         }
 
         this.reference = referenceHibernate.getById(referenceId);
+
+        if (attributes == null) {
+            attributes = referenceHibernate.getAttributeValues(this.reference);
+        }
+
         if (testMap == null) {
             testMap = new HashMap<String, String>();
-
-            List<Attribute> attributes = referenceHibernate.getAttributeValues(this.reference);
 
             for (Attribute attribute : attributes) {
                 testMap.put(String.valueOf(attribute.getId()), "");
@@ -132,13 +129,10 @@ public class CreateReference {
         referenceInstance.setReference(reference);
         referenceInstanceHibernate.store(referenceInstance);
 
-        for (String attributeId : testMap.keySet()) {
-            Attribute attribute = attributeHibernate.getById(Long.valueOf(attributeId));
-
-            referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, testMap.get(attributeId));
-        }
+        referenceInstanceHibernate.updateAttributeReferenceInstances(referenceInstance, testMap, attributes);
 
         testMap = null;
+        attributes = null;
 
         return index;
     }
@@ -183,7 +177,11 @@ public class CreateReference {
     @OnEvent(component = "addAttribute", value = "selected")
     void addAttribute() {
         if (newAttribute != null) {
-            testMap.put(String.valueOf(newAttribute.getId()), "");
+            String id = String.valueOf(newAttribute.getId());
+            if (!testMap.containsKey(id)) {
+                attributes.add(newAttribute);
+                testMap.put(id, "");
+            }
         }
 
         if (request.isXHR()) {
@@ -193,6 +191,7 @@ public class CreateReference {
 
     Object onActionFromCancel() {
         testMap = null;
+        attributes = null;
 
         return index;
     }
@@ -200,8 +199,12 @@ public class CreateReference {
     @CommitAfter
     @OnEvent(component = "delete", value = "selected")
     public void delete(Long attributeId) {
-        Attribute attribute = attributeHibernate.getById(attributeId);
-        referenceInstanceHibernate.deleteAttribute(referenceInstance, attribute);
+        for (Iterator<Attribute> iterator = attributes.iterator(); iterator.hasNext(); ) {
+            Long id = iterator.next().getId();
+            if (id.equals(attributeId)) {
+                iterator.remove();
+            }
+        }
 
         testMap.remove(String.valueOf(attributeId));
     }

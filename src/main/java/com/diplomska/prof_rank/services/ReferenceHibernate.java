@@ -275,7 +275,56 @@ public class ReferenceHibernate {
         return attributes;
     }
 
-    @CommitAfter
+    public AttributeReference getOrCreateAttributeReference(Reference reference, Attribute attribute) {
+        if (reference == null || attribute == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        AttributeReference attributeReference;
+        List<AttributeReference> attributeReferences = session.createCriteria(AttributeReference.class)
+                .add(eq("reference", reference))
+                .add(eq("attribute", attribute))
+                .list();
+
+        if (attributeReferences.size() > 0) {
+            attributeReference = attributeReferences.get(0);
+        } else {
+            attributeReference = new AttributeReference();
+        }
+
+        return attributeReference;
+    }
+
+    public boolean isDisplayAttribute(Reference reference, Attribute attribute) {
+        String attributeName = attribute.getName();
+        if (attributeName.equals("Наслов") ||
+                attributeName.equals("Предмет") ||
+                attributeName.equals("Име на проектот") ||
+                attributeName.startsWith("Период") ||
+                attributeName.equals("Год.") ||
+                attributeName.startsWith("Позиција") ||
+                attributeName.equals("Година"))
+        {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void setAttributeDisplay(Reference reference, Attribute attribute, boolean display) {
+        if (reference == null || attribute == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        AttributeReference attributeReference = getOrCreateAttributeReference(reference, attribute);
+
+        attributeReference.setReference(reference);
+        attributeReference.setAttribute(attribute);
+        attributeReference.setDisplay(display);
+
+        session.persist(attributeReference);
+    }
+
     public void deleteAttribute(Reference reference, Attribute attribute) {
         if (reference == null || attribute == null) {
             throw new IllegalArgumentException("Cannot persist null value.");

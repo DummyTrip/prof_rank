@@ -28,14 +28,6 @@ public class AttributeReference {
         this.id = id;
     }
 
-    public boolean getValue() {
-        return display;
-    }
-
-    public void setValue(boolean display) {
-        this.display = display;
-    }
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "attribute_id")
     public Attribute getAttribute() {
@@ -54,5 +46,13 @@ public class AttributeReference {
 
     public void setReference(Reference reference) {
         this.reference = reference;
+    }
+
+    public boolean isDisplay() {
+        return display;
+    }
+
+    public void setDisplay(boolean display) {
+        this.display = display;
     }
 }

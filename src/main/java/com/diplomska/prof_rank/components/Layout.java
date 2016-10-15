@@ -46,8 +46,8 @@ public class Layout
     @Symbol(SymbolConstants.APPLICATION_VERSION)
     private String appVersion;
 
-    @SessionState
-    UserInfo userInfo;
+//    @SessionState
+//    UserInfo userInfo;
 
     @Property
     Person person;
@@ -67,9 +67,9 @@ public class Layout
     return new String[]{"Index"};
   }
 
-    public void setupRender() {
-        person = userInfo.getPerson();
-    }
+//    public void setupRender() {
+//        person = userInfo.getPerson();
+//    }
 
     public boolean isLoggedIn() {
         return person != null ? true : false;
@@ -83,7 +83,7 @@ public class Layout
         Session session = request.getSession(false);
         if (session != null) {
             session.invalidate();
-            userInfo = null;
+//            userInfo = null;
             person = null;
         }
 

@@ -19,10 +19,7 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.SelectModelFactory;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Aleksandar on 09-Oct-16.
@@ -56,20 +53,16 @@ public class EditReference {
     @Property
     private Attribute attribute;
 
-    public List<Attribute> getAttributes() {
-        List<Attribute> attributes = new ArrayList<Attribute>();
-        for (String attributeId : testMap.keySet()) {
-            attributes.add(attributeHibernate.getById(Long.valueOf(attributeId)));
-        }
-        return attributes;
-    }
+    @Persist
+    @Property
+    List<Attribute> attributes;
 
     public boolean isTextInput() {
         return attribute.getInputType().equals("text") ? true :false;
     }
 
     public boolean isNumAttributes() {
-        return getAttributes().size() > 0 ? true :false;
+        return attributes.size() > 0 ? true :false;
     }
 
     @Property
@@ -93,14 +86,18 @@ public class EditReference {
     void setupRender() throws Exception {
         if (!referenceInstanceId.equals(oldReferenceInstanceId)) {
             testMap = null;
+            attributes = null;
             oldReferenceInstanceId = referenceInstanceId;
         }
 
         this.referenceInstance = referenceInstanceHibernate.getById(referenceInstanceId);
+
         if (testMap == null) {
             testMap = new HashMap<String, String>();
+            attributes = new ArrayList<Attribute>();
 
-            for (AttributeReferenceInstance ari: referenceInstance.getAttributeReferenceInstances()) {
+            for (AttributeReferenceInstance ari: referenceInstanceHibernate.getSortedAttributeReferenceInstance(referenceInstance)) {
+                attributes.add(ari.getAttribute());
                 testMap.put(String.valueOf(ari.getAttribute().getId()), ari.getValue());
             }
         }
@@ -115,13 +112,10 @@ public class EditReference {
     Object saveReference() {
         referenceInstance = referenceInstanceHibernate.getById(referenceInstanceId);
 
-        for (String attributeId : testMap.keySet()) {
-            Attribute attribute = attributeHibernate.getById(Long.valueOf(attributeId));
-
-            referenceInstanceHibernate.setAttributeValue(referenceInstance, attribute, testMap.get(attributeId));
-        }
+        referenceInstanceHibernate.updateAttributeReferenceInstances(referenceInstance, testMap, attributes);
 
         testMap = null;
+        attributes = null;
 
         return showReference;
     }
@@ -166,7 +160,11 @@ public class EditReference {
     @OnEvent(component = "addAttribute", value = "selected")
     void addAttribute() {
         if (newAttribute != null) {
-            testMap.put(String.valueOf(newAttribute.getId()), "");
+            String id = String.valueOf(newAttribute.getId());
+            if (!testMap.containsKey(id)) {
+                attributes.add(newAttribute);
+                testMap.put(id, "");
+            }
         }
 
         if (request.isXHR()) {
@@ -176,6 +174,7 @@ public class EditReference {
 
     Object onActionFromCancel() {
         testMap = null;
+        attributes = null;
 
         return index;
     }
@@ -183,9 +182,17 @@ public class EditReference {
     @CommitAfter
     @OnEvent(component = "delete", value = "selected")
     public void delete(Long attributeId) {
-        Attribute attribute = attributeHibernate.getById(attributeId);
-        referenceInstanceHibernate.deleteAttribute(referenceInstance, attribute);
+//        Attribute attribute = attributeHibernate.getById(attributeId);
+//        referenceInstance = referenceInstanceHibernate.getById(referenceInstanceId);
+//
+//        referenceInstanceHibernate.deleteAttribute(referenceInstance, attribute);
 
         testMap.remove(String.valueOf(attributeId));
+        for (Iterator<Attribute> iterator = attributes.iterator(); iterator.hasNext(); ) {
+            Long id = iterator.next().getId();
+            if (id.equals(attributeId)) {
+                iterator.remove();
+            }
+        }
     }
 }
