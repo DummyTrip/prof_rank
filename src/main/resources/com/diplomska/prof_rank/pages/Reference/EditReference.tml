@@ -15,10 +15,13 @@
                     <div class="form-group">
                         <label class="control-label col-sm-3">${attribute.getName()}</label>
                         <t:if test="textInput">
-                            <div class="col-sm-9">
+                            <div class="col-sm-8">
                                 <t:mapfield key="${attribute.getId()}" t:map="testMap"/>
                             </div>
                         </t:if>
+                        <div class="col-sm-1">
+                            <input t:type="submit" t:id="delete" class="btn btn-danger" defer="false" value="Х" context="attribute.id"/>
+                        </div>
                     </div>
                 </t:loop>
             </t:if>
@@ -27,17 +30,11 @@
         <t:if test="numAttributes">
             <div class="form-group">
                 <div class="col-sm-3 col-sm-offset-3">
-                    <t:submit value="Save"/>
-                    <t:actionlink t:id="cancel" class="btn btn-danger margin-left-danger">Cancel</t:actionlink>
+                    <t:submit t:id="save" value="Зачувај"/>
+                    <t:actionlink t:id="cancel" class="btn btn-danger margin-left-danger">Откажи</t:actionlink>
                 </div>
             </div>
         </t:if>
-
-
-    </t:form>
-
-
-    <t:form t:id="testform" class="form-horizontal">
 
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-3">
@@ -45,7 +42,7 @@
             </div>
 
             <div class="col-sm-3">
-                <t:submit t:id="addAttribute" zone="newAttributesZone" class="btn btn-default" value="Add Attribute"/>
+                <t:submit t:id="addAttribute" zone="newAttributesZone" class="btn btn-default" value="Додај"/>
             </div>
         </div>
 

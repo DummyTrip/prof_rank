@@ -11,10 +11,7 @@ import com.diplomska.prof_rank.services.ReferenceHibernate;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
 import org.apache.tapestry5.SelectModel;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
@@ -127,8 +124,10 @@ public class CreateReference {
 
     }
 
+
     @CommitAfter
-    Object onSuccessFromForm() {
+    @OnEvent(component = "save", value = "selected")
+    Object saveReference() {
         referenceInstance = new ReferenceInstance();
         referenceInstance.setReference(reference);
         referenceInstanceHibernate.store(referenceInstance);
@@ -180,11 +179,9 @@ public class CreateReference {
     @Inject
     AjaxResponseRenderer ajaxResponseRenderer;
 
-    @InjectComponent
-    Form testform;
 
-
-    void onSuccessFromTestform() {
+    @OnEvent(component = "addAttribute", value = "selected")
+    void addAttribute() {
         if (newAttribute != null) {
             testMap.put(String.valueOf(newAttribute.getId()), "");
         }
@@ -194,7 +191,18 @@ public class CreateReference {
         }
     }
 
-    void onActionFromCancel() {
+    Object onActionFromCancel() {
         testMap = null;
+
+        return index;
+    }
+
+    @CommitAfter
+    @OnEvent(component = "delete", value = "selected")
+    public void delete(Long attributeId) {
+        Attribute attribute = attributeHibernate.getById(attributeId);
+        referenceInstanceHibernate.deleteAttribute(referenceInstance, attribute);
+
+        testMap.remove(String.valueOf(attributeId));
     }
 }
