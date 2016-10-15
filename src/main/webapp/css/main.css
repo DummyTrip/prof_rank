@@ -207,6 +207,11 @@
     padding-top: 15px;
 }
 
+.padding-top-10px
+{
+    padding-top: 10px;
+}
+
 .padding-top-5px
 {
     padding-top: 5px;
@@ -226,6 +231,21 @@ div.scrollExtend-loading {
 .word-wrap
 {
     word-wrap: break-word;
+}
+
+.padding-left-20px
+{
+    padding-left: 20px;
+}
+
+.padding-left-25px
+{
+    padding-left: 25px;
+}
+
+.padding-left-30px
+{
+    padding-left: 30px;
 }
 
 

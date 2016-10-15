@@ -17,34 +17,80 @@
             </t:form>
         </div>
 
-        <h3 class="padding-top-20px">Филтрирај:</h3>
+
+        <div class="row margin-top-20px">
+            <div class="col-md-9">
+                <h3 class="">Филтрирај:</h3>
+
+            </div>
+            <div class="col-md-3 padding-top-15px padding-left-25px">
+                <t:actionlink t:id="toggleDisplay" zone="leftPanelZone" class="btn btn-default"><i class="fa fa-eye" aria-hidden="true"></i></t:actionlink>
+            </div>
+        </div>
+
 
 
         <div class="row margin-top-20px">
-            <t:form t:id="filterForm">
-                <t:loop source="attributes" value="attribute">
 
-                    <div class="col-md-12">
-                        <label class="control-label">${attribute.getName()}</label>
-                    </div>
+            <t:zone t:id="leftPanelZone" id="leftPanelZone">
+                <t:if test="toggleDisplay">
 
-                    <div class="col-md-12">
-                        <t:if test="textInput">
-                            <div class="">
-                                <t:mapfield key="${attribute.getName()}" t:map="testMap"/>
+                    <t:form t:id="filterForm">
+                        <t:loop source="attributes" value="attribute">
+
+                            <div class="col-md-12 padding-top-10px">
+                                <label class="control-label">${attribute.getName()}</label>
                             </div>
-                        </t:if>
-                    </div>
 
-                </t:loop>
-                <div class="col-md-12 padding-top-15px">
-                    <div class="form-group">
-                        <div class="">
-                            <t:submit value="Филтрирај" class="btn btn-default"/>
+                            <div class="col-md-12 padding-top-10px">
+                                <t:if test="textInput">
+                                    <div class="">
+                                        <t:mapfield key="${attribute.getName()}" t:map="testMap"/>
+                                    </div>
+                                </t:if>
+                            </div>
+
+                        </t:loop>
+                        <div class="col-md-12 padding-top-15px">
+                            <div class="form-group">
+                                <div class="">
+                                    <t:submit value="Филтрирај" class="btn btn-default"/>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </t:form>
+                    </t:form>
+                    <p:else>
+                        <t:form t:id="displayForm">
+                            <t:loop source="attributes" value="attribute">
+
+                                <div class="col-md-9 padding-top-10px">
+                                    <label class="control-label">${attribute.getName()}</label>
+                                </div>
+
+                                <div class="col-md-3 padding-top-10px padding-left-30px">
+                                    <t:if test="selectedCheckbox">
+                                        <input t:type="submit" t:id="removeDisplay" class="btn btn-primary" defer="false" value="-" context="attribute.id"/>
+
+                                        <p:else>
+                                            <input t:type="submit" t:id="addDisplay" class="btn btn-default" defer="false" value="+" context="attribute.id"/>
+
+                                        </p:else>
+                                    </t:if>
+                                </div>
+
+                            </t:loop>
+                            <div class="col-md-12 padding-top-15px">
+                                <div class="form-group">
+                                    <div class="">
+                                        <t:submit t:id="saveDisplay" value="Прикажи" class="btn btn-default"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t:form>
+                    </p:else>
+                </t:if>
+            </t:zone>
+
         </div>
 
 

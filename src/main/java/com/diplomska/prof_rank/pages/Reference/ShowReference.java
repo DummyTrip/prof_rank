@@ -2,13 +2,18 @@ package com.diplomska.prof_rank.pages.Reference;
 
 import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.entities.*;
+import com.diplomska.prof_rank.services.AttributeHibernate;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import com.diplomska.prof_rank.services.UserHibernate;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.hibernate.annotations.CommitAfter;
+import org.apache.tapestry5.internal.util.IntegerRange;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PageRenderLinkSource;
+import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
 import java.util.*;
 
@@ -41,6 +46,10 @@ public class ShowReference {
     @Persist
     @Property
     Long referenceId;
+
+    @Persist
+    @Property
+    Long oldReferenceId;
 
     @Property
     String referenceName;
@@ -164,6 +173,12 @@ public class ShowReference {
     }
 
     void setupRender() throws Exception {
+        if (!referenceId.equals(oldReferenceId)) {
+            selectedCheckboxes = null;
+            toggleDisplay = true;
+            oldReferenceId = referenceId;
+        }
+
         this.reference = referenceHibernate.getById(referenceId);
         this.referenceName = referenceNameQueryString;
         this.displayNames = referenceInstanceHibernate.getAllDisplayNames();
@@ -178,6 +193,15 @@ public class ShowReference {
             allReferenceInstances = sortReferenceInstaces(filterMap);
         } else {
             allReferenceInstances = sortReferenceInstaces();
+        }
+
+        if (selectedCheckboxes == null) {
+            selectedCheckboxes = new HashMap<Long, Integer>();
+            for (Attribute attribute : getAttributes()) {
+                Integer value = referenceHibernate.isDisplayAttribute(reference, attribute) ? 1 : 0;
+
+                selectedCheckboxes.put(attribute.getId(), value);
+            }
         }
     }
 
@@ -318,6 +342,77 @@ public class ShowReference {
             refInstances.addAll(newInstances);
 
             return refInstances;
+        }
+    }
+
+    @Persist
+    @Property
+    boolean toggleDisplay;
+
+    @Inject
+    AjaxResponseRenderer ajaxResponseRenderer;
+
+    @InjectComponent
+    Zone leftPanelZone;
+
+    @Persist
+    @Property
+    Map<Long, Integer> selectedCheckboxes;
+
+    public boolean isSelectedCheckbox() {
+        return selectedCheckboxes.get(attribute.getId()) == 0 ? false : true;
+    }
+
+    void onActionFromToggleDisplay() {
+        toggleDisplay = !toggleDisplay;
+
+        ajaxResponseRenderer.addRender(leftPanelZone);
+    }
+
+    public Integer getAttVal() {
+        return selectedCheckboxes.get(attribute.getId());
+    }
+
+    public Long getAttId() {
+        return attribute.getId();
+    }
+
+    @Inject
+    AttributeHibernate attributeHibernate;
+
+    @OnEvent(component = "addDisplay", value = "selected")
+    public void addDisplay(Long attributeId) {
+        selectedCheckboxes.put(attributeId, 1);
+
+        ajaxResponseRenderer.addRender(leftPanelZone);
+
+    }
+
+    @OnEvent(component = "removeDisplay", value = "selected")
+    public void removeDisplay(Long attributeId) {
+        selectedCheckboxes.put(attributeId, 0);
+
+        ajaxResponseRenderer.addRender(leftPanelZone);
+
+    }
+
+    @CommitAfter
+    @OnEvent(component = "saveDisplay", value = "selected")
+    void saveDisplay() {
+        Reference reference = referenceHibernate.getById(referenceId);
+        List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getByReference(reference);
+
+        for (ReferenceInstance referenceInstance : referenceInstances) {
+            List<AttributeReferenceInstance> attributeReferenceInstances = referenceInstance.getAttributeReferenceInstances();
+
+            for (AttributeReferenceInstance ari : attributeReferenceInstances) {
+                Attribute attribute = ari.getAttribute();
+                if (selectedCheckboxes.containsKey(attribute.getId())) {
+                    boolean display = selectedCheckboxes.get(attribute.getId()) == 0 ? false : true;
+
+                    referenceInstanceHibernate.setAttributeDisplay(ari, referenceInstance, attribute, display);
+                }
+            }
         }
     }
 
