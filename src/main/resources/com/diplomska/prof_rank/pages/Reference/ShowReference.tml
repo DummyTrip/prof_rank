@@ -17,22 +17,27 @@
             </t:form>
         </div>
 
+        <t:zone t:id="leftPanelZone" id="leftPanelZone">
 
-        <div class="row margin-top-20px">
-            <div class="col-md-9">
-                <h3 class="">Филтрирај:</h3>
+            <div class="row margin-top-20px">
+                <div class="col-md-9">
+                    <t:if test="toggleDisplay">
+                        <h3 class="">Филтрирај:</h3>
+                        <p:else>
+                            <h4 class="padding-top-10px">Видливи атрибути:</h4>
+                        </p:else>
+                    </t:if>
 
+                </div>
+                <div class="col-md-3 padding-top-15px padding-left-25px">
+                    <t:actionlink t:id="toggleDisplay" zone="leftPanelZone" class="btn btn-default"><i class="fa fa-eye" aria-hidden="true"></i></t:actionlink>
+                </div>
             </div>
-            <div class="col-md-3 padding-top-15px padding-left-25px">
-                <t:actionlink t:id="toggleDisplay" zone="leftPanelZone" class="btn btn-default"><i class="fa fa-eye" aria-hidden="true"></i></t:actionlink>
-            </div>
-        </div>
 
 
 
-        <div class="row margin-top-20px">
+            <div class="row margin-top-20px">
 
-            <t:zone t:id="leftPanelZone" id="leftPanelZone">
                 <t:if test="toggleDisplay">
 
                     <t:form t:id="filterForm">
@@ -45,7 +50,7 @@
                             <div class="col-md-12 padding-top-10px">
                                 <t:if test="textInput">
                                     <div class="">
-                                        <t:mapfield key="${attribute.getName()}" t:map="testMap"/>
+                                        <t:mapfield key="${attribute.getName()}" t:map="filterMap"/>
                                     </div>
                                 </t:if>
                             </div>
@@ -53,8 +58,11 @@
                         </t:loop>
                         <div class="col-md-12 padding-top-15px">
                             <div class="form-group">
-                                <div class="">
+                                <div class="col-md-5 no-padding-left">
                                     <t:submit value="Филтрирај" class="btn btn-default"/>
+                                </div>
+                                <div class="col-md-7">
+                                    <t:actionlink t:id="resetFilter" class="btn btn-default">Откажи</t:actionlink>
                                 </div>
                             </div>
                         </div>
@@ -89,25 +97,21 @@
                         </t:form>
                     </p:else>
                 </t:if>
-            </t:zone>
 
-        </div>
+            </div>
 
-
-        <!--<h3>Филтрирај:</h3>-->
-        <!--<ul>-->
-            <!--<li>Sekcii</li>-->
-        <!--</ul>-->
+        </t:zone>
 
     </div>
+
 
     <div class="col-md-offset-1 col-md-8">
         <div class="row">
             <div class="col-md-12">
                 <h2>
-                    <t:pagelink page="reference/showreference" context="reference.id" class="link-decoration black-color">
+                    <t:actionlink t:id="refreshPage" class="link-decoration black-color" context="referenceId">
                         ${reference.getName()}
-                    </t:pagelink>
+                    </t:actionlink>
                 </h2>
             </div>
         </div>

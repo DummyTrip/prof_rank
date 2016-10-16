@@ -84,7 +84,7 @@ public class ReferenceInstanceHibernate {
 
     public String getDisplayName(ReferenceInstance referenceInstance) {
         String displayName = "";
-        List<AttributeReferenceInstance> attributeReferenceInstances = referenceInstance.getAttributeReferenceInstances();
+        List<AttributeReferenceInstance> attributeReferenceInstances = getSortedAttributeReferenceInstance(referenceInstance);
         List<Attribute> attributes = getAttributeValues(referenceInstance);
 
         for (AttributeReferenceInstance attributeReferenceInstance : attributeReferenceInstances) {
@@ -284,13 +284,15 @@ public class ReferenceInstanceHibernate {
 
         AttributeReferenceInstance attributeReferenceInstance = getOrCreateAttributeRefereneInstance(referenceInstance, attribute);
 
-        setAttributeValue(attributeReferenceInstance, referenceInstance, attribute, value);
+        setAttributeValue(attributeReferenceInstance, referenceInstance, value);
     }
 
-    public void setAttributeValue(AttributeReferenceInstance attributeReferenceInstance, ReferenceInstance referenceInstance, Attribute attribute, String value) {
-        if (attributeReferenceInstance == null || referenceInstance == null || attribute == null || value == null) {
+    public void setAttributeValue(AttributeReferenceInstance attributeReferenceInstance, ReferenceInstance referenceInstance, String value) {
+        if (attributeReferenceInstance == null || referenceInstance == null || value == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
+
+        Attribute attribute = attributeReferenceInstance.getAttribute();
 
         attributeReferenceInstance.setReferenceInstance(referenceInstance);
         attributeReferenceInstance.setAttribute(attribute);
@@ -306,13 +308,16 @@ public class ReferenceInstanceHibernate {
 
         AttributeReferenceInstance attributeReferenceInstance = getOrCreateAttributeRefereneInstance(referenceInstance, attribute);
 
-        setAttributeIndex(attributeReferenceInstance, referenceInstance, attribute, index);
+        setAttributeIndex(attributeReferenceInstance, referenceInstance, index);
     }
 
-    public void setAttributeIndex(AttributeReferenceInstance attributeReferenceInstance, ReferenceInstance referenceInstance, Attribute attribute, Integer index) {
-        if (attributeReferenceInstance == null || referenceInstance == null || attribute == null || index == null) {
+    public void setAttributeIndex(AttributeReferenceInstance attributeReferenceInstance, ReferenceInstance referenceInstance, Integer index) {
+        if (attributeReferenceInstance == null || referenceInstance == null || index == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
+
+        Attribute attribute = attributeReferenceInstance.getAttribute();
+
         attributeReferenceInstance.setReferenceInstance(referenceInstance);
         attributeReferenceInstance.setAttribute(attribute);
         attributeReferenceInstance.setIndex(index);
@@ -327,13 +332,15 @@ public class ReferenceInstanceHibernate {
 
         AttributeReferenceInstance attributeReferenceInstance = getOrCreateAttributeRefereneInstance(referenceInstance, attribute);
 
-        setAttributeDisplay(attributeReferenceInstance, referenceInstance, attribute, display);
+        setAttributeDisplay(attributeReferenceInstance, referenceInstance, display);
     }
 
-    public void setAttributeDisplay(AttributeReferenceInstance attributeReferenceInstance, ReferenceInstance referenceInstance, Attribute attribute, boolean display) {
-        if (attributeReferenceInstance == null || referenceInstance == null || attribute == null) {
+    public void setAttributeDisplay(AttributeReferenceInstance attributeReferenceInstance, ReferenceInstance referenceInstance, boolean display) {
+        if (attributeReferenceInstance == null || referenceInstance == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
+
+        Attribute attribute = attributeReferenceInstance.getAttribute();
 
         attributeReferenceInstance.setReferenceInstance(referenceInstance);
         attributeReferenceInstance.setAttribute(attribute);

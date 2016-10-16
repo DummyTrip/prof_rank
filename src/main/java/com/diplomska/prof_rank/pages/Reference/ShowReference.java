@@ -73,9 +73,9 @@ public class ShowReference {
     @Persist
     private List<String> displayNames;
 
-    @Persist
-    @Property
-    private Map<String, String> testMap;
+//    @Persist
+//    @Property
+//    private Map<String, String> testMap;
 
     @Persist
     @Property
@@ -157,7 +157,7 @@ public class ShowReference {
     }
 
     public Object onSuccessFromFilterForm() {
-        Link link = this.setFilters(testMap);
+        Link link = this.setFilters(filterMap);
 
         return link;
     }
@@ -182,7 +182,7 @@ public class ShowReference {
         this.reference = referenceHibernate.getById(referenceId);
         this.referenceName = referenceNameQueryString;
         this.displayNames = referenceInstanceHibernate.getAllDisplayNames();
-        testMap = new HashMap<String, String>();
+//        testMap = new HashMap<String, String>();
 
         refInstances = new ArrayList<ReferenceInstance>();
         firstPageRefInstances = new ArrayList<ReferenceInstance>();
@@ -399,7 +399,6 @@ public class ShowReference {
     @CommitAfter
     @OnEvent(component = "saveDisplay", value = "selected")
     void saveDisplay() {
-        Reference reference = referenceHibernate.getById(referenceId);
         List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getByReference(reference);
 
         for (ReferenceInstance referenceInstance : referenceInstances) {
@@ -410,10 +409,23 @@ public class ShowReference {
                 if (selectedCheckboxes.containsKey(attribute.getId())) {
                     boolean display = selectedCheckboxes.get(attribute.getId()) == 0 ? false : true;
 
-                    referenceInstanceHibernate.setAttributeDisplay(ari, referenceInstance, attribute, display);
+                    referenceInstanceHibernate.setAttributeDisplay(ari, referenceInstance, display);
                 }
             }
         }
+    }
+
+    public Object onActionFromRefreshPage(Long referenceId) {
+        this.referenceId = referenceId;
+        this.filtersQueryString = null;
+
+        return this;
+    }
+
+    public Object onActionFromResetFilter() {
+        this.filtersQueryString = null;
+
+        return this;
     }
 
 }
