@@ -66,4 +66,25 @@ public class AttributeHibernate {
 
         return entities;
     }
+
+    public Attribute getOrCreateAttribute(String attributeName) {
+        if (attributeName == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        List<Attribute> attributes = getByColumn("name", attributeName);
+        Attribute attribute;
+
+        if (attributes.size() > 0) {
+            attribute = attributes.get(0);
+        } else {
+            attribute = new Attribute();
+            attribute.setName(attributeName);
+            attribute.setInputType("text");
+
+            store(attribute);
+        }
+
+        return attribute;
+    }
 }

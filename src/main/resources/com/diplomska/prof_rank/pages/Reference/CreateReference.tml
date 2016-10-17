@@ -2,7 +2,44 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
       xmlns:p="tapestry:parameter" xmlns:T="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
 
-<h4>${reference}</h4>
+<t:if test="missingAuthors">
+    <div class="row">
+        <div class="alert alert-warning">
+            <strong>Предупредување!</strong>
+            Некои од авторите не беа пронајдени.
+            Внесете го името, презимето или емаил-от на авторот за да ви биде понуден избор за автоматско дополнување.
+        </div>
+    </div>
+</t:if>
+
+<div class="row">
+
+    <t:if test="papersReference">
+        <div class="col-md-3 margin-top-50px">
+            <h2 class="float-right">${reference}</h2>
+        </div>
+
+        <t:form t:id="bibtexForm">
+
+            <div class="col-md-offset-4 col-md-4">
+                <t:textarea t:id="testBibtex" value="bibtexString" placeholder="Внеси BibTex..." class="bittex-textarea"/>
+            </div>
+
+            <div class="col-md-1">
+                <input t:type="submit" t:id="parseBibtex" class="btn btn-primary btn-outline font-size-18px" value="+"/>
+            </div>
+        </t:form>
+
+        <p:else>
+            <div class="col-md-offset-2 col-md-10">
+                <h2 class="">${reference}</h2>
+            </div>
+        </p:else>
+
+    </t:if>
+
+</div>
+
 
 <hr/>
 
@@ -13,6 +50,26 @@
 
             <t:zone t:id="newAttributesZone" id="newAttributesZone">
                 <t:if test="testMapPopulated">
+                    <t:loop source="authors" value="author">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">${author}</label>
+                            <div class="col-sm-8">
+                                <t:authormapfield key="${author}" t:map="testMap"/>
+                            </div>
+                            <div class="col-sm-1">
+                                <input t:type="submit" t:id="deleteAuthor" class="btn btn-danger btn-outline" defer="false" value="Х" context="author"/>
+                            </div>
+                        </div>
+                    </t:loop>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <t:submit t:id="addAuthor" zone="newAttributesZone" class="btn btn-primary btn-outline" value="Додај автор"/>
+                        </div>
+                    </div>
+
+                    <hr/>
+
                     <t:loop source="attributes" value="attribute" index="loopIndex">
                         <div class="form-group">
                             <label class="control-label col-sm-3">${attribute.getName()}</label>
@@ -21,7 +78,7 @@
                                     <t:mapfield key="${attribute.getId()}" t:map="testMap"/>
                                 </div>
                                 <div class="col-sm-1">
-                                    <input t:type="submit" t:id="delete" class="btn btn-danger" defer="false" value="Х" context="attribute.id"/>
+                                    <input t:type="submit" t:id="deleteAttribute" class="btn btn-danger btn-outline" defer="false" value="Х" context="attribute.id"/>
                                 </div>
                             </t:if>
                         </div>
@@ -29,27 +86,25 @@
                 </t:if>
             </t:zone>
 
-            <t:if test="numAttributes">
-                <div class="form-group">
-                    <div class="col-sm-3 col-sm-offset-3">
-                        <t:submit t:id="save" value="Зачувај"/>
-                        <t:actionlink t:id="cancel" class="btn btn-danger margin-left-danger">Откажи</t:actionlink>
-                    </div>
-                </div>
-
-            </t:if>
-
-
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-3">
                     <t:select t:id="newAttributes" value="newAttribute" model="attributeSelectModel" zone="newAttributesZone"/>
                 </div>
 
                 <div class="col-sm-3">
-                    <t:submit t:id="addAttribute" zone="newAttributesZone" class="btn btn-default" value="Додај"/>
+                    <t:submit t:id="addAttribute" zone="newAttributesZone" class="btn btn-primary btn-outline" value="Додај атрибут"/>
                 </div>
             </div>
 
+            <t:if test="numAttributes">
+                <div class="form-group">
+                    <div class="col-sm-3 col-sm-offset-3">
+                        <t:submit t:id="save" value="Зачувај" class="btn btn-primary"/>
+                        <t:actionlink t:id="cancel" class="btn btn-danger margin-left-danger">Откажи</t:actionlink>
+                    </div>
+                </div>
+
+            </t:if>
 
         </t:form>
 

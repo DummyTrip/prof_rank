@@ -16,6 +16,8 @@ public class ReferenceInstancePerson {
 
     private Person person;
 
+    private String author;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NonVisual
@@ -45,5 +47,13 @@ public class ReferenceInstancePerson {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

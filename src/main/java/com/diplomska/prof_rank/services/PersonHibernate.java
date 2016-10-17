@@ -3,10 +3,12 @@ package com.diplomska.prof_rank.services;
 import com.diplomska.prof_rank.entities.*;
 import mk.ukim.finki.isis.model.entities.Instructor;
 import mk.ukim.finki.isis.model.entities.Person;
+import org.apache.commons.codec.binary.StringUtils;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
@@ -15,9 +17,6 @@ import java.util.List;
 import static org.hibernate.criterion.Restrictions.*;
 import static org.hibernate.criterion.Restrictions.eq;
 
-/**
- * Created by Aleksandar on 06-Oct-16.
- */
 public class PersonHibernate {
     @Inject
     Session session;
@@ -66,6 +65,19 @@ public class PersonHibernate {
                 .add(eq("userName", username)).uniqueResult();
     }
 
+    public List<Person> getByBibtexAuthorName(String author) {
+        String lastName = author.split(", ")[0];
+        String firstName = author.split(", ")[1].split(" ")[0];
+
+        Criteria criteria = session.createCriteria(Person.class);
+        List<Person> entities = criteria
+                .add(eq("lastName", lastName))
+                .add(like("firstName", firstName))
+                .list();
+
+        return entities;
+    }
+
     public List<Person> getByColumn(String column, String value) {
         if (column == null || value == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
@@ -75,6 +87,28 @@ public class PersonHibernate {
         List<Person> entities = criteria.add(eq(column, value)).list();
 
         return entities;
+    }
+
+    public List<String> listAllPersonIdentifiers() {
+        List<String> identifiers = new ArrayList<String>();
+
+        for (Person person : getAll()) {
+            StringBuilder sb = buildPersonIdentifier(person);
+            identifiers.add(sb.toString());
+        }
+
+        return identifiers;
+    }
+
+    private StringBuilder buildPersonIdentifier(Person person) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(person.getFirstName());
+        sb.append(" ");
+        sb.append(person.getLastName());
+        sb.append(" (");
+        sb.append(person.getEmail());
+        sb.append(")");
+        return sb;
     }
 
     public List<Instructor> getInstructorsByPersonId (Long personId) {
@@ -99,7 +133,6 @@ public class PersonHibernate {
         return referenceInstances;
     }
 
-    @CommitAfter
     public void setReferenceInstance(Person person, ReferenceInstance referenceInstance) {
         if (person == null || referenceInstance == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -107,6 +140,54 @@ public class PersonHibernate {
         ReferenceInstancePerson referenceInstancePerson = new ReferenceInstancePerson();
 
         referenceInstancePerson.setPerson(person);
+        referenceInstancePerson.setReferenceInstance(referenceInstance);
+
+        session.saveOrUpdate(referenceInstancePerson);
+    }
+
+    public void setReferenceInstance(ReferenceInstance referenceInstance, String personIdentifier) {
+        if (referenceInstance == null || personIdentifier == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        ReferenceInstancePerson referenceInstancePerson = new ReferenceInstancePerson();
+        Person person;
+
+        String[] identifiers = personIdentifier.split("\\(");
+        if (identifiers.length > 1) {
+            List<Person> persons = getPersonFromIdentifier(personIdentifier);
+
+            person = persons.get(0);
+            referenceInstancePerson.setPerson(person);
+        } else {
+            referenceInstancePerson.setAuthor(personIdentifier);
+        }
+
+        referenceInstancePerson.setReferenceInstance(referenceInstance);
+
+        session.saveOrUpdate(referenceInstancePerson);
+    }
+
+    private List<Person> getPersonFromIdentifier(String personIdentifier) {
+        if (personIdentifier == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        String[] identifiers = personIdentifier.split("\\(");
+        String email = identifiers[1];
+        email = email.substring(0, email.length() - 1);
+
+        return getByColumn("email", email);
+    }
+
+    public void setReferenceInstanceMissingPerson(ReferenceInstance referenceInstance, String author) {
+        if (author == null || referenceInstance == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        ReferenceInstancePerson referenceInstancePerson = new ReferenceInstancePerson();
+
+        referenceInstancePerson.setAuthor(author);
         referenceInstancePerson.setReferenceInstance(referenceInstance);
 
         session.saveOrUpdate(referenceInstancePerson);

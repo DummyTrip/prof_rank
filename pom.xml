@@ -161,6 +161,12 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
             <version>4.1.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.jbibtex</groupId>
+            <artifactId>jbibtex</artifactId>
+            <version>1.0.15</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>prof_rank</finalName>

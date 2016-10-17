@@ -222,6 +222,11 @@
     margin-top: 20px;
 }
 
+.margin-top-50px
+{
+    margin-top: 50px;
+}
+
 div.scrollExtend-loading {
     /*height: 80px;*/
     background: url("../images/ripple.gif") no-repeat center bottom;
@@ -246,6 +251,68 @@ div.scrollExtend-loading {
 .padding-left-30px
 {
     padding-left: 30px;
+}
+
+.font-size-18px
+{
+    font-size: 18px;
+}
+
+.bittex-textarea {
+    height: 100px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Bootstrap button outline override*/
+.btn-outline {
+    background-color: transparent;
+    color: inherit;
+}
+
+.btn-primary.btn-outline {
+    color: #286090;
+    border-color: #428bca;
+}
+
+.btn-success.btn-outline {
+    color: #5cb85c;
+}
+
+.btn-info.btn-outline {
+    color: #5bc0de;
+}
+
+.btn-warning.btn-outline {
+    color: #f0ad4e;
+}
+
+.btn-danger.btn-outline {
+    color: #d9534f;
+}
+
+.btn-primary.btn-outline:hover,
+.btn-success.btn-outline:hover,
+.btn-info.btn-outline:hover,
+.btn-warning.btn-outline:hover,
+.btn-danger.btn-outline:hover,
+.btn-primary.btn-outline:focus,
+.btn-success.btn-outline:focus,
+.btn-info.btn-outline:focus,
+.btn-warning.btn-outline:focus,
+.btn-danger.btn-outline:focus
+{
+    color: #fff;
 }
 
 
