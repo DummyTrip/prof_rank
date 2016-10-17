@@ -225,6 +225,7 @@ public class EditReference {
             Collection<BibTeXEntry> entries = listBibtexEntriesFromString(bibtexString);
 
             parseBibtexEntries(entries);
+            showBibtexImport = false;
         }
     }
 
@@ -357,5 +358,19 @@ public class EditReference {
         attributes = null;
         authors = null;
         missingAuthors = false;
+        showBibtexImport = false;
+    }
+
+    @Property
+    @Persist
+    boolean showBibtexImport;
+
+    @InjectComponent
+    Zone bibtexZone;
+
+    public void onActionFromToggleBibtexImport() {
+        showBibtexImport = !showBibtexImport;
+
+        ajaxResponseRenderer.addRender(bibtexZone);
     }
 }
