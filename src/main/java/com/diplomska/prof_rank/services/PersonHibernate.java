@@ -133,20 +133,21 @@ public class PersonHibernate {
         return referenceInstances;
     }
 
-    public void setReferenceInstance(Person person, ReferenceInstance referenceInstance) {
-        if (person == null || referenceInstance == null) {
+    public void setReferenceInstance(Person person, ReferenceInstance referenceInstance, Integer authorNum) {
+        if (person == null || referenceInstance == null || authorNum == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
         ReferenceInstancePerson referenceInstancePerson = new ReferenceInstancePerson();
 
         referenceInstancePerson.setPerson(person);
+        referenceInstancePerson.setAuthorNum(authorNum);
         referenceInstancePerson.setReferenceInstance(referenceInstance);
 
         session.saveOrUpdate(referenceInstancePerson);
     }
 
-    public void setReferenceInstance(ReferenceInstance referenceInstance, String personIdentifier) {
-        if (referenceInstance == null || personIdentifier == null) {
+    public void setReferenceInstance(ReferenceInstance referenceInstance, String personIdentifier, Integer authorNum) {
+        if (referenceInstance == null || personIdentifier == null || authorNum == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
@@ -163,6 +164,7 @@ public class PersonHibernate {
             referenceInstancePerson.setAuthor(personIdentifier);
         }
 
+        referenceInstancePerson.setAuthorNum(authorNum);
         referenceInstancePerson.setReferenceInstance(referenceInstance);
 
         session.saveOrUpdate(referenceInstancePerson);
@@ -178,6 +180,34 @@ public class PersonHibernate {
         email = email.substring(0, email.length() - 1);
 
         return getByColumn("email", email);
+    }
+
+    public List<String> getReferenceInstanceAuthors(ReferenceInstance referenceInstance) {
+        if (referenceInstance == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        List<String> authors = new ArrayList<String>();
+
+        Criteria criteria = session.createCriteria(ReferenceInstancePerson.class);
+        criteria.add(eq("referenceInstance", referenceInstance));
+
+        List<ReferenceInstancePerson> rips = criteria.list();
+
+        for (ReferenceInstancePerson rip : rips) {
+            Person person = rip.getPerson();
+            String identifier;
+
+            if (person == null) {
+                identifier = rip.getAuthor();
+            } else {
+                identifier = buildPersonIdentifier(person).toString();
+            }
+
+            authors.add(identifier);
+        }
+
+        return authors;
     }
 
     public void setReferenceInstanceMissingPerson(ReferenceInstance referenceInstance, String author) {

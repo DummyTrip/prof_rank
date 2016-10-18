@@ -110,16 +110,30 @@ public class EditReference {
         bibtexString = "";
 
         if (authors == null) {
+            List<String> personIdentifiers = personHibernate.getReferenceInstanceAuthors(referenceInstance);
             authors = new ArrayList<String>();
-            String authorName = "author 1";
-            authors.add(authorName);
-            testMap.put(authorName, "");
+            int i = 0;
+            String authorName;
+
+            for (String identifier : personIdentifiers) {
+                authorName = "author " + (++i);
+                authors.add(authorName);
+                testMap.put(authorName, identifier);
+            }
+
+//            String authorName = "author 1";
+//            authors.add(authorName);
+//            testMap.put(authorName, "");
         }
     }
 
     @CommitAfter
     @OnEvent(component = "save", value = "selected")
     Object saveReference() {
+        for (String author : authors) {
+            testMap.remove(author);
+        }
+
         referenceInstance = referenceInstanceHibernate.getById(referenceInstanceId);
 
         referenceInstanceHibernate.updateAttributeReferenceInstances(referenceInstance, testMap, attributes);

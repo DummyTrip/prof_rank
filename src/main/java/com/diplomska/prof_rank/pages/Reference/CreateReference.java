@@ -145,7 +145,7 @@ public class CreateReference {
             referenceInstance.setReference(reference);
             referenceInstanceHibernate.store(referenceInstance);
 
-            personHibernate.setReferenceInstance(referenceInstance, authorName);
+            personHibernate.setReferenceInstance(referenceInstance, authorName, authorNames.indexOf(authorName));
 
             referenceInstanceHibernate.updateAttributeReferenceInstances(referenceInstance, testMap, attributes);
         }

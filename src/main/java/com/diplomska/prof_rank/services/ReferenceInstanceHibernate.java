@@ -1,6 +1,7 @@
 package com.diplomska.prof_rank.services;
 
 import com.diplomska.prof_rank.entities.*;
+import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
@@ -98,6 +99,46 @@ public class ReferenceInstanceHibernate {
         }
 
         return displayName;
+    }
+
+    public Integer getReferenceInstanceAuthorNum(ReferenceInstance referenceInstance, Person person) {
+        if (person == null || referenceInstance == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        Criteria criteria = session.createCriteria(ReferenceInstancePerson.class);
+        criteria.add(eq("person", person))
+                .add(eq("referenceInstance", referenceInstance));
+
+        List<ReferenceInstancePerson> rips = criteria.list();
+
+        if (rips.size() > 0) {
+            ReferenceInstancePerson rip = (ReferenceInstancePerson) criteria.list().get(0);
+
+            return rip.getAuthorNum();
+        } else {
+            return -1;
+        }
+    }
+
+    public Integer getReferenceInstanceAuthorNum(ReferenceInstance referenceInstance, String author) {
+        if (author == null || referenceInstance == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        Criteria criteria = session.createCriteria(ReferenceInstancePerson.class);
+        criteria.add(eq("author", author))
+                .add(eq("referenceInstance", referenceInstance));
+
+        List<ReferenceInstancePerson> rips = criteria.list();
+
+        if (rips.size() > 0) {
+            ReferenceInstancePerson rip = (ReferenceInstancePerson) criteria.list().get(0);
+
+            return rip.getAuthorNum();
+        } else {
+            return -1;
+        }
     }
 
     public boolean isDisplayAttribute(ReferenceInstance referenceInstance, Attribute attribute) {

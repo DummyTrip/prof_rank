@@ -142,7 +142,7 @@ public class ShowPerson {
     void onActionFromAddReferenceInstance(Long id) {
         ReferenceInstance entity = referenceInstanceHibernate.getById(id);
 
-        personHibernate.setReferenceInstance(person, entity);
+//        personHibernate.setReferenceInstance(person, entity);
     }
 
     @CommitAfter
