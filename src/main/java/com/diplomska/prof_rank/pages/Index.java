@@ -119,10 +119,10 @@ public class Index
         userHibernate.store(user);
 
         Person person = new Person();
-        person.setFirstName("TestFirstName");
-        person.setMiddleName("TestMiddleName");
-        person.setLastName("TestLastName");
-        person.setEmail("TestEmail");
+        person.setFirstName("Vangel");
+//        person.setMiddleName("");
+        person.setLastName("Ajanovski");
+        person.setEmail("vangel.ajanovski@finki.ukim.mk");
         personHibernate.store(person);
 
         String fileName = "poi_test.xlsx";
@@ -131,21 +131,21 @@ public class Index
         excelWorkbook.readCategorySpreadsheet(fileName, 2);
         excelWorkbook.readCategorySpreadsheet(fileName, 3);
 
-        excelWorkbook.readNastavaSpreadsheet(fileName, 4);
+        excelWorkbook.readNastavaSpreadsheet(fileName, 4, person);
         
-        // read Projects sheet
-        excelWorkbook.readSpreadsheet(fileName,
-                5, "Projects", 2,
-                "Име на проектот", "ПОЕНИ");
-
-        // read Papers sheet
-        excelWorkbook.readSpreadsheet(fileName,
-                6, "Papers", 2,
-                "Автор 1", "//");
-
-        // read Books sheet
-        excelWorkbook.readSpreadsheet(fileName,
-                7, "Books", 1,
-                "Автори", "ПОЕНИ");
+//        // read Projects sheet
+//        excelWorkbook.readSpreadsheet(fileName,
+//                5, "Projects", 2,
+//                "Име на проектот", "ПОЕНИ");
+//
+//        // read Papers sheet
+//        excelWorkbook.readSpreadsheet(fileName,
+//                6, "Papers", 2,
+//                "Автор 1", "//");
+//
+//        // read Books sheet
+//        excelWorkbook.readSpreadsheet(fileName,
+//                7, "Books", 1,
+//                "Автори", "ПОЕНИ");
     }
 }

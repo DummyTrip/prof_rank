@@ -157,7 +157,7 @@ public class ExcelWorkbook {
         return cellValue;
     }
 
-    public List<List<String>> readNastavaSpreadsheet(String fileName, Integer spreadsheetNumber) throws Exception{
+    public List<List<String>> readNastavaSpreadsheet(String fileName, Integer spreadsheetNumber, Person person) throws Exception{
         // List of row values of Category Spreadsheet.
         // Row values are a list of strings.
         List<List<String>> categoryValues = new ArrayList<List<String>>();
@@ -169,12 +169,12 @@ public class ExcelWorkbook {
 
         Iterator<Row> rowIterator = spreadsheet.iterator();
 
-        categoryValues = iterateAndStoreNastavaSpreadsheet(rowIterator, categoryValues);
+        categoryValues = iterateAndStoreNastavaSpreadsheet(rowIterator, categoryValues, person);
 
         return categoryValues;
     }
 
-    private List<List<String>> iterateAndStoreNastavaSpreadsheet(Iterator<Row> rowIterator, List<List<String>> categoryValues) {
+    private List<List<String>> iterateAndStoreNastavaSpreadsheet(Iterator<Row> rowIterator, List<List<String>> categoryValues, Person person) {
         while (rowIterator.hasNext()) {
             XSSFRow row = (XSSFRow) rowIterator.next();
 
@@ -196,6 +196,7 @@ public class ExcelWorkbook {
                 if (rowValues.size() == attributes.size()) {
                     Reference reference = getReference("Одржување на настава - од прв циклус студии");
                     ReferenceInstance referenceInstance = createReferenceInstance(reference);
+                    personHibernate.setReferenceInstance(person, referenceInstance, 1);
                     for (String cellValue : rowValues) {
                         Integer index = rowValues.indexOf(cellValue);
                         Attribute attribute = attributes.get(index);
