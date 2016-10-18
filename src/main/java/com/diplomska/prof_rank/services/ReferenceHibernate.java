@@ -226,14 +226,19 @@ public class ReferenceHibernate {
         return reference.getReferenceType();
     }
 
-    @CommitAfter
     public void setReferenceType(Reference reference, ReferenceType referenceType) {
         if (reference == null || reference == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
         reference.setReferenceType(referenceType);
-        session.persist(reference);
+        session.saveOrUpdate(reference);
+
+        List<Attribute> attributes = referenceTypeHibernate.getAttributes(referenceType);
+
+        for (Attribute attribute : attributes) {
+            setAttributeReference(reference, attribute);
+        }
     }
 
     public void setAttributeReference(Reference reference, Attribute attribute) {

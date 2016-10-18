@@ -4,10 +4,7 @@ package com.diplomska.prof_rank.pages;
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.annotations.PublicPage;
-import com.diplomska.prof_rank.entities.Reference;
-import com.diplomska.prof_rank.entities.ReferenceInstance;
-import com.diplomska.prof_rank.entities.Section;
-import com.diplomska.prof_rank.entities.User;
+import com.diplomska.prof_rank.entities.*;
 import com.diplomska.prof_rank.model.UserInfo;
 import com.diplomska.prof_rank.services.*;
 import com.diplomska.prof_rank.util.AppConfig;
@@ -28,7 +25,7 @@ import java.util.List;
 /**
  * Start page of application prof_rank.
  */
-@InstructorPage
+@PublicPage
 public class Index
 {
     @Inject
@@ -54,6 +51,15 @@ public class Index
 
     @Inject
     Logger logger;
+
+    @Inject
+    ReferenceTypeHibernate referenceTypeHibernate;
+
+    @Inject
+    AttributeHibernate attributeHibernate;
+
+    @Inject
+    RoleHibernate roleHibernate;
 
     public Float getPoints() {
         Float points = 0f;
@@ -109,30 +115,52 @@ public class Index
         return getPopularReferencesForUser().size() > 0 ? true : false;
     }
 
-    @CommitAfter
-    void onActionFromAddReferencesFromExcel() throws Exception{
+    private void createDefaultReferenceType() {
+        ReferenceType referenceType = new ReferenceType();
+        referenceType.setName("Default");
+        Attribute attribute = new Attribute();
+        attribute.setName("Title");
+        attribute.setInputType("text");
+        attributeHibernate.store(attribute);
+        referenceTypeHibernate.store(referenceType);
+        referenceTypeHibernate.setAttribute(referenceType, attribute);
+    }
+
+    private void addUser() {
         User user = new User();
         user.setFirstName("TestFirstName");
         user.setFatherName("TestFatherName");
         user.setLastName("TestLastName");
         user.setEmail("TestEmail");
         userHibernate.store(user);
+    }
+
+    private void addPerson() {
+        Role role = new Role();
+        role.setName("admin");
+        roleHibernate.store(role);
 
         Person person = new Person();
         person.setFirstName("Vangel");
 //        person.setMiddleName("");
         person.setLastName("Ajanovski");
         person.setEmail("vangel.ajanovski@finki.ukim.mk");
+        person.setUserName("da");
         personHibernate.store(person);
+        personHibernate.setRole(person, role);
+    }
 
-        String fileName = "poi_test.xlsx";
-
+    private void addCategories(String fileName) throws Exception {
         excelWorkbook.readCategorySpreadsheet(fileName, 1);
         excelWorkbook.readCategorySpreadsheet(fileName, 2);
         excelWorkbook.readCategorySpreadsheet(fileName, 3);
+    }
+
+    private void addRefs(String fileName) throws Exception{
+        Person person = personHibernate.getById(Long.valueOf(1));
 
         excelWorkbook.readNastavaSpreadsheet(fileName, 4, person);
-        
+
         // read Projects sheet
         excelWorkbook.readSpreadsheet(fileName,
                 5, "Projects", 2,
@@ -147,5 +175,20 @@ public class Index
         excelWorkbook.readSpreadsheet(fileName,
                 7, "Books", 1,
                 "Автори", "ПОЕНИ", person);
+    }
+
+    @CommitAfter
+    void onActionFromAddReferencesFromExcel() throws Exception{
+        String fileName = "poi_test.xlsx";
+
+        addCategories(fileName);
+        addRefs(fileName);
+    }
+
+    @CommitAfter
+    void onActionFromAddPersonAndReferenceType() {
+        addUser();
+        addPerson();
+        createDefaultReferenceType();
     }
 }

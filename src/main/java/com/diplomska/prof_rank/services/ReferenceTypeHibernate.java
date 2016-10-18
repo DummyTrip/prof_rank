@@ -85,7 +85,6 @@ public class ReferenceTypeHibernate {
         return attributes;
     }
 
-    @CommitAfter
     public void setAttribute(ReferenceType referenceType, Attribute attribute) {
         if (referenceType == null || attribute == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -98,7 +97,6 @@ public class ReferenceTypeHibernate {
         session.saveOrUpdate(attributeReferenceType);
     }
 
-    @CommitAfter
     public void deleteAttribute(ReferenceType referenceType, Attribute attribute) {
         if (referenceType == null || attribute == null) {
             throw new IllegalArgumentException("Cannot persist null value.");

@@ -33,6 +33,9 @@ public class ExcelWorkbook {
 
     @Inject
     PersonHibernate personHibernate;
+
+    @Inject
+    ReferenceTypeHibernate referenceTypeHibernate;
     
     // helper variable. remembers parent name for category names
     private String parentCategoryName = "";
@@ -83,8 +86,10 @@ public class ExcelWorkbook {
             }
             if (rowValues.size() > 0) {
                 categoryValues.add(rowValues);
-                // add comment to stop storing references
+                // comment next lines to stop storing references
+                ReferenceType referenceType = referenceTypeHibernate.getById(Long.valueOf(1));
                 referenceHibernate.store(reference);
+                referenceHibernate.setReferenceType(reference, referenceType);
             }
         }
 
@@ -200,9 +205,8 @@ public class ExcelWorkbook {
                     for (String cellValue : rowValues) {
                         Integer index = rowValues.indexOf(cellValue);
                         Attribute attribute = attributes.get(index);
-                        boolean display = isDisplayAttribute(attribute);
 
-                        referenceHibernate.setAttributeDisplay(reference, attribute, display);
+                        boolean display = isDisplayAttribute(attribute);
                         referenceInstanceHibernate.setAttributeValueIndexDisplay(referenceInstance, attribute, cellValue, index, display);
                     }
                     categoryValues.add(rowValues);
@@ -421,8 +425,6 @@ public class ExcelWorkbook {
             }
 
             boolean display = isDisplayAttribute(attribute);
-
-            referenceHibernate.setAttributeDisplay(reference, attribute, display);
             referenceInstanceHibernate.setAttributeValueIndexDisplay(referenceInstance, attribute, rowValues.get(i), i, display);
         }
     }
@@ -468,19 +470,35 @@ public class ExcelWorkbook {
     private Reference getReference(String name) {
         List<Reference> references = referenceHibernate.getByColumn("name", name);
         Reference reference;
+        // second part of the clause is used when the reference is already created,
+        // but it's attributes are not.
         if (references.size() == 0) {
             reference = new Reference();
             reference.setName(name);
             referenceHibernate.store(reference);
-            // create attributeReference
-            for (Attribute attribute : attributes) {
-                referenceHibernate.setAttributeReference(reference, attribute);
-            }
+
+            addAttributesToReference(reference);
         } else {
             reference = references.get(0);
+
+            if (referenceHibernate.getAttributeValues(reference).size() == 1) {
+                addAttributesToReference(reference);
+            }
         }
 
         return reference;
+    }
+
+    private void addAttributesToReference(Reference reference) {
+        for (Attribute attribute : attributes) {
+            // don't write authors as attributes
+            if (attribute.getName().startsWith("Автор")) {
+                continue;
+            }
+
+            boolean display = isDisplayAttribute(attribute);
+            referenceHibernate.setAttributeDisplay(reference, attribute, display);
+        }
     }
 
     private ReferenceInstance createReferenceInstance(Reference reference) {

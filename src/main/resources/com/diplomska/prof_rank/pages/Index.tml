@@ -26,6 +26,10 @@
 
         <hr/>
         <div>
+            <t:actionlink t:id="addPersonAndReferenceType">Add Person and Reference Type</t:actionlink>
+        </div>
+
+        <div>
             <t:actionlink t:id="addReferencesFromExcel">Add References From Excel</t:actionlink>
         </div>
 
