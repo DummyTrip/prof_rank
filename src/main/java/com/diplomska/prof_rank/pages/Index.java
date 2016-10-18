@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Start page of application prof_rank.
  */
-@PublicPage
+@InstructorPage
 public class Index
 {
     @Inject
@@ -60,6 +60,12 @@ public class Index
 
     @Inject
     RoleHibernate roleHibernate;
+
+    @Inject
+    RulebookHibernate rulebookHibernate;
+
+    @Inject
+    SectionHibernate sectionHibernate;
 
     public Float getPoints() {
         Float points = 0f;
@@ -150,31 +156,59 @@ public class Index
         personHibernate.setRole(person, role);
     }
 
+    private void addRulebookAndSections() {
+        Rulebook rulebook = new Rulebook();
+        rulebook.setName("Default");
+        rulebookHibernate.store(rulebook);
+
+        Section section = new Section();
+        section.setName("Наставно-Образовна Дејност");
+        sectionHibernate.store(section);
+        rulebookHibernate.setSection(rulebook, section);
+
+        section = new Section();
+        section.setName("Наставно-Истражувачка Дејност");
+        sectionHibernate.store(section);
+        rulebookHibernate.setSection(rulebook, section);
+
+        section = new Section();
+        section.setName("Стручно-Апликативна Дејност");
+        sectionHibernate.store(section);
+        rulebookHibernate.setSection(rulebook, section);
+    }
+
     private void addCategories(String fileName) throws Exception {
-        excelWorkbook.readCategorySpreadsheet(fileName, 1);
-        excelWorkbook.readCategorySpreadsheet(fileName, 2);
-        excelWorkbook.readCategorySpreadsheet(fileName, 3);
+        Section section = sectionHibernate.getByColumn("name", "Наставно-Образовна Дејност").get(0);
+        excelWorkbook.readCategorySpreadsheet(fileName, 1, section);
+        section = sectionHibernate.getByColumn("name", "Наставно-Истражувачка Дејност").get(0);
+        excelWorkbook.readCategorySpreadsheet(fileName, 2, section);
+        section = sectionHibernate.getByColumn("name", "Стручно-Апликативна Дејност").get(0);
+        excelWorkbook.readCategorySpreadsheet(fileName, 3, section);
     }
 
     private void addRefs(String fileName) throws Exception{
         Person person = personHibernate.getById(Long.valueOf(1));
 
-        excelWorkbook.readNastavaSpreadsheet(fileName, 4, person);
+        Section section = sectionHibernate.getByColumn("name", "Наставно-Образовна Дејност").get(0);
+        excelWorkbook.readNastavaSpreadsheet(fileName, 4, person, section);
 
+        section = sectionHibernate.getByColumn("name", "Наставно-Истражувачка Дејност").get(0);
         // read Projects sheet
         excelWorkbook.readSpreadsheet(fileName,
                 5, "Projects", 2,
-                "Име на проектот", "ПОЕНИ", person);
+                "Име на проектот", "ПОЕНИ", person, section);
 
+        section = sectionHibernate.getByColumn("name", "Наставно-Истражувачка Дејност").get(0);
         // read Papers sheet
         excelWorkbook.readSpreadsheet(fileName,
                 6, "Papers", 2,
-                "Автор 1", "//", person);
+                "Автор 1", "//", person, section);
 
+        section = sectionHibernate.getByColumn("name", "Наставно-Образовна Дејност").get(0);
         // read Books sheet
         excelWorkbook.readSpreadsheet(fileName,
                 7, "Books", 1,
-                "Автори", "ПОЕНИ", person);
+                "Автори", "ПОЕНИ", person, section);
     }
 
     @CommitAfter
@@ -190,5 +224,6 @@ public class Index
         addUser();
         addPerson();
         createDefaultReferenceType();
+        addRulebookAndSections();
     }
 }

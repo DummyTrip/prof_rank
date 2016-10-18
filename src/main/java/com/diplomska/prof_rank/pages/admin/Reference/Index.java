@@ -61,8 +61,8 @@ public class Index {
 
     @CommitAfter
     void onActionFromReadExcel() throws Exception {
-        excelWorkbook.readCategorySpreadsheet("poi_test.xlsx", 1);
-        excelWorkbook.readCategorySpreadsheet("poi_test.xlsx", 2);
-        excelWorkbook.readCategorySpreadsheet("poi_test.xlsx", 3);
+//        excelWorkbook.readCategorySpreadsheet("poi_test.xlsx", 1);
+//        excelWorkbook.readCategorySpreadsheet("poi_test.xlsx", 2);
+//        excelWorkbook.readCategorySpreadsheet("poi_test.xlsx", 3);
     }
 }

@@ -50,6 +50,36 @@ public class ReferenceHibernate {
         return session.createCriteria(Reference.class).addOrder(Order.desc("id")).setFirstResult(offset).setMaxResults(limit).list();
     }
 
+    public List<Reference> getBySections(Integer offset, Integer limit, List<Section> sections) {
+        List<Reference> allReferences = session.createCriteria(Reference.class).addOrder(Order.desc("id")).list();
+
+        List<Reference> references = new ArrayList<Reference>();
+
+        for (Reference reference : allReferences ) {
+            List<Section> refSections = getSections(reference);
+
+            for (Section section : sections) {
+                for(Section refSection: refSections) {
+                    if (refSection.getId().equals(section.getId())) {
+                        references.add(reference);
+                        break;
+                    }
+                }
+            }
+
+            if (references.size() == (offset + limit)) {
+                break;
+            }
+        }
+        // TODO: refactor this code
+        if (offset > references.size()) {
+            return new ArrayList<Reference>();
+        }
+
+        limit = references.size() > (limit + offset) ? (limit + offset) : references.size();
+        return references.subList(offset, limit);
+    }
+
     public List<String> getAllNames() {
         List<Reference> references = getAll();
         List<String> referenceNames = new ArrayList<String>();
@@ -77,6 +107,25 @@ public class ReferenceHibernate {
         List<ReferenceInstance> allReferenceInstances = personHibernate.getReferenceInstances(person);
 
         return getSortedReferences(allReferenceInstances, limit);
+    }
+
+    public List<Reference> getPopularByPerson(Person person, Integer limit, List<Section> sections) {
+        List<ReferenceInstance> allReferenceInstances = personHibernate.getReferenceInstances(person);
+        List<ReferenceInstance> references = new ArrayList<ReferenceInstance>();
+
+        for (ReferenceInstance referenceInstance : allReferenceInstances ) {
+            List<Section> refSections = getSections(referenceInstance.getReference());
+
+            for (Section section : sections) {
+                for(Section refSection: refSections) {
+                    if (refSection.getId().equals(section.getId())) {
+                        references.add(referenceInstance);
+                    }
+                }
+            }
+        }
+
+        return getSortedReferences(references, limit);
     }
 
     private List<Reference> getSortedReferences(List<ReferenceInstance> allReferenceInstances, Integer limit) {

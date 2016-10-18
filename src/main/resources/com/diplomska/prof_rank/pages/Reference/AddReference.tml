@@ -18,9 +18,31 @@
         </div>
 
         <h3 class="padding-top-20px">Филтрирај:</h3>
-        <ul>
-            <li>Sekcii</li>
-        </ul>
+
+        <t:zone t:id="sectionFilterZone" id="sectionFilterZone">
+            <t:if test="sectionNum">
+                <t:form t:id="sectionForm">
+                    <t:loop source="sections" value="section">
+
+                        <div class="col-md-9 padding-top-10px">
+                            <label class="control-label">${section.getName()}</label>
+                        </div>
+
+                        <div class="col-md-3 padding-top-10px padding-left-30px">
+                            <t:if test="selectedCheckbox">
+                                <input t:type="submit" t:id="removeSection" class="btn btn-primary" defer="false" value="-" context="section.id"/>
+
+                                <p:else>
+                                    <input t:type="submit" t:id="addSection" class="btn btn-default" defer="false" value="+" context="section.id"/>
+
+                                </p:else>
+                            </t:if>
+                        </div>
+
+                    </t:loop>
+                </t:form>
+            </t:if>
+        </t:zone>
 
     </div>
 

@@ -2,18 +2,22 @@ package com.diplomska.prof_rank.pages.Reference;
 
 import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.entities.Reference;
+import com.diplomska.prof_rank.entities.Section;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
+import com.diplomska.prof_rank.services.RulebookHibernate;
+import com.diplomska.prof_rank.services.SectionHibernate;
 import com.diplomska.prof_rank.services.UserHibernate;
 import org.apache.tapestry5.Link;
-import org.apache.tapestry5.annotations.ActivationRequestParameter;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PageRenderLinkSource;
+import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Aleksandar on 12-Oct-16.
@@ -77,6 +81,20 @@ public class AddReference {
         this.referenecNames = referenceHibernate.getAllNames();
 
         refs = new ArrayList<Reference>();
+
+        if (sections == null) {
+            sections = sectionHibernate.getAll();
+        }
+
+        if (selectedCheckboxes == null) {
+            selectedCheckboxes = new HashMap<Long, Integer>();
+            selectedSections = new ArrayList<Section>();
+
+            for (Section section : sections) {
+                selectedCheckboxes.put(section.getId(), 1);
+                selectedSections.add(section);
+            }
+        }
     }
 
     public Object onSuccessFromForm() {
@@ -102,13 +120,71 @@ public class AddReference {
 
         int size = refs.size();
         List<Reference> newInstances;
-        if (referenceNameQueryString != null) {
-            newInstances = referenceHibernate.getByColumn("name", referenceNameQueryString);
-        } else {
-            newInstances = referenceHibernate.getAll(first, PageSize);
-        }
+        // TODO: fix duplicate records.
+        newInstances = referenceHibernate.getBySections(first, PageSize, selectedSections);
+
         refs.addAll(newInstances);
 
         return refs;
+    }
+
+
+    @InjectComponent
+    Zone sectionFilterZone;
+
+    @Inject
+    SectionHibernate sectionHibernate;
+
+    @Inject
+    RulebookHibernate rulebookHibernate;
+
+    @Persist
+    @Property
+    List<Section> sections;
+
+    @Persist
+    @Property
+    List<Section> selectedSections;
+
+    @Property
+    Section section;
+
+    @Persist
+    @Property
+    Map<Long, Integer> selectedCheckboxes;
+
+    @Inject
+    AjaxResponseRenderer ajaxResponseRenderer;
+
+    public boolean isSelectedCheckbox() {
+        return selectedCheckboxes.get(section.getId()) == 0 ? false : true;
+    }
+
+    public boolean isSectionNum() {
+        return sections.size() > 0 ? true : false;
+    }
+
+    @OnEvent(component = "addSection", value = "selected")
+    public void addSection(Long sectionId) {
+        selectedCheckboxes.put(sectionId, 1);
+
+        selectedSections = new ArrayList<Section>();
+        for (Long id : selectedCheckboxes.keySet()) {
+            if (selectedCheckboxes.get(id).equals(1)) {
+                selectedSections.add(sectionHibernate.getById(id));
+            }
+        }
+    }
+
+    @OnEvent(component = "removeSection", value = "selected")
+    public void removeSection(Long sectionId) {
+        selectedCheckboxes.put(sectionId, 0);
+
+        selectedSections = new ArrayList<Section>();
+        for (Long id : selectedCheckboxes.keySet()) {
+            if (selectedCheckboxes.get(id).equals(1)) {
+                selectedSections.add(sectionHibernate.getById(id));
+            }
+        }
     }
 }

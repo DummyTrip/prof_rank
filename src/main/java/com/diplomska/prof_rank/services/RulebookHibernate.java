@@ -79,8 +79,8 @@ public class RulebookHibernate {
 
         Criteria criteria = session.createCriteria(RulebookSection.class);
         List<RulebookSection> rulebookSections = criteria
-                .add(eq("rulebook_id", rulebook.getId()))
-                .add(eq("section_id", section.getId()))
+                .add(eq("rulebook", rulebook))
+                .add(eq("section", section))
                 .list();
 
         if (rulebookSections.size() == 0) {

@@ -2,6 +2,7 @@ package com.diplomska.prof_rank.services;
 
 import com.diplomska.prof_rank.entities.*;
 import mk.ukim.finki.isis.model.entities.Person;
+import org.apache.commons.codec.language.bm.Rule;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -36,6 +37,9 @@ public class ExcelWorkbook {
 
     @Inject
     ReferenceTypeHibernate referenceTypeHibernate;
+
+    @Inject
+    RulebookHibernate rulebookHibernate;
     
     // helper variable. remembers parent name for category names
     private String parentCategoryName = "";
@@ -46,7 +50,7 @@ public class ExcelWorkbook {
     private String parentYear = "";
     private String parentSemester = "";
 
-    public List<List<String>> readCategorySpreadsheet(String fileName, Integer spreadsheetNumber) throws Exception{
+    public List<List<String>> readCategorySpreadsheet(String fileName, Integer spreadsheetNumber, Section section) throws Exception{
         // List of row values of Category Spreadsheet.
         // Row values are a list of strings.
         List<List<String>> categoryValues = new ArrayList<List<String>>();
@@ -58,12 +62,12 @@ public class ExcelWorkbook {
 
         Iterator<Row> rowIterator = spreadsheet.iterator();
 
-        categoryValues = iterateAndStoreCategorySpreadsheet(rowIterator, categoryValues);
+        categoryValues = iterateAndStoreCategorySpreadsheet(rowIterator, categoryValues, section);
 
         return categoryValues;
     }
 
-    private List<List<String>> iterateAndStoreCategorySpreadsheet(Iterator<Row> rowIterator, List<List<String>> categoryValues) {
+    private List<List<String>> iterateAndStoreCategorySpreadsheet(Iterator<Row> rowIterator, List<List<String>> categoryValues, Section section) {
         while (rowIterator.hasNext()) {
             XSSFRow row = (XSSFRow) rowIterator.next();
 
@@ -88,8 +92,11 @@ public class ExcelWorkbook {
                 categoryValues.add(rowValues);
                 // comment next lines to stop storing references
                 ReferenceType referenceType = referenceTypeHibernate.getById(Long.valueOf(1));
+                Rulebook rulebook = rulebookHibernate.getById(Long.valueOf(1));
+
                 referenceHibernate.store(reference);
                 referenceHibernate.setReferenceType(reference, referenceType);
+                referenceHibernate.setSection(reference, section, rulebook);
             }
         }
 
@@ -162,7 +169,7 @@ public class ExcelWorkbook {
         return cellValue;
     }
 
-    public List<List<String>> readNastavaSpreadsheet(String fileName, Integer spreadsheetNumber, Person person) throws Exception{
+    public List<List<String>> readNastavaSpreadsheet(String fileName, Integer spreadsheetNumber, Person person, Section section) throws Exception{
         // List of row values of Category Spreadsheet.
         // Row values are a list of strings.
         List<List<String>> categoryValues = new ArrayList<List<String>>();
@@ -174,12 +181,12 @@ public class ExcelWorkbook {
 
         Iterator<Row> rowIterator = spreadsheet.iterator();
 
-        categoryValues = iterateAndStoreNastavaSpreadsheet(rowIterator, categoryValues, person);
+        categoryValues = iterateAndStoreNastavaSpreadsheet(rowIterator, categoryValues, person, section);
 
         return categoryValues;
     }
 
-    private List<List<String>> iterateAndStoreNastavaSpreadsheet(Iterator<Row> rowIterator, List<List<String>> categoryValues, Person person) {
+    private List<List<String>> iterateAndStoreNastavaSpreadsheet(Iterator<Row> rowIterator, List<List<String>> categoryValues, Person person, Section section) {
         while (rowIterator.hasNext()) {
             XSSFRow row = (XSSFRow) rowIterator.next();
 
@@ -199,7 +206,7 @@ public class ExcelWorkbook {
                 rowValues = getNastavaAttributeValues(row, rowValues);
 
                 if (rowValues.size() == attributes.size()) {
-                    Reference reference = getReference("Одржување на настава - од прв циклус студии");
+                    Reference reference = getReference("Одржување на настава - од прв циклус студии", section);
                     ReferenceInstance referenceInstance = createReferenceInstance(reference);
                     personHibernate.setReferenceInstance(person, referenceInstance, 1);
                     for (String cellValue : rowValues) {
@@ -301,7 +308,7 @@ public class ExcelWorkbook {
     }
 
     // Reads spreadsheets: projects, papers and books
-    public List<List<String>> readSpreadsheet(String fileName, Integer spreadsheetNumber, String referenceName, Integer startAtRow, String notNullColumnName, String stopReadingAtColumn, Person person) throws Exception{
+    public List<List<String>> readSpreadsheet(String fileName, Integer spreadsheetNumber, String referenceName, Integer startAtRow, String notNullColumnName, String stopReadingAtColumn, Person person, Section section) throws Exception{
         // Row values are a list of strings.
         List<List<String>> categoryValues = new ArrayList<List<String>>();
 
@@ -312,12 +319,12 @@ public class ExcelWorkbook {
 
         Iterator<Row> rowIterator = spreadsheet.iterator();
 
-        categoryValues = iterateAndStoreSpreadsheet(rowIterator, categoryValues, referenceName, stopReadingAtColumn, startAtRow, notNullColumnName, person);
+        categoryValues = iterateAndStoreSpreadsheet(rowIterator, categoryValues, referenceName, stopReadingAtColumn, startAtRow, notNullColumnName, person, section);
 
         return categoryValues;
     }
 
-    private List<List<String>> iterateAndStoreSpreadsheet(Iterator<Row> rowIterator, List<List<String>> categoryValues, String referenceName, String stopReadingAtColumn, Integer startAtRow, String notNullColumnName, Person person) {
+    private List<List<String>> iterateAndStoreSpreadsheet(Iterator<Row> rowIterator, List<List<String>> categoryValues, String referenceName, String stopReadingAtColumn, Integer startAtRow, String notNullColumnName, Person person, Section section) {
         while (rowIterator.hasNext()) {
             XSSFRow row = (XSSFRow) rowIterator.next();
 
@@ -361,9 +368,9 @@ public class ExcelWorkbook {
                             person = findPerson(bibtexAuthorName);
 
                             if (person == null) {
-                                persistReferenceInstance(referenceName, bibtexAuthorName, rowValues, authorNum);
+                                persistReferenceInstance(referenceName, bibtexAuthorName, rowValues, authorNum, section);
                             } else {
-                                persistReferenceInstance(referenceName, person, rowValues, authorNum);
+                                persistReferenceInstance(referenceName, person, rowValues, authorNum, section);
                             }
 
                             hasAuthors = true;
@@ -372,7 +379,7 @@ public class ExcelWorkbook {
 
                     // this sheet doesnt contain authors.
                     if (!hasAuthors) {
-                        persistReferenceInstance(referenceName, person, rowValues, 1);
+                        persistReferenceInstance(referenceName, person, rowValues, 1, section);
                     }
                 }
             }
@@ -399,16 +406,16 @@ public class ExcelWorkbook {
         return fullName[lastNameIndex] + ", " + fullName[firstNameIndex];
     }
 
-    private void persistReferenceInstance(String referenceName, Person person, List<String> rowValues, Integer authorNum) {
-        Reference reference = getReference(referenceName);
+    private void persistReferenceInstance(String referenceName, Person person, List<String> rowValues, Integer authorNum, Section section) {
+        Reference reference = getReference(referenceName, section);
         ReferenceInstance referenceInstance = createReferenceInstance(reference);
         personHibernate.setReferenceInstance(person, referenceInstance, authorNum);
 
         addCellValuesToReferenceInstance(rowValues, reference, referenceInstance);
     }
 
-    private void persistReferenceInstance(String referenceName, String author, List<String> rowValues, Integer authorNum) {
-        Reference reference = getReference(referenceName);
+    private void persistReferenceInstance(String referenceName, String author, List<String> rowValues, Integer authorNum, Section section) {
+        Reference reference = getReference(referenceName, section);
         ReferenceInstance referenceInstance = createReferenceInstance(reference);
         personHibernate.setReferenceInstance(referenceInstance, author, authorNum);
 
@@ -467,7 +474,7 @@ public class ExcelWorkbook {
         return attribute;
     }
 
-    private Reference getReference(String name) {
+    private Reference getReference(String name, Section section) {
         List<Reference> references = referenceHibernate.getByColumn("name", name);
         Reference reference;
         // second part of the clause is used when the reference is already created,
@@ -476,6 +483,9 @@ public class ExcelWorkbook {
             reference = new Reference();
             reference.setName(name);
             referenceHibernate.store(reference);
+
+            Rulebook rulebook = rulebookHibernate.getById(Long.valueOf(1));
+            referenceHibernate.setSection(reference, section, rulebook);
 
             addAttributesToReference(reference);
         } else {

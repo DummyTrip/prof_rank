@@ -31,34 +31,37 @@
 
 <hr/>
 
-<div class="row">
-    <div class="col-md-12">
-        <t:form t:id="bibtexForm" class="form-horizontal">
 
-            <div class="form-group">
-                <div class="col-sm-3">
-                    <t:actionlink t:id="toggleBibtexImport" class="float-right">BitTex import</t:actionlink>
+<t:if test="papersReference">
+    <div class="row">
+        <div class="col-md-12">
+            <t:form t:id="bibtexForm" class="form-horizontal">
+
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <t:actionlink t:id="toggleBibtexImport" class="float-right">BitTex import</t:actionlink>
+                    </div>
+
+                    <t:zone t:id="bibtexZone" id="bibtexZone">
+                        <t:if test="showBibtexImport">
+                            <div class="col-sm-8">
+                                <t:textarea t:id="testBibtex" value="bibtexString" placeholder="Внеси BibTex..." class="bittex-textarea form-control tt-input"/>
+                            </div>
+
+                            <div class="col-sm-offset-3 col-sm-9 padding-top-15px">
+                                <input t:type="submit" t:id="parseBibtex" class="btn btn-primary btn-outline" value="Додај BibTex"/>
+                            </div>
+
+
+                        </t:if>
+                    </t:zone>
+
                 </div>
+            </t:form>
 
-                <t:zone t:id="bibtexZone" id="bibtexZone">
-                    <t:if test="showBibtexImport">
-                        <div class="col-sm-8">
-                            <t:textarea t:id="testBibtex" value="bibtexString" placeholder="Внеси BibTex..." class="bittex-textarea form-control tt-input"/>
-                        </div>
-
-                        <div class="col-sm-offset-3 col-sm-9 padding-top-15px">
-                            <input t:type="submit" t:id="parseBibtex" class="btn btn-primary btn-outline" value="Додај BibTex"/>
-                        </div>
-
-
-                    </t:if>
-                </t:zone>
-
-            </div>
-        </t:form>
-
+        </div>
     </div>
-</div>
+</t:if>
 
 <div class="row">
     <div class="col-md-12">
