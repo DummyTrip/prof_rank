@@ -2,12 +2,12 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
         >
 
-        <t:if test="popularReferencesForUserNull">
+        <t:if test="popularReferencesForPersonNull">
             <div class="row">
                 <h3>Најпопуларни референци за корисник со ID 1</h3>
 
-                <t:loop source="popularReferencesForUser" value="reference">
-                    <t:delegate to="block:referenceForUserElement"/>
+                <t:loop source="popularReferencesForPerson" value="reference">
+                    <t:delegate to="block:referenceForPersonElement"/>
                 </t:loop>
 
             </div>
@@ -53,14 +53,14 @@
         </div>
 
 
-    <t:block id="referenceForUserElement">
+    <t:block id="referenceForPersonElement">
         <div class="col-md-4 no-padding-left">
             <div class="div-shadow white-background ref-box-padding">
                 <div class="col-md-10 no-padding-left">
                     <h4 class="truncate no-margin-top">${reference.getName()}</h4>
                 </div>
                 <div class="col-md-2">
-                    <b>${numberOfReferenceInstancesForUser}</b>
+                    <b>${numberOfReferenceInstancesForPerson}</b>
                 </div>
                 <div class="row ref-info-row-padding">
                     <div class="col-md-12">

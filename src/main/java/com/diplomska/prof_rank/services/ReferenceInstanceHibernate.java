@@ -37,6 +37,9 @@ public class ReferenceInstanceHibernate {
     @Inject
     AttributeHibernate attributeHibernate;
 
+    @Inject
+    PersonHibernate personHibernate;
+
     @CommitAfter
     public void store(ReferenceInstance referenceInstance) {
         if (referenceInstance == null) {
@@ -199,8 +202,36 @@ public class ReferenceInstanceHibernate {
         return referenceInstancesOfSpecificReference;
     }
 
+    public List<ReferenceInstance> getByReferenceAndPerson(Reference reference, Person person) {
+        List<ReferenceInstance> referenceInstances = personHibernate.getReferenceInstances(person);
+        List<ReferenceInstance> referenceInstancesOfSpecificReference = new ArrayList<ReferenceInstance>();
+
+        for (ReferenceInstance referenceInstance : referenceInstances) {
+            if (referenceInstance.getReference().getId().equals(reference.getId())) {
+                referenceInstancesOfSpecificReference.add(referenceInstance);
+            }
+        }
+
+        return referenceInstancesOfSpecificReference;
+    }
+
     public List<ReferenceInstance> getByReferenceAndUser(Reference reference, User user, Integer offset, Integer limit) {
         List<ReferenceInstance> referenceInstances = userHibernate.getReferenceInstances(user);
+        List<ReferenceInstance> referenceInstancesOfSpecificReference = new ArrayList<ReferenceInstance>();
+
+        limit = limit + offset > referenceInstances.size() ? referenceInstances.size() : limit + offset;
+
+        for (ReferenceInstance referenceInstance : referenceInstances) {
+            if (referenceInstance.getReference().getId().equals(reference.getId())) {
+                referenceInstancesOfSpecificReference.add(referenceInstance);
+            }
+        }
+
+        return referenceInstancesOfSpecificReference.subList(offset, offset + limit);
+    }
+
+    public List<ReferenceInstance> getByReferenceAndPerson(Reference reference, Person person, Integer offset, Integer limit) {
+        List<ReferenceInstance> referenceInstances = personHibernate.getReferenceInstances(person);
         List<ReferenceInstance> referenceInstancesOfSpecificReference = new ArrayList<ReferenceInstance>();
 
         limit = limit + offset > referenceInstances.size() ? referenceInstances.size() : limit + offset;

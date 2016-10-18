@@ -80,10 +80,10 @@ public class Index
         return referenceHibernate.getPopular(9);
     }
 
-    public List<Reference> getPopularReferencesForUser() {
-        User user = userHibernate.getById(Long.valueOf(1));
-        if (user != null) {
-            return referenceHibernate.getPopularByUser(user, 9);
+    public List<Reference> getPopularReferencesForPerson() {
+        Person person = personHibernate.getById(Long.valueOf(1));
+        if (person != null) {
+            return referenceHibernate.getPopularByPerson(person, 9);
         } else {
             return new ArrayList<Reference>();
         }
@@ -99,10 +99,10 @@ public class Index
         return referenceInstancesOfCurrentReference.size();
     }
 
-    public Integer getNumberOfReferenceInstancesForUser() {
-        User user = userHibernate.getById(Long.valueOf(1));
-        List<ReferenceInstance> referenceInstancesOfCurrentReference = referenceInstanceHibernate.getByReferenceAndUser(reference, user);
-//        List<ReferenceInstance> referenceInstancesOfCurrentReference = referenceInstanceHibernate.getByReference(reference);
+    public Integer getNumberOfReferenceInstancesForPerson() {
+        Person person = personHibernate.getById(Long.valueOf(1));
+
+        List<ReferenceInstance> referenceInstancesOfCurrentReference = referenceInstanceHibernate.getByReferenceAndPerson(reference, person);
 
         return referenceInstancesOfCurrentReference.size();
     }
@@ -111,8 +111,8 @@ public class Index
         return getPopularReferences().size() > 0 ? true : false;
     }
 
-    public boolean isPopularReferencesForUserNull() {
-        return getPopularReferencesForUser().size() > 0 ? true : false;
+    public boolean isPopularReferencesForPersonNull() {
+        return getPopularReferencesForPerson().size() > 0 ? true : false;
     }
 
     private void createDefaultReferenceType() {

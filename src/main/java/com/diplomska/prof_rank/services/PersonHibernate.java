@@ -123,7 +123,7 @@ public class PersonHibernate {
 
         Criteria criteria = session.createCriteria(ReferenceInstancePerson.class);
 
-        List<ReferenceInstancePerson> referenceInstancePersons = criteria.add(eq("person", person)).list();;
+        List<ReferenceInstancePerson> referenceInstancePersons = criteria.add(eq("person", person)).list();
         List<ReferenceInstance> referenceInstances = new ArrayList<ReferenceInstance>();
 
         for (ReferenceInstancePerson referenceInstancePerson : referenceInstancePersons) {

@@ -1,9 +1,11 @@
 package com.diplomska.prof_rank.services;
 
 import com.diplomska.prof_rank.entities.*;
+import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
+import org.hibernate.PersistentObjectException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -27,6 +29,9 @@ public class ReferenceHibernate {
 
     @Inject
     UserHibernate userHibernate;
+
+    @Inject
+    PersonHibernate personHibernate;
 
     @CommitAfter
     public void store(Reference reference) {
@@ -64,6 +69,12 @@ public class ReferenceHibernate {
 
     public List<Reference> getPopularByUser(User user, Integer limit) {
         List<ReferenceInstance> allReferenceInstances = userHibernate.getReferenceInstances(user);
+
+        return getSortedReferences(allReferenceInstances, limit);
+    }
+
+    public List<Reference> getPopularByPerson(Person person, Integer limit) {
+        List<ReferenceInstance> allReferenceInstances = personHibernate.getReferenceInstances(person);
 
         return getSortedReferences(allReferenceInstances, limit);
     }
