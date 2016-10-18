@@ -73,14 +73,16 @@ public class Temp {
 
         // Reads projects, papers and books spreadsheets.
         // 5, 6 or 7 spreadsheet number
-        return excelWorkbook.readSpreadsheet(fileName,
-                spreadsheetNumber, referenceName, startAtRow,
-                notNullColumnName, stopReadingAtColumn);
+//        return excelWorkbook.readSpreadsheet(fileName,
+//                spreadsheetNumber, referenceName, startAtRow,
+//                notNullColumnName, stopReadingAtColumn);
 
 //        // 1, 2 or 3 spreadsheet number
 //        return excelWorkbook.readCategorySpreadsheet(fileName, 1);
 //
 //        return excelWorkbook.readNastavaSpreadsheet(fileName, 4);
+
+        return new ArrayList<List<String>>();
     }
 
     @Property

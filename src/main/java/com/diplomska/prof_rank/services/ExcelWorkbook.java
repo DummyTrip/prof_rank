@@ -297,7 +297,7 @@ public class ExcelWorkbook {
     }
 
     // Reads spreadsheets: projects, papers and books
-    public List<List<String>> readSpreadsheet(String fileName, Integer spreadsheetNumber, String referenceName, Integer startAtRow, String notNullColumnName, String stopReadingAtColumn) throws Exception{
+    public List<List<String>> readSpreadsheet(String fileName, Integer spreadsheetNumber, String referenceName, Integer startAtRow, String notNullColumnName, String stopReadingAtColumn, Person person) throws Exception{
         // Row values are a list of strings.
         List<List<String>> categoryValues = new ArrayList<List<String>>();
 
@@ -308,12 +308,12 @@ public class ExcelWorkbook {
 
         Iterator<Row> rowIterator = spreadsheet.iterator();
 
-        categoryValues = iterateAndStoreSpreadsheet(rowIterator, categoryValues, referenceName, stopReadingAtColumn, startAtRow, notNullColumnName);
+        categoryValues = iterateAndStoreSpreadsheet(rowIterator, categoryValues, referenceName, stopReadingAtColumn, startAtRow, notNullColumnName, person);
 
         return categoryValues;
     }
 
-    private List<List<String>> iterateAndStoreSpreadsheet(Iterator<Row> rowIterator, List<List<String>> categoryValues, String referenceName, String stopReadingAtColumn, Integer startAtRow, String notNullColumnName) {
+    private List<List<String>> iterateAndStoreSpreadsheet(Iterator<Row> rowIterator, List<List<String>> categoryValues, String referenceName, String stopReadingAtColumn, Integer startAtRow, String notNullColumnName, Person person) {
         while (rowIterator.hasNext()) {
             XSSFRow row = (XSSFRow) rowIterator.next();
 
@@ -335,21 +335,96 @@ public class ExcelWorkbook {
                 if (rowValues.size() == attributes.size()) {
                     categoryValues.add(rowValues);
 
-                    Reference reference = getReference(referenceName);
-                    ReferenceInstance referenceInstance = createReferenceInstance(reference);
+                    boolean hasAuthors = false;
+                    for (Attribute attribute : attributes) {
+                        String attrubuteName = attribute.getName();
+                        if (attrubuteName.startsWith("Автор")) {
+                            String authorName = rowValues.get(attributes.indexOf(attribute));
 
-                    for (int i = 0; i < rowValues.size() ; i++) {
-                        Attribute attribute = attributes.get(i);
-                        boolean display = isDisplayAttribute(attribute);
+                            // empty cell
+                            if (authorName.equals("")) {
+                                continue;
+                            }
 
-                        referenceHibernate.setAttributeDisplay(reference, attribute, display);
-                        referenceInstanceHibernate.setAttributeValueIndexDisplay(referenceInstance, attribute, rowValues.get(i), i, display);
+                            Integer authorNum;
+                            if (attrubuteName.contains(" ")){
+                                authorNum = Integer.valueOf(attrubuteName.split(" ")[1]);
+                            } else {
+                                authorNum = 1;
+                            }
+
+                            String bibtexAuthorName = buildBibtexName(authorName);
+                            person = findPerson(bibtexAuthorName);
+
+                            if (person == null) {
+                                persistReferenceInstance(referenceName, bibtexAuthorName, rowValues, authorNum);
+                            } else {
+                                persistReferenceInstance(referenceName, person, rowValues, authorNum);
+                            }
+
+                            hasAuthors = true;
+                        }
+                    }
+
+                    // this sheet doesnt contain authors.
+                    if (!hasAuthors) {
+                        persistReferenceInstance(referenceName, person, rowValues, 1);
                     }
                 }
             }
         }
 
         return categoryValues;
+    }
+
+    private Person findPerson(String bibtexAuthorName) {
+        List<Person> persons = personHibernate.getByBibtexAuthorName(bibtexAuthorName);
+
+        if (persons.size() > 0){
+            return persons.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    private String buildBibtexName(String authorName) {
+        String[] fullName = authorName.split(" ");
+        Integer firstNameIndex = 0;
+        Integer lastNameIndex = fullName.length - 1;
+
+        return fullName[lastNameIndex] + ", " + fullName[firstNameIndex];
+    }
+
+    private void persistReferenceInstance(String referenceName, Person person, List<String> rowValues, Integer authorNum) {
+        Reference reference = getReference(referenceName);
+        ReferenceInstance referenceInstance = createReferenceInstance(reference);
+        personHibernate.setReferenceInstance(person, referenceInstance, authorNum);
+
+        addCellValuesToReferenceInstance(rowValues, reference, referenceInstance);
+    }
+
+    private void persistReferenceInstance(String referenceName, String author, List<String> rowValues, Integer authorNum) {
+        Reference reference = getReference(referenceName);
+        ReferenceInstance referenceInstance = createReferenceInstance(reference);
+        personHibernate.setReferenceInstance(referenceInstance, author, authorNum);
+
+        addCellValuesToReferenceInstance(rowValues, reference, referenceInstance);
+    }
+
+    private void addCellValuesToReferenceInstance(List<String> rowValues, Reference reference, ReferenceInstance referenceInstance) {
+        for (int i = 0; i < rowValues.size() ; i++) {
+            Attribute attribute = attributes.get(i);
+
+            // don't write authors as attributes
+            if (attribute.getName().startsWith("Автор")) {
+                continue;
+            }
+
+            boolean display = isDisplayAttribute(attribute);
+
+            referenceHibernate.setAttributeDisplay(reference, attribute, display);
+            referenceInstanceHibernate.setAttributeValueIndexDisplay(referenceInstance, attribute, rowValues.get(i), i, display);
+        }
     }
 
     private List<Attribute> getAttributes(Row row, String stopReadingAtColumn) {
