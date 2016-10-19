@@ -62,11 +62,11 @@ public class ShowReferenceInputTemplate {
     }
 
     public List<Attribute> getAttributes() {
-        List<Attribute> attributeReferenceTypes = new ArrayList<Attribute>();
+        List<Attribute> attributeReferenceInputTemplates = new ArrayList<Attribute>();
 
-        attributeReferenceTypes.addAll(referenceInputTemplateHibernate.getAttributes(referenceInputTemplate));
+        attributeReferenceInputTemplates.addAll(referenceInputTemplateHibernate.getAttributes(referenceInputTemplate));
 
-        return attributeReferenceTypes;
+        return attributeReferenceInputTemplates;
     }
 
     void onActivate(Long referenceTypeId) {

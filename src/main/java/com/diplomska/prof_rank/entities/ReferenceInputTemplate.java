@@ -16,8 +16,8 @@ public class ReferenceInputTemplate {
     private String name;
 
     @Column
-    @ElementCollection(targetClass = AttributeReferenceType.class)
-    private List<AttributeReferenceType> attributeReferenceTypes = new ArrayList<AttributeReferenceType>();
+    @ElementCollection(targetClass = AttributeReferenceInputTemplate.class)
+    private List<AttributeReferenceInputTemplate> attributeReferenceInputTemplates = new ArrayList<AttributeReferenceInputTemplate>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,12 +39,12 @@ public class ReferenceInputTemplate {
     }
 
     @OneToMany(mappedBy = "referenceInputTemplate")
-    public List<AttributeReferenceType> getAttributeReferenceTypes() {
-        return attributeReferenceTypes;
+    public List<AttributeReferenceInputTemplate> getAttributeReferenceInputTemplates() {
+        return attributeReferenceInputTemplates;
     }
 
-    public void setAttributeReferenceTypes(List<AttributeReferenceType> attributeReferenceTypes) {
-        this.attributeReferenceTypes = attributeReferenceTypes;
+    public void setAttributeReferenceInputTemplates(List<AttributeReferenceInputTemplate> attributeReferenceInputTemplates) {
+        this.attributeReferenceInputTemplates = attributeReferenceInputTemplates;
     }
 
     @Override

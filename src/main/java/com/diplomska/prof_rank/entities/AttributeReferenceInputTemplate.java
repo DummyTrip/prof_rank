@@ -8,7 +8,7 @@ import javax.persistence.*;
  * Created by Aleksandar on 23-Sep-16.
  */
 @Entity
-public class AttributeReferenceType {
+public class AttributeReferenceInputTemplate {
     private Long id;
 
     private ReferenceInputTemplate referenceInputTemplate;

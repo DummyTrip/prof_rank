@@ -1,7 +1,7 @@
 package com.diplomska.prof_rank.services;
 
 import com.diplomska.prof_rank.entities.Attribute;
-import com.diplomska.prof_rank.entities.AttributeReferenceType;
+import com.diplomska.prof_rank.entities.AttributeReferenceInputTemplate;
 import com.diplomska.prof_rank.entities.ReferenceInputTemplate;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -75,11 +75,11 @@ public class ReferenceInputTemplateHibernate {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        List<AttributeReferenceType> attributeReferenceTypes = referenceInputTemplate.getAttributeReferenceTypes();
+        List<AttributeReferenceInputTemplate> attributeReferenceInputTemplates = referenceInputTemplate.getAttributeReferenceInputTemplates();
         List<Attribute> attributes = new ArrayList<Attribute>();
 
-        for (AttributeReferenceType attributeReferenceType : attributeReferenceTypes) {
-            attributes.add(attributeReferenceType.getAttribute());
+        for (AttributeReferenceInputTemplate attributeReferenceInputTemplate : attributeReferenceInputTemplates) {
+            attributes.add(attributeReferenceInputTemplate.getAttribute());
         }
 
         return attributes;
@@ -89,12 +89,12 @@ public class ReferenceInputTemplateHibernate {
         if (referenceInputTemplate == null || attribute == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
-        AttributeReferenceType attributeReferenceType = new AttributeReferenceType();
+        AttributeReferenceInputTemplate attributeReferenceInputTemplate = new AttributeReferenceInputTemplate();
 
-        attributeReferenceType.setReferenceInputTemplate(referenceInputTemplate);
-        attributeReferenceType.setAttribute(attribute);
+        attributeReferenceInputTemplate.setReferenceInputTemplate(referenceInputTemplate);
+        attributeReferenceInputTemplate.setAttribute(attribute);
 
-        session.saveOrUpdate(attributeReferenceType);
+        session.saveOrUpdate(attributeReferenceInputTemplate);
     }
 
     public void deleteAttribute(ReferenceInputTemplate referenceInputTemplate, Attribute attribute) {
@@ -102,8 +102,8 @@ public class ReferenceInputTemplateHibernate {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
-        Criteria criteria = session.createCriteria(AttributeReferenceType.class);
-        List<AttributeReferenceType> entities = criteria
+        Criteria criteria = session.createCriteria(AttributeReferenceInputTemplate.class);
+        List<AttributeReferenceInputTemplate> entities = criteria
                 .add(eq("referenceInputTemplate", referenceInputTemplate))
                 .add(eq("attribute", attribute))
                 .list();
@@ -112,8 +112,8 @@ public class ReferenceInputTemplateHibernate {
             throw new IllegalStateException("No data in database.");
         }
 
-        AttributeReferenceType attributeReferenceType = entities.get(0);
-        attributeReferenceType.setReferenceInputTemplate(null);
-        referenceInputTemplate.getAttributeReferenceTypes().remove(attributeReferenceType);
+        AttributeReferenceInputTemplate attributeReferenceInputTemplate = entities.get(0);
+        attributeReferenceInputTemplate.setReferenceInputTemplate(null);
+        referenceInputTemplate.getAttributeReferenceInputTemplates().remove(attributeReferenceInputTemplate);
     }
 }
