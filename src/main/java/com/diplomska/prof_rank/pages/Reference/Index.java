@@ -21,7 +21,7 @@ import java.util.Map;
 @InstructorPage
 public class Index {
     @Inject
-    ReferenceHibernate referenceHibernate;
+    ReferenceTypeHibernate referenceTypeHibernate;
 
     @Property
     ReferenceType referenceType;
@@ -47,9 +47,9 @@ public class Index {
 
     public List<ReferenceType> getReferences() {
         if (referenceTypeNameQueryString != null) {
-            return referenceHibernate.getByColumn("name", referenceTypeNameQueryString);
+            return referenceTypeHibernate.getByColumn("name", referenceTypeNameQueryString);
         } else {
-            return referenceHibernate.getPopular(Integer.MAX_VALUE);
+            return referenceTypeHibernate.getPopular(Integer.MAX_VALUE);
         }
     }
 
@@ -74,7 +74,7 @@ public class Index {
 
     void setupRender() {
         this.referenceTypeName = referenceTypeNameQueryString;
-        this.referenceTypeNames = referenceHibernate.getAllNames();
+        this.referenceTypeNames = referenceTypeHibernate.getAllNames();
 
         refs = new ArrayList<ReferenceType>();
         firstPageRefs = new ArrayList<ReferenceType>();
@@ -121,7 +121,7 @@ public class Index {
 
         List<ReferenceType> newInstances;
 
-        newInstances = referenceHibernate.getPopularByPerson(personHibernate.getById(Long.valueOf(1)), Integer.MAX_VALUE, selectedSections);
+        newInstances = referenceTypeHibernate.getPopularByPerson(personHibernate.getById(Long.valueOf(1)), Integer.MAX_VALUE, selectedSections);
 
         // This fix makes sure the items from page 0 don't duplicate
         // by separating the items of page 0 from the rest.

@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class ExcelWorkbook {
     @Inject
-    private ReferenceHibernate referenceHibernate;
+    private ReferenceTypeHibernate referenceTypeHibernate;
 
     @Inject
     ReferenceInstanceHibernate referenceInstanceHibernate;
@@ -90,9 +90,9 @@ public class ExcelWorkbook {
                 ReferenceInputTemplate referenceInputTemplate = referenceInputTemplateHibernate.getById(Long.valueOf(1));
                 Rulebook rulebook = rulebookHibernate.getById(Long.valueOf(1));
 
-                referenceHibernate.store(referenceType);
-                referenceHibernate.setReferenceInputTemplate(referenceType, referenceInputTemplate);
-                referenceHibernate.setSection(referenceType, section, rulebook);
+                referenceTypeHibernate.store(referenceType);
+                referenceTypeHibernate.setReferenceInputTemplate(referenceType, referenceInputTemplate);
+                referenceTypeHibernate.setSection(referenceType, section, rulebook);
             }
         }
 
@@ -471,23 +471,23 @@ public class ExcelWorkbook {
     }
 
     private ReferenceType getReferenceType(String name, Section section) {
-        List<ReferenceType> referenceTypes = referenceHibernate.getByColumn("name", name);
+        List<ReferenceType> referenceTypes = referenceTypeHibernate.getByColumn("name", name);
         ReferenceType referenceType;
         // second part of the clause is used when the referenceType is already created,
         // but it's attributes are not.
         if (referenceTypes.size() == 0) {
             referenceType = new ReferenceType();
             referenceType.setName(name);
-            referenceHibernate.store(referenceType);
+            referenceTypeHibernate.store(referenceType);
 
             Rulebook rulebook = rulebookHibernate.getById(Long.valueOf(1));
-            referenceHibernate.setSection(referenceType, section, rulebook);
+            referenceTypeHibernate.setSection(referenceType, section, rulebook);
 
             addAttributesToReferenceType(referenceType);
         } else {
             referenceType = referenceTypes.get(0);
 
-            if (referenceHibernate.getAttributeValues(referenceType).size() == 1) {
+            if (referenceTypeHibernate.getAttributeValues(referenceType).size() == 1) {
                 addAttributesToReferenceType(referenceType);
             }
         }
@@ -503,7 +503,7 @@ public class ExcelWorkbook {
             }
 
             boolean display = isDisplayAttribute(attribute);
-            referenceHibernate.setAttributeDisplay(referenceType, attribute, display);
+            referenceTypeHibernate.setAttributeDisplay(referenceType, attribute, display);
         }
     }
 

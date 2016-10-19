@@ -35,8 +35,6 @@ public class Report {
     @ElementCollection(targetClass = ReferenceInstanceReport.class)
     private List<ReferenceInstanceReport> referenceInstanceReports = new ArrayList<ReferenceInstanceReport>();
 
-    private User user;
-
     private Person person;
 
     @Id
@@ -107,15 +105,6 @@ public class Report {
 
     public void setReferenceInstanceReports(List<ReferenceInstanceReport> referenceInstanceReports) {
         this.referenceInstanceReports = referenceInstanceReports;
-    }
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     @ManyToOne(cascade = CascadeType.ALL)

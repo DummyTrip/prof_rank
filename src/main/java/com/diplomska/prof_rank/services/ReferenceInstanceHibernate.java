@@ -28,7 +28,7 @@ public class ReferenceInstanceHibernate {
     ReferenceInputTemplateHibernate referenceInputTemplateHibernate;
 
     @Inject
-    ReferenceHibernate referenceHibernate;
+    ReferenceTypeHibernate referenceTypeHibernate;
 
     @Inject
     AttributeHibernate attributeHibernate;
@@ -260,7 +260,7 @@ public class ReferenceInstanceHibernate {
         }
 
         ReferenceType referenceType = referenceInstance.getReferenceType();
-        return referenceHibernate.getAttributeValues(referenceType);
+        return referenceTypeHibernate.getAttributeValues(referenceType);
     }
 
     public void updateAttributeReferenceInstances(ReferenceInstance referenceInstance, Map<String, String> newValues, List<Attribute> attributes) {

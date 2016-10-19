@@ -4,7 +4,7 @@ import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.ReferenceInputTemplate;
 import com.diplomska.prof_rank.entities.ReferenceType;
 import com.diplomska.prof_rank.services.ReferenceInputTemplateHibernate;
-import com.diplomska.prof_rank.services.ReferenceHibernate;
+import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
@@ -23,7 +23,7 @@ public class CreateReferenceType {
     private ReferenceType referenceType;
 
     @Inject
-    private ReferenceHibernate referenceHibernate;
+    private ReferenceTypeHibernate referenceTypeHibernate;
 
     @Inject
     private ReferenceInputTemplateHibernate referenceInputTemplateHibernate;
@@ -57,10 +57,10 @@ public class CreateReferenceType {
 
     @CommitAfter
     Object onSuccess() {
-        referenceHibernate.store(referenceType);
+        referenceTypeHibernate.store(referenceType);
 
         if (referenceInputTemplate != null){
-            referenceHibernate.setReferenceInputTemplate(referenceType, referenceInputTemplate);
+            referenceTypeHibernate.setReferenceInputTemplate(referenceType, referenceInputTemplate);
         }
 
         return index;

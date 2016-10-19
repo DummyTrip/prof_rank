@@ -21,7 +21,7 @@ public class SectionHibernate {
     Session session;
 
     @Inject
-    ReferenceHibernate referenceHibernate;
+    ReferenceTypeHibernate referenceTypeHibernate;
 
     @CommitAfter
     public void store(Section section) {
@@ -86,11 +86,11 @@ public class SectionHibernate {
     }
 
     public List<ReferenceType> getReferenceTypes(Section section) {
-        List<ReferenceType> refs = referenceHibernate.getAll();
+        List<ReferenceType> refs = referenceTypeHibernate.getAll();
         List<ReferenceType> referenceTypes = new ArrayList<ReferenceType>();
 
         for (ReferenceType referenceType : refs ) {
-            if (referenceHibernate.getSections(referenceType).contains(section)) {
+            if (referenceTypeHibernate.getSections(referenceType).contains(section)) {
                 referenceTypes.add(referenceType);
             }
         }

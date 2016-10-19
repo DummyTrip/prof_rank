@@ -15,7 +15,7 @@ import static org.hibernate.criterion.Restrictions.eq;
 /**
  * Created by Aleksandar on 24-Sep-16.
  */
-public class ReferenceHibernate {
+public class ReferenceTypeHibernate {
     @Inject
     Session session;
 

@@ -24,7 +24,7 @@ public class Index
     ExcelWorkbook excelWorkbook;
 
     @Inject
-    ReferenceHibernate referenceHibernate;
+    ReferenceTypeHibernate referenceTypeHibernate;
 
     @Inject
     ReferenceInstanceHibernate referenceInstanceHibernate;
@@ -72,20 +72,20 @@ public class Index
     }
 
     public List<ReferenceType> getPopularReferenceTypes() {
-        return referenceHibernate.getPopular(9);
+        return referenceTypeHibernate.getPopular(9);
     }
 
     public List<ReferenceType> getPopularReferenceTypesForPerson() {
         Person person = personHibernate.getById(Long.valueOf(1));
         if (person != null) {
-            return referenceHibernate.getPopularByPerson(person, 9);
+            return referenceTypeHibernate.getPopularByPerson(person, 9);
         } else {
             return new ArrayList<ReferenceType>();
         }
     }
 
     public Section getSection() {
-        return referenceHibernate.getSections(referenceType).get(0);
+        return referenceTypeHibernate.getSections(referenceType).get(0);
     }
 
     public Integer getNumberOfReferenceInstances() {

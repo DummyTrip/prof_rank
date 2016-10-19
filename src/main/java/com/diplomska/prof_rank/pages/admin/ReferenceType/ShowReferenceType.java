@@ -3,7 +3,7 @@ package com.diplomska.prof_rank.pages.admin.ReferenceType;
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.*;
 import com.diplomska.prof_rank.services.AttributeHibernate;
-import com.diplomska.prof_rank.services.ReferenceHibernate;
+import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
@@ -26,7 +26,7 @@ public class ShowReferenceType {
     private Long referenceTypeId;
 
     @Inject
-    private ReferenceHibernate referenceHibernate;
+    private ReferenceTypeHibernate referenceTypeHibernate;
 
     @Inject
     private AttributeHibernate attributeHibernate;
@@ -68,7 +68,7 @@ public class ShowReferenceType {
 
     public List<Attribute> getAttributes() {
         List<Attribute> attributeReferences = new ArrayList<Attribute>();
-        attributeReferences.addAll(referenceHibernate.getAttributeValues(referenceType));
+        attributeReferences.addAll(referenceTypeHibernate.getAttributeValues(referenceType));
 
         return attributeReferences;
     }
@@ -98,7 +98,7 @@ public class ShowReferenceType {
     }
 
     void setupRender() throws Exception {
-        this.referenceType = referenceHibernate.getById(referenceTypeId);
+        this.referenceType = referenceTypeHibernate.getById(referenceTypeId);
 
         if (referenceType == null) {
             throw new Exception("ReferenceType " + referenceTypeId + " does not exist.");
@@ -127,13 +127,13 @@ public class ShowReferenceType {
 //    void onActionFromAdd(Long attributeId) {
 //        attribute = attributeHibernate.getById(attributeId);
 //
-//        referenceHibernate.setAttributeValue(referenceType, attribute);
+//        referenceTypeHibernate.setAttributeValue(referenceType, attribute);
 //    }
 
     @CommitAfter
     void onActionFromDelete(Long attributeId) {
         Attribute attr = attributeHibernate.getById(attributeId);
 
-        referenceHibernate.deleteAttribute(referenceType, attr);
+        referenceTypeHibernate.deleteAttribute(referenceType, attr);
     }
 }

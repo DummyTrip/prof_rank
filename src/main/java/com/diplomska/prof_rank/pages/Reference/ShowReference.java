@@ -22,7 +22,7 @@ import java.util.*;
 public class ShowReference {
 
     @Inject
-    ReferenceHibernate referenceHibernate;
+    ReferenceTypeHibernate referenceTypeHibernate;
 
     @Inject
     ReferenceInstanceHibernate referenceInstanceHibernate;
@@ -87,7 +87,7 @@ public class ShowReference {
     }
 
     public List<Attribute> getAttributes() {
-        return referenceHibernate.getAttributeValues(referenceType);
+        return referenceTypeHibernate.getAttributeValues(referenceType);
     }
 
     public List<AttributeReferenceInstance> getAttributeValues() {
@@ -158,7 +158,7 @@ public class ShowReference {
             oldReferenceId = referenceId;
         }
 
-        this.referenceType = referenceHibernate.getById(referenceId);
+        this.referenceType = referenceTypeHibernate.getById(referenceId);
         this.referenceName = referenceNameQueryString;
         this.displayNames = referenceInstanceHibernate.getAllDisplayNames();
 //        testMap = new HashMap<String, String>();
@@ -177,7 +177,7 @@ public class ShowReference {
         if (selectedCheckboxes == null) {
             selectedCheckboxes = new HashMap<Long, Integer>();
             for (Attribute attribute : getAttributes()) {
-                Integer value = referenceHibernate.isDisplayAttribute(referenceType, attribute) ? 1 : 0;
+                Integer value = referenceTypeHibernate.isDisplayAttribute(referenceType, attribute) ? 1 : 0;
 
                 selectedCheckboxes.put(attribute.getId(), value);
             }
@@ -222,7 +222,7 @@ public class ShowReference {
     }
 
     private Attribute getOrderAttribute() {
-        List<Attribute> attributes = referenceHibernate.getAttributeValues(referenceType);
+        List<Attribute> attributes = referenceTypeHibernate.getAttributeValues(referenceType);
         Attribute orderAttribute = null;
 
         for (Attribute attribute : attributes) {

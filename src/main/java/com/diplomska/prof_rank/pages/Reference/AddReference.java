@@ -3,7 +3,7 @@ package com.diplomska.prof_rank.pages.Reference;
 import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.entities.ReferenceType;
 import com.diplomska.prof_rank.entities.Section;
-import com.diplomska.prof_rank.services.ReferenceHibernate;
+import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
 import com.diplomska.prof_rank.services.RulebookHibernate;
 import com.diplomska.prof_rank.services.SectionHibernate;
 import org.apache.tapestry5.Link;
@@ -24,7 +24,7 @@ import java.util.Map;
 @InstructorPage
 public class AddReference {
     @Inject
-    ReferenceHibernate referenceHibernate;
+    ReferenceTypeHibernate referenceTypeHibernate;
 
     @Property
     ReferenceType referenceType;
@@ -47,9 +47,9 @@ public class AddReference {
 
     public List<ReferenceType> getReferenceTypes() {
         if (referenceTypeNameQueryString != null) {
-            return referenceHibernate.getByColumn("name", referenceTypeNameQueryString);
+            return referenceTypeHibernate.getByColumn("name", referenceTypeNameQueryString);
         } else {
-            return referenceHibernate.getPopular(Integer.MAX_VALUE);
+            return referenceTypeHibernate.getPopular(Integer.MAX_VALUE);
         }
     }
 
@@ -74,7 +74,7 @@ public class AddReference {
 
     void setupRender() {
         this.referenceTypeName = referenceTypeNameQueryString;
-        this.referenceTypeNames = referenceHibernate.getAllNames();
+        this.referenceTypeNames = referenceTypeHibernate.getAllNames();
 
         refs = new ArrayList<ReferenceType>();
         firstPageRefs = new ArrayList<ReferenceType>();
@@ -122,7 +122,7 @@ public class AddReference {
         int size = refs.size();
         List<ReferenceType> newInstances;
 
-        newInstances = referenceHibernate.getBySections(first, PageSize, selectedSections);
+        newInstances = referenceTypeHibernate.getBySections(first, PageSize, selectedSections);
 
         // This fix makes sure the items from page 0 don't duplicate
         // by separating the items of page 0 from the rest.

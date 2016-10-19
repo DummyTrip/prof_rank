@@ -4,9 +4,9 @@ import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.ReferenceType;
 import com.diplomska.prof_rank.entities.Rulebook;
 import com.diplomska.prof_rank.entities.RulebookSection;
+import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
 import com.diplomska.prof_rank.services.RulebookHibernate;
 import com.diplomska.prof_rank.services.SectionHibernate;
-import com.diplomska.prof_rank.services.ReferenceHibernate;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
@@ -47,7 +47,7 @@ public class ShowSection {
     private Rulebook addRulebook;
 
     @Inject
-    private ReferenceHibernate referenceHibernate;
+    private ReferenceTypeHibernate referenceTypeHibernate;
 
     @Property
     private BeanModel<ReferenceType> referenceTypeBeanModel;
@@ -72,7 +72,7 @@ public class ShowSection {
     }
 
     public List<ReferenceType> getAddReferenceTypes() {
-        return referenceHibernate.getAll();
+        return referenceTypeHibernate.getAll();
     }
 
     public List<Rulebook> getAddRulebooks() {
@@ -115,10 +115,10 @@ public class ShowSection {
 
     @CommitAfter
     void onActionFromAddReferenceType(Long id) {
-        ReferenceType entity = referenceHibernate.getById(id);
+        ReferenceType entity = referenceTypeHibernate.getById(id);
         rulebookSection = sectionHibernate.getRulebookSectionById(rulebookSectionId);
 
-        referenceHibernate.setSection(entity, rulebookSection);
+        referenceTypeHibernate.setSection(entity, rulebookSection);
     }
 
     @CommitAfter
@@ -131,8 +131,8 @@ public class ShowSection {
 
     @CommitAfter
     void onActionFromDelete(Long id) {
-        ReferenceType entity = referenceHibernate.getById(id);
+        ReferenceType entity = referenceTypeHibernate.getById(id);
 
-        referenceHibernate.deleteSection(entity, rulebookSection);
+        referenceTypeHibernate.deleteSection(entity, rulebookSection);
     }
 }

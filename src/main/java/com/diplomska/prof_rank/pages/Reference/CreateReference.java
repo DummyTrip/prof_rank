@@ -38,7 +38,7 @@ public class CreateReference {
     private ReferenceType referenceType;
 
     @Inject
-    ReferenceHibernate referenceHibernate;
+    ReferenceTypeHibernate referenceTypeHibernate;
 
     @Property
     private ReferenceInstance referenceInstance;
@@ -53,7 +53,7 @@ public class CreateReference {
     private com.diplomska.prof_rank.pages.Index index;
 
     public List<ReferenceType> getReferences() {
-        return referenceHibernate.getAll();
+        return referenceTypeHibernate.getAll();
     }
 
     @Property
@@ -98,10 +98,10 @@ public class CreateReference {
             oldReferenceId = referenceId;
         }
 
-        this.referenceType = referenceHibernate.getById(referenceId);
+        this.referenceType = referenceTypeHibernate.getById(referenceId);
 
         if (attributes == null) {
-            attributes = referenceHibernate.getAttributeValues(this.referenceType);
+            attributes = referenceTypeHibernate.getAttributeValues(this.referenceType);
         }
 
         if (testMap == null) {

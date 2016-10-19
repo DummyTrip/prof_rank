@@ -3,7 +3,7 @@ package com.diplomska.prof_rank.pages.admin.ReferenceType;
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.ReferenceType;
 import com.diplomska.prof_rank.services.ExcelWorkbook;
-import com.diplomska.prof_rank.services.ReferenceHibernate;
+import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
@@ -20,7 +20,7 @@ import java.util.List;
 @AdministratorPage
 public class Index {
     @Inject
-    private ReferenceHibernate referenceHibernate;
+    private ReferenceTypeHibernate referenceTypeHibernate;
 
     @Inject
     private ExcelWorkbook excelWorkbook;
@@ -41,7 +41,7 @@ public class Index {
     private PropertyConduitSource pcs;
 
     public List<ReferenceType> getReferenceTypes() {
-        return referenceHibernate.getAll();
+        return referenceTypeHibernate.getAll();
     }
 
     void setupRender() {
@@ -55,8 +55,8 @@ public class Index {
 
     @CommitAfter
     void onActionFromDelete(Long referenceTypeId) {
-        referenceType = referenceHibernate.getById(referenceTypeId);
-        referenceHibernate.delete(referenceType);
+        referenceType = referenceTypeHibernate.getById(referenceTypeId);
+        referenceTypeHibernate.delete(referenceType);
     }
 
     @CommitAfter

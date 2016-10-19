@@ -2,7 +2,7 @@ package com.diplomska.prof_rank.pages.admin.SubjectDomain;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.SubjectDomain;
-import com.diplomska.prof_rank.services.ReferenceHibernate;
+import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
 import com.diplomska.prof_rank.services.RoleHibernate;
 import com.diplomska.prof_rank.services.SubjectDomainHibernate;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -34,7 +34,7 @@ public class EditSubjectDomain {
     private RoleHibernate roleHibernate;
 
     @Inject
-    private ReferenceHibernate referenceHibernate;
+    private ReferenceTypeHibernate referenceTypeHibernate;
 
     @InjectPage
     private Index index;

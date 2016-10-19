@@ -34,7 +34,7 @@ public class AppModule
         binder.bind(RoleHibernate.class);
         binder.bind(RulebookHibernate.class);
         binder.bind(SectionHibernate.class);
-        binder.bind(ReferenceHibernate.class);
+        binder.bind(ReferenceTypeHibernate.class);
         binder.bind(ReferenceInputTemplateHibernate.class);
         binder.bind(AttributeHibernate.class);
         binder.bind(ReportHibernate.class);

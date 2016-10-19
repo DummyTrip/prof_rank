@@ -3,7 +3,7 @@ package com.diplomska.prof_rank.pages.admin.Person;
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.ReferenceType;
 import com.diplomska.prof_rank.entities.Role;
-import com.diplomska.prof_rank.services.ReferenceHibernate;
+import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
 import com.diplomska.prof_rank.services.RoleHibernate;
 import com.diplomska.prof_rank.services.PersonHibernate;
 import mk.ukim.finki.isis.model.entities.Person;
@@ -40,7 +40,7 @@ public class EditPerson {
     private RoleHibernate roleHibernate;
 
     @Inject
-    private ReferenceHibernate referenceHibernate;
+    private ReferenceTypeHibernate referenceTypeHibernate;
 
     @InjectPage
     private com.diplomska.prof_rank.pages.admin.Person.Index index;
@@ -56,7 +56,7 @@ public class EditPerson {
 
     void setupRender() {
         List<Role> roles = roleHibernate.getAll();
-        List<ReferenceType> referenceTypes = referenceHibernate.getAll();
+        List<ReferenceType> referenceTypes = referenceTypeHibernate.getAll();
 
         roleSelectModel = selectModelFactory.create(roles, "name");
         referenceSelectModel = selectModelFactory.create(referenceTypes, "name");
