@@ -1,7 +1,7 @@
 package com.diplomska.prof_rank.pages.admin.Reference;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
-import com.diplomska.prof_rank.entities.ReferenceType;
+import com.diplomska.prof_rank.entities.ReferenceInputTemplate;
 import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
@@ -41,22 +41,22 @@ public class EditReference {
     private Index index;
 
     @Property
-    private SelectModel referenceTypeSelectModel;
+    private SelectModel referenceInputTemplateSelectModel;
 
     @Inject
     SelectModelFactory selectModelFactory;
 
     void setupRender() {
-        List<ReferenceType> referenceTypes = referenceTypeHibernate.getAll();
+        List<ReferenceInputTemplate> referenceInputTemplates = referenceTypeHibernate.getAll();
 
-        referenceTypeSelectModel = selectModelFactory.create(referenceTypes, "name");
+        referenceInputTemplateSelectModel = selectModelFactory.create(referenceInputTemplates, "name");
     }
 
 //    @Property
-//    private ReferenceType referenceType;
-//    private List<ReferenceType> referenceTypes;
+//    private ReferenceInputTemplate referenceType;
+//    private List<ReferenceInputTemplate> referenceTypes;
 //
-//    public List<ReferenceType> getReferenceTypes() {
+//    public List<ReferenceInputTemplate> getReferenceInputTemplates() {
 //        return referenceTypeHibernate.getAll();
 //    }
 

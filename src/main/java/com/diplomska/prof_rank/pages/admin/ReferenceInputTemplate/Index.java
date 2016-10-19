@@ -1,8 +1,8 @@
-package com.diplomska.prof_rank.pages.admin.ReferenceType;
+package com.diplomska.prof_rank.pages.admin.ReferenceInputTemplate;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.Attribute;
-import com.diplomska.prof_rank.entities.ReferenceType;
+import com.diplomska.prof_rank.entities.ReferenceInputTemplate;
 import com.diplomska.prof_rank.services.AttributeHibernate;
 import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
 import org.apache.tapestry5.annotations.Property;
@@ -27,13 +27,13 @@ public class Index {
     private AttributeHibernate attributeHibernate;
 
     @Property
-    private ReferenceType referenceType;
+    private ReferenceInputTemplate referenceInputTemplate;
 
     @Property
     private Attribute attribute;
 
     @Property
-    private BeanModel<ReferenceType> referenceTypeBeanModel;
+    private BeanModel<ReferenceInputTemplate> referenceInputTemplateBeanModel;
 
     @Property
     private BeanModel<Attribute> attributeBeanModel;
@@ -47,7 +47,7 @@ public class Index {
     @Inject
     private PropertyConduitSource pcs;
 
-    public List<ReferenceType> getReferenceTypes() {
+    public List<ReferenceInputTemplate> getReferenceInputTemplates() {
         return referenceTypeHibernate.getAll();
     }
 
@@ -56,11 +56,11 @@ public class Index {
     }
 
     void setupRender() {
-        referenceTypeBeanModel = beanModelSource.createDisplayModel(ReferenceType.class, messages);
-        referenceTypeBeanModel.include("name");
-        referenceTypeBeanModel.add("show", null);
-        referenceTypeBeanModel.add("edit", null);
-        referenceTypeBeanModel.add("delete", null);
+        referenceInputTemplateBeanModel = beanModelSource.createDisplayModel(ReferenceInputTemplate.class, messages);
+        referenceInputTemplateBeanModel.include("name");
+        referenceInputTemplateBeanModel.add("show", null);
+        referenceInputTemplateBeanModel.add("edit", null);
+        referenceInputTemplateBeanModel.add("delete", null);
 
         attributeBeanModel = beanModelSource.createDisplayModel(Attribute.class, messages);
         attributeBeanModel.include("name", "inputType");
@@ -69,7 +69,7 @@ public class Index {
 
     @CommitAfter
     void onActionFromDelete(Long referenceTypeId) {
-        referenceType = referenceTypeHibernate.getById(referenceTypeId);
-        referenceTypeHibernate.delete(referenceType);
+        referenceInputTemplate = referenceTypeHibernate.getById(referenceTypeId);
+        referenceTypeHibernate.delete(referenceInputTemplate);
     }
 }

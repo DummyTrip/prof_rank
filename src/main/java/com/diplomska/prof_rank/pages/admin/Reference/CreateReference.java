@@ -1,7 +1,7 @@
 package com.diplomska.prof_rank.pages.admin.Reference;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
-import com.diplomska.prof_rank.entities.ReferenceType;
+import com.diplomska.prof_rank.entities.ReferenceInputTemplate;
 import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
@@ -35,11 +35,11 @@ public class CreateReference {
     private Form form;
 
     @Property
-    private ReferenceType referenceType;
+    private ReferenceInputTemplate referenceInputTemplate;
 
-    private List<ReferenceType> referenceTypes;
+    private List<ReferenceInputTemplate> referenceInputTemplates;
 
-    public List<ReferenceType> getReferenceTypes() {
+    public List<ReferenceInputTemplate> getReferenceInputTemplates() {
         return referenceTypeHibernate.getAll();
     }
 
@@ -59,8 +59,8 @@ public class CreateReference {
     Object onSuccess() {
         referenceHibernate.store(reference);
 
-        if (referenceType != null){
-            referenceHibernate.setReferenceType(reference, referenceType);
+        if (referenceInputTemplate != null){
+            referenceHibernate.setReferenceType(reference, referenceInputTemplate);
         }
 
         return index;

@@ -1,20 +1,12 @@
 package com.diplomska.prof_rank.pages;
 
 
-import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.annotations.InstructorPage;
-import com.diplomska.prof_rank.annotations.PublicPage;
 import com.diplomska.prof_rank.entities.*;
-import com.diplomska.prof_rank.model.UserInfo;
 import com.diplomska.prof_rank.services.*;
-import com.diplomska.prof_rank.util.AppConfig;
 import mk.ukim.finki.isis.model.entities.Person;
-import org.apache.tapestry5.annotations.Import;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SessionState;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
-import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.RequestGlobals;
 import org.slf4j.Logger;
@@ -119,14 +111,14 @@ public class Index
     }
 
     private void createDefaultReferenceType() {
-        ReferenceType referenceType = new ReferenceType();
-        referenceType.setName("Default");
+        ReferenceInputTemplate referenceInputTemplate = new ReferenceInputTemplate();
+        referenceInputTemplate.setName("Default");
         Attribute attribute = new Attribute();
         attribute.setName("Title");
         attribute.setInputType("text");
         attributeHibernate.store(attribute);
-        referenceTypeHibernate.store(referenceType);
-        referenceTypeHibernate.setAttribute(referenceType, attribute);
+        referenceTypeHibernate.store(referenceInputTemplate);
+        referenceTypeHibernate.setAttribute(referenceInputTemplate, attribute);
     }
 
     private void addPerson() {
@@ -208,7 +200,7 @@ public class Index
     }
 
     @CommitAfter
-    void onActionFromAddPersonAndReferenceType() {
+    void onActionFromAddPersonAndReferenceInputTemplate() {
         addPerson();
         createDefaultReferenceType();
         addRulebookAndSections();

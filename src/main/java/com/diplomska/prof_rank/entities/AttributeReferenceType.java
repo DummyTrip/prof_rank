@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class AttributeReferenceType {
     private Long id;
 
-    private ReferenceType referenceType;
+    private ReferenceInputTemplate referenceInputTemplate;
 
     private Attribute attribute;
 
@@ -27,13 +27,13 @@ public class AttributeReferenceType {
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "referenceType_id")
-    public ReferenceType getReferenceType() {
-        return referenceType;
+    @JoinColumn(name = "referenceInputTemplate_id")
+    public ReferenceInputTemplate getReferenceInputTemplate() {
+        return referenceInputTemplate;
     }
 
-    public void setReferenceType(ReferenceType referenceType) {
-        this.referenceType = referenceType;
+    public void setReferenceInputTemplate(ReferenceInputTemplate referenceInputTemplate) {
+        this.referenceInputTemplate = referenceInputTemplate;
     }
 
     @ManyToOne(cascade = CascadeType.ALL)

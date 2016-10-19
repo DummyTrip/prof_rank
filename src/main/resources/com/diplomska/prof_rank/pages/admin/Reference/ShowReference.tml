@@ -12,7 +12,7 @@
 
     <t:if test="refTypeNull">
         <h3>Reference Type</h3>
-        <t:beandisplay object="referenceType"></t:beandisplay>
+        <t:beandisplay object="referenceInputTemplate"></t:beandisplay>
     </t:if>
     <hr/>
 

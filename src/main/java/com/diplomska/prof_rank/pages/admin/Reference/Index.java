@@ -47,7 +47,7 @@ public class Index {
     void setupRender() {
         referenceBeanModel = beanModelSource.createDisplayModel(Reference.class, messages);
         referenceBeanModel.include("name", "points");
-        referenceBeanModel.add("referenceType", pcs.create(Reference.class, "referenceType"));
+        referenceBeanModel.add("referenceInputTemplate", pcs.create(Reference.class, "referenceInputTemplate"));
         referenceBeanModel.add("show", null);
         referenceBeanModel.add("edit", null);
         referenceBeanModel.add("delete", null);

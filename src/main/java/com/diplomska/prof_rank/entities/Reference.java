@@ -19,7 +19,7 @@ public class Reference {
 
     private RulebookSection rulebookSection;
 
-    private ReferenceType referenceType;
+    private ReferenceInputTemplate referenceInputTemplate;
 
     @Column
     @ElementCollection(targetClass = AttributeReference.class)
@@ -66,12 +66,12 @@ public class Reference {
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    public ReferenceType getReferenceType() {
-        return referenceType;
+    public ReferenceInputTemplate getReferenceInputTemplate() {
+        return referenceInputTemplate;
     }
 
-    public void setReferenceType(ReferenceType referenceType) {
-        this.referenceType = referenceType;
+    public void setReferenceInputTemplate(ReferenceInputTemplate referenceInputTemplate) {
+        this.referenceInputTemplate = referenceInputTemplate;
     }
 
     @OneToMany(mappedBy = "reference")

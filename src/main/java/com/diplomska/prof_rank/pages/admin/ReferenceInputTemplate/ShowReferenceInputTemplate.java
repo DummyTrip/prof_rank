@@ -1,8 +1,8 @@
-package com.diplomska.prof_rank.pages.admin.ReferenceType;
+package com.diplomska.prof_rank.pages.admin.ReferenceInputTemplate;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.Attribute;
-import com.diplomska.prof_rank.entities.ReferenceType;
+import com.diplomska.prof_rank.entities.ReferenceInputTemplate;
 import com.diplomska.prof_rank.services.AttributeHibernate;
 import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
 import org.apache.tapestry5.annotations.Persist;
@@ -21,7 +21,7 @@ import java.util.List;
  * Created by Aleksandar on 25-Sep-16.
  */
 @AdministratorPage
-public class ShowReferenceType {
+public class ShowReferenceInputTemplate {
     @Persist
     @Property
     private Long referenceTypeId;
@@ -34,7 +34,7 @@ public class ShowReferenceType {
 
     @Persist
     @Property
-    private ReferenceType referenceType;
+    private ReferenceInputTemplate referenceInputTemplate;
 
     @Property
     private Attribute addAttribute;
@@ -64,7 +64,7 @@ public class ShowReferenceType {
     public List<Attribute> getAttributes() {
         List<Attribute> attributeReferenceTypes = new ArrayList<Attribute>();
 
-        attributeReferenceTypes.addAll(referenceTypeHibernate.getAttributes(referenceType));
+        attributeReferenceTypes.addAll(referenceTypeHibernate.getAttributes(referenceInputTemplate));
 
         return attributeReferenceTypes;
     }
@@ -78,10 +78,10 @@ public class ShowReferenceType {
     }
 
     void setupRender() throws Exception {
-        this.referenceType = referenceTypeHibernate.getById(referenceTypeId);
+        this.referenceInputTemplate = referenceTypeHibernate.getById(referenceTypeId);
 
-        if (referenceType == null) {
-            throw new Exception("ReferenceType " + referenceTypeId + " does not exist.");
+        if (referenceInputTemplate == null) {
+            throw new Exception("ReferenceInputTemplate " + referenceTypeId + " does not exist.");
         }
 
         attributeBeanModel = beanModelSource.createDisplayModel(Attribute.class, messages);
@@ -98,13 +98,13 @@ public class ShowReferenceType {
     void onActionFromAdd(Long attributeId) {
         attribute = attributeHibernate.getById(attributeId);
 
-        referenceTypeHibernate.setAttribute(referenceType, attribute);
+        referenceTypeHibernate.setAttribute(referenceInputTemplate, attribute);
     }
 
     @CommitAfter
     void onActionFromDelete(Long attributeId) {
         Attribute attr = attributeHibernate.getById(attributeId);
 
-        referenceTypeHibernate.deleteAttribute(referenceType, attr);
+        referenceTypeHibernate.deleteAttribute(referenceInputTemplate, attr);
     }
 }

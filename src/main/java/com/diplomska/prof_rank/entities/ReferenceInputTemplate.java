@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Aleksandar on 23-Sep-16.
  */
 @Entity
-public class ReferenceType {
+public class ReferenceInputTemplate {
     private Long id;
 
     private String name;
@@ -38,7 +38,7 @@ public class ReferenceType {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "referenceType")
+    @OneToMany(mappedBy = "referenceInputTemplate")
     public List<AttributeReferenceType> getAttributeReferenceTypes() {
         return attributeReferenceTypes;
     }

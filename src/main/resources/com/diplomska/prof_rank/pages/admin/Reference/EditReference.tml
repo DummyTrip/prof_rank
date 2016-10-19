@@ -29,10 +29,10 @@
         </div>
     </div>
     <div class="form-group">
-        <t:label for="referenceType" class="col-sm-3"/>
+        <t:label for="referenceInputTemplate" class="col-sm-3"/>
         <div class="col-sm-3">
-            <t:select t:id="referenceType" value="reference.referenceType" model="referenceTypeSelectModel"/>
-            <!--<t:selectobject t:id="referenceType" list="referenceTypes" value="referenceType" labelField="literal:name"/>-->
+            <t:select t:id="referenceInputTemplate" value="reference.referenceInputTemplate" model="referenceInputTemplateSelectModel"/>
+            <!--<t:selectobject t:id="referenceInputTemplate" list="referenceInputTemplates" value="referenceInputTemplate" labelField="literal:name"/>-->
         </div>
         <div class="col-sm-6">
             <p class="form-control-static">

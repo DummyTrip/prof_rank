@@ -2,7 +2,6 @@ package com.diplomska.prof_rank.services;
 
 import com.diplomska.prof_rank.entities.*;
 import mk.ukim.finki.isis.model.entities.Person;
-import org.apache.commons.codec.language.bm.Rule;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -88,11 +87,11 @@ public class ExcelWorkbook {
             if (rowValues.size() > 0) {
                 categoryValues.add(rowValues);
                 // comment next lines to stop storing references
-                ReferenceType referenceType = referenceTypeHibernate.getById(Long.valueOf(1));
+                ReferenceInputTemplate referenceInputTemplate = referenceTypeHibernate.getById(Long.valueOf(1));
                 Rulebook rulebook = rulebookHibernate.getById(Long.valueOf(1));
 
                 referenceHibernate.store(reference);
-                referenceHibernate.setReferenceType(reference, referenceType);
+                referenceHibernate.setReferenceType(reference, referenceInputTemplate);
                 referenceHibernate.setSection(reference, section, rulebook);
             }
         }

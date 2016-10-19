@@ -85,8 +85,8 @@ public class ShowReference {
         return rulebookSections;
     }
 
-    public ReferenceType getReferenceType() {
-        return reference.getReferenceType();
+    public ReferenceInputTemplate getReferenceInputTemplate() {
+        return reference.getReferenceInputTemplate();
     }
 
     void onActivate(Long referenceId) {
@@ -119,7 +119,7 @@ public class ShowReference {
     }
 
     public boolean isRefTypeNull() {
-        return reference.getReferenceType() == null ? false : true;
+        return reference.getReferenceInputTemplate() == null ? false : true;
     }
 
 //

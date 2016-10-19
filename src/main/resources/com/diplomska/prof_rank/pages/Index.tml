@@ -26,7 +26,7 @@
 
         <hr/>
         <div>
-            <t:actionlink t:id="addPersonAndReferenceType">Add Person, Reference Type, Rulebook and Sections</t:actionlink>
+            <t:actionlink t:id="addPersonAndReferenceInputTemplate">Add Person, Reference Input Template, Rulebook and Sections</t:actionlink>
         </div>
 
         <div>
@@ -42,7 +42,7 @@
                 <li><t:pagelink page="admin/rulebook/index">Rulebooks</t:pagelink></li>
                 <li><t:pagelink page="admin/section/index">Sections</t:pagelink></li>
                 <li><t:pagelink page="admin/reference/index">References</t:pagelink></li>
-                <li><t:pagelink page="admin/referencetype/index">Reference Types</t:pagelink></li>
+                <li><t:pagelink page="admin/referenceinputtemplate/index">Reference Types</t:pagelink></li>
                 <li><t:pagelink page="admin/attribute/index">Attributes</t:pagelink></li>
                 <li><t:pagelink page="admin/report/index">Reports</t:pagelink></li>
                 <li><t:pagelink page="admin/institutionProfRank/index">Institutions</t:pagelink></li>

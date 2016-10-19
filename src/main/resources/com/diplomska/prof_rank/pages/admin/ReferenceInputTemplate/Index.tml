@@ -1,0 +1,26 @@
+<html t:type="layout" title="ReferenceInputTemplate Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <h2>ReferenceTypes</h2>
+
+    <t:grid source="referenceInputTemplates" row="referenceInputTemplate" model="referenceInputTemplateBeanModel">
+        <p:showCell>
+            <t:pagelink page="admin/referenceinputtemplate/showreferenceinputtemplate" context="referenceInputTemplate.id">Show</t:pagelink>
+        </p:showCell>
+        <p:editCell>
+            <t:pagelink page="admin/referenceinputtemplate/editreferenceinputtemplate" context="referenceInputTemplate.id">Edit</t:pagelink>
+        </p:editCell>
+        <p:deleteCell>
+            <t:actionlink t:id="delete" context="referenceInputTemplate.id">Delete</t:actionlink>
+        </p:deleteCell>
+    </t:grid>
+
+    <p><t:pagelink page="admin/referenceinputtemplate/createreferenceinputtemplate">Create new referenceInputTemplate</t:pagelink></p>
+
+    <hr/>
+
+</div>
+
+</html>

@@ -1,15 +1,15 @@
-<html t:type="layout" title="Edit ReferenceType"
+<html t:type="layout" title="Edit ReferenceInputTemplate"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
 
-<!--<t:beaneditform object="referenceType" submitLabel="Edit ReferenceType"/>-->
+<!--<t:beaneditform object="referenceInputTemplate" submitLabel="Edit ReferenceInputTemplate"/>-->
 
-<t:form t:id="form" class="form-horizontal" validate="referenceType">
+<t:form t:id="form" class="form-horizontal" validate="referenceInputTemplate">
     <t:errors globalOnly="true"/>
 
     <div class="form-group">
         <t:label for="name" class="col-sm-3"/>
         <div class="col-sm-3">
-            <t:textfield t:id="name" value="referenceType.name"/>
+            <t:textfield t:id="name" value="referenceInputTemplate.name"/>
         </div>
         <div class="col-sm-6">
             <p class="form-control-static">
@@ -20,7 +20,7 @@
     <div class="form-group">
         <div class="col-sm-3 col-sm-offset-3">
             <t:submit value="Save"/>
-            <t:pagelink page="admin/referenceType/index" class="btn btn-default">Cancel</t:pagelink>
+            <t:pagelink page="admin/referenceInputTemplate/index" class="btn btn-default">Cancel</t:pagelink>
         </div>
     </div>
 
