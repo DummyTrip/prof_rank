@@ -15,7 +15,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.PropertyConduitSource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,10 +40,10 @@ public class ShowPerson {
     private ReportHibernate reportHibernate;
 
     @Property
-    private ReferenceInstance referenceInstance;
+    private Reference reference;
 
     @Property
-    private ReferenceInstance addReferenceInstance;
+    private Reference addReference;
 
     @Property
     private Report report;
@@ -53,10 +52,10 @@ public class ShowPerson {
     private Report addReport;
 
     @Property
-    private BeanModel<ReferenceInstance> referenceInstanceBeanModel;
+    private BeanModel<Reference> referenceBeanModel;
 
     @Property
-    private BeanModel<ReferenceInstance> addReferenceInstanceBeanModel;
+    private BeanModel<Reference> addreferenceBeanModel;
 
     @Property
     private BeanModel<Report> reportBeanModel;
@@ -77,11 +76,11 @@ public class ShowPerson {
 //        return person.getRole();
 //    }
 
-    public List<ReferenceInstance> getReferenceInstances() {
-        return personHibernate.getReferenceInstances(person);
+    public List<Reference> getReferences() {
+        return personHibernate.getReferences(person);
     }
 
-    public List<ReferenceInstance> getAddReferenceInstances() {
+    public List<Reference> getAddReferences() {
         return referenceInstanceHibernate.getAll();
     }
 
@@ -108,15 +107,15 @@ public class ShowPerson {
             throw new Exception("Report " + personId + " does not exist.");
         }
 
-        referenceInstanceBeanModel = beanModelSource.createDisplayModel(ReferenceInstance.class, messages);
-        referenceInstanceBeanModel.add("referenceInstanceName", pcs.create(ReferenceInstance.class, "reference.name"));
-        referenceInstanceBeanModel.add("show", null);
-        referenceInstanceBeanModel.add("delete", null);
+        referenceBeanModel = beanModelSource.createDisplayModel(Reference.class, messages);
+        referenceBeanModel.add("referenceName", pcs.create(Reference.class, "reference.name"));
+        referenceBeanModel.add("show", null);
+        referenceBeanModel.add("delete", null);
 
-        addReferenceInstanceBeanModel = beanModelSource.createDisplayModel(ReferenceInstance.class, messages);
-        addReferenceInstanceBeanModel.add("referenceInstanceName", pcs.create(ReferenceInstance.class, "reference.name"));
-        addReferenceInstanceBeanModel.add("show", null);
-        addReferenceInstanceBeanModel.add("add", null);
+        addreferenceBeanModel = beanModelSource.createDisplayModel(Reference.class, messages);
+        addreferenceBeanModel.add("referenceName", pcs.create(Reference.class, "reference.name"));
+        addreferenceBeanModel.add("show", null);
+        addreferenceBeanModel.add("add", null);
 
         reportBeanModel = beanModelSource.createDisplayModel(Report.class, messages);
         reportBeanModel.add("reportTitle", pcs.create(Report.class, "title"));
@@ -139,10 +138,10 @@ public class ShowPerson {
 //    }
 
     @CommitAfter
-    void onActionFromAddReferenceInstance(Long id) {
-        ReferenceInstance entity = referenceInstanceHibernate.getById(id);
+    void onActionFromAddReference(Long id) {
+        Reference entity = referenceInstanceHibernate.getById(id);
 
-//        personHibernate.setReferenceInstance(person, entity);
+//        personHibernate.setReference(person, entity);
     }
 
     @CommitAfter
@@ -154,10 +153,10 @@ public class ShowPerson {
     }
 
     @CommitAfter
-    void onActionFromDeleteReferenceInstance(Long id) {
-        ReferenceInstance entity = referenceInstanceHibernate.getById(id);
+    void onActionFromDeleteReference(Long id) {
+        Reference entity = referenceInstanceHibernate.getById(id);
 
-        personHibernate.deleteReferenceInstance(person, entity);
+        personHibernate.deleteReference(person, entity);
     }
 
     @CommitAfter

@@ -3,13 +3,10 @@ package com.diplomska.prof_rank.services;
 import com.diplomska.prof_rank.entities.*;
 import mk.ukim.finki.isis.model.entities.Instructor;
 import mk.ukim.finki.isis.model.entities.Person;
-import org.apache.commons.codec.binary.StringUtils;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,7 +113,7 @@ public class PersonHibernate {
                 .add(eq("person.personId", personId)).list();
     }
 
-    public List<ReferenceInstance> getReferenceInstances(Person person) {
+    public List<Reference> getReferences(Person person) {
         if (person == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
@@ -124,30 +121,30 @@ public class PersonHibernate {
         Criteria criteria = session.createCriteria(ReferenceInstancePerson.class);
 
         List<ReferenceInstancePerson> referenceInstancePersons = criteria.add(eq("person", person)).list();
-        List<ReferenceInstance> referenceInstances = new ArrayList<ReferenceInstance>();
+        List<Reference> references = new ArrayList<Reference>();
 
         for (ReferenceInstancePerson referenceInstancePerson : referenceInstancePersons) {
-            referenceInstances.add(referenceInstancePerson.getReferenceInstance());
+            references.add(referenceInstancePerson.getReference());
         }
 
-        return referenceInstances;
+        return references;
     }
 
-    public void setReferenceInstance(Person person, ReferenceInstance referenceInstance, Integer authorNum) {
-        if (person == null || referenceInstance == null || authorNum == null) {
+    public void setReference(Person person, Reference reference, Integer authorNum) {
+        if (person == null || reference == null || authorNum == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
         ReferenceInstancePerson referenceInstancePerson = new ReferenceInstancePerson();
 
         referenceInstancePerson.setPerson(person);
         referenceInstancePerson.setAuthorNum(authorNum);
-        referenceInstancePerson.setReferenceInstance(referenceInstance);
+        referenceInstancePerson.setReference(reference);
 
         session.saveOrUpdate(referenceInstancePerson);
     }
 
-    public void setReferenceInstance(ReferenceInstance referenceInstance, String personIdentifier, Integer authorNum) {
-        if (referenceInstance == null || personIdentifier == null || authorNum == null) {
+    public void setReference(Reference reference, String personIdentifier, Integer authorNum) {
+        if (reference == null || personIdentifier == null || authorNum == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
@@ -165,7 +162,7 @@ public class PersonHibernate {
         }
 
         referenceInstancePerson.setAuthorNum(authorNum);
-        referenceInstancePerson.setReferenceInstance(referenceInstance);
+        referenceInstancePerson.setReference(reference);
 
         session.saveOrUpdate(referenceInstancePerson);
     }
@@ -182,15 +179,15 @@ public class PersonHibernate {
         return getByColumn("email", email);
     }
 
-    public List<String> getReferenceInstanceAuthors(ReferenceInstance referenceInstance) {
-        if (referenceInstance == null) {
+    public List<String> getReferenceAuthors(Reference reference) {
+        if (reference == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
         List<String> authors = new ArrayList<String>();
 
         Criteria criteria = session.createCriteria(ReferenceInstancePerson.class);
-        criteria.add(eq("referenceInstance", referenceInstance));
+        criteria.add(eq("reference", reference));
 
         List<ReferenceInstancePerson> rips = criteria.list();
 
@@ -210,29 +207,29 @@ public class PersonHibernate {
         return authors;
     }
 
-    public void setReferenceInstanceMissingPerson(ReferenceInstance referenceInstance, String author) {
-        if (author == null || referenceInstance == null) {
+    public void setReferenceMissingPerson(Reference reference, String author) {
+        if (author == null || reference == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
         ReferenceInstancePerson referenceInstancePerson = new ReferenceInstancePerson();
 
         referenceInstancePerson.setAuthor(author);
-        referenceInstancePerson.setReferenceInstance(referenceInstance);
+        referenceInstancePerson.setReference(reference);
 
         session.saveOrUpdate(referenceInstancePerson);
     }
 
     @CommitAfter
-    public void deleteReferenceInstance(Person person, ReferenceInstance referenceInstance) {
-        if (person == null || referenceInstance == null) {
+    public void deleteReference(Person person, Reference reference) {
+        if (person == null || reference == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
         Criteria criteria = session.createCriteria(ReferenceInstancePerson.class);
         List<ReferenceInstancePerson> entities = criteria
                 .add(eq("person", person))
-                .add(eq("referenceInstance", referenceInstance))
+                .add(eq("reference", reference))
                 .list();
 
         if (entities.size() < 1) {

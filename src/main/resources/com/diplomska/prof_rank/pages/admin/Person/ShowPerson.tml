@@ -12,13 +12,13 @@
         <!--<t:beandisplay object="role"/>-->
     <!--</t:if>-->
 
-    <h3>ReferenceInstances</h3>
-    <t:grid source="referenceInstances" row="referenceInstance" model="referenceInstanceBeanModel">
+    <h3>References</h3>
+    <t:grid source="references" row="reference" model="referenceBeanModel">
         <p:showCell>
-            <t:pagelink page="admin/referenceinstance/showreferenceinstance" context="referenceInstance.id">Show</t:pagelink>
+            <t:pagelink page="admin/referenceinstance/showreferenceinstance" context="reference.id">Show</t:pagelink>
         </p:showCell>
         <p:deleteCell>
-            <t:actionlink t:id="deleteReferenceInstance" context="referenceInstance.id">Delete</t:actionlink>
+            <t:actionlink t:id="deleteReference" context="reference.id">Delete</t:actionlink>
         </p:deleteCell>
     </t:grid>
 
@@ -43,13 +43,13 @@
         </p:addCell>
     </t:grid>
 
-    <h3>Add ReferenceInstances</h3>
-    <t:grid source="addReferenceInstances" row="addReferenceInstance" model="addReferenceInstanceBeanModel">
+    <h3>Add References</h3>
+    <t:grid source="addReferences" row="addReference" model="addReferenceBeanModel">
         <p:showCell>
-            <t:pagelink page="admin/referenceinstance/showreferenceinstance" context="addReferenceInstance.id">Show</t:pagelink>
+            <t:pagelink page="admin/referenceinstance/showreferenceinstance" context="addReference.id">Show</t:pagelink>
         </p:showCell>
         <p:addCell>
-            <t:actionlink t:id="addReferenceInstance" context="addReferenceInstance.id">Add</t:actionlink>
+            <t:actionlink t:id="addReference" context="addReference.id">Add</t:actionlink>
         </p:addCell>
     </t:grid>
 

@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class ReferenceInstancePerson {
     private Long id;
 
-    private ReferenceInstance referenceInstance;
+    private Reference reference;
 
     private Person person;
 
@@ -32,13 +32,13 @@ public class ReferenceInstancePerson {
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "referenceInstance_id")
-    public ReferenceInstance getReferenceInstance() {
-        return referenceInstance;
+    @JoinColumn(name = "reference_id")
+    public Reference getReference() {
+        return reference;
     }
 
-    public void setReferenceInstance(ReferenceInstance referenceInstance) {
-        this.referenceInstance = referenceInstance;
+    public void setReference(Reference reference) {
+        this.reference = reference;
     }
 
     @ManyToOne(cascade = CascadeType.ALL)

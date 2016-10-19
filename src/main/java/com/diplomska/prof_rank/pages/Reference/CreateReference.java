@@ -3,7 +3,7 @@ package com.diplomska.prof_rank.pages.Reference;
 import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.entities.Attribute;
 import com.diplomska.prof_rank.entities.ReferenceType;
-import com.diplomska.prof_rank.entities.ReferenceInstance;
+import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.services.*;
 import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.SelectModel;
@@ -27,11 +27,11 @@ import java.util.*;
 public class CreateReference {
     @Persist
     @Property
-    private Long referenceId;
+    private Long referenceTypeId;
 
     @Persist
     @Property
-    private Long oldReferenceId;
+    private Long oldreferenceTypeId;
 
     @Persist
     @Property
@@ -41,7 +41,7 @@ public class CreateReference {
     ReferenceTypeHibernate referenceTypeHibernate;
 
     @Property
-    private ReferenceInstance referenceInstance;
+    private Reference reference;
 
     @Inject
     ReferenceInstanceHibernate referenceInstanceHibernate;
@@ -84,21 +84,21 @@ public class CreateReference {
     @Property
     private Map<String, String> testMap;
 
-    void onActivate(Long referenceId) {
-        this.referenceId = referenceId;
+    void onActivate(Long referenceTypeId) {
+        this.referenceTypeId = referenceTypeId;
     }
 
     Long passivate() {
-        return referenceId;
+        return referenceTypeId;
     }
 
     void setupRender() throws Exception {
-        if (!referenceId.equals(oldReferenceId)) {
+        if (!referenceTypeId.equals(oldreferenceTypeId)) {
             resetPersistedVariables();
-            oldReferenceId = referenceId;
+            oldreferenceTypeId = referenceTypeId;
         }
 
-        this.referenceType = referenceTypeHibernate.getById(referenceId);
+        this.referenceType = referenceTypeHibernate.getById(referenceTypeId);
 
         if (attributes == null) {
             attributes = referenceTypeHibernate.getAttributeValues(this.referenceType);
@@ -138,13 +138,13 @@ public class CreateReference {
         }
 
         for (String authorName : authorNames) {
-            referenceInstance = new ReferenceInstance();
-            referenceInstance.setReferenceType(referenceType);
-            referenceInstanceHibernate.store(referenceInstance);
+            reference = new Reference();
+            reference.setReferenceType(referenceType);
+            referenceInstanceHibernate.store(reference);
 
-            personHibernate.setReferenceInstance(referenceInstance, authorName, authorNames.indexOf(authorName));
+            personHibernate.setReference(reference, authorName, authorNames.indexOf(authorName));
 
-            referenceInstanceHibernate.updateAttributeReferenceInstances(referenceInstance, testMap, attributes);
+            referenceInstanceHibernate.updateAttributeReferenceInstances(reference, testMap, attributes);
         }
 
         resetPersistedVariables();
@@ -358,7 +358,12 @@ public class CreateReference {
 
     @OnEvent(component = "addAuthor", value = "selected")
     void addAuthor() {
-        String lastAuthor = authors.get(authors.size() - 1);
+        String lastAuthor;
+        if (authors.size() > 0){
+            lastAuthor = authors.get(authors.size() - 1);
+        } else{
+            lastAuthor = "author 0";
+        }
         Integer newAuthorNumber = Integer.valueOf(lastAuthor.split(" ")[1]) + 1;
         String authorName = "author " + newAuthorNumber;
         addAuthorToForm(authorName, "");

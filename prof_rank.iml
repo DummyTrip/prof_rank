@@ -48,6 +48,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.jbibtex:jbibtex:1.0.15" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tapestry:tapestry-core:5.4.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tapestry:beanmodel:5.4.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tapestry:commons:5.4.1" level="project" />

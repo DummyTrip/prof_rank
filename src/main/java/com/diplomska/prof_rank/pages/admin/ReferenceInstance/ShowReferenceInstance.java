@@ -2,7 +2,7 @@ package com.diplomska.prof_rank.pages.admin.ReferenceInstance;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.AttributeReferenceInstance;
-import com.diplomska.prof_rank.entities.ReferenceInstance;
+import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -21,13 +21,13 @@ import java.util.List;
 public class ShowReferenceInstance {
     @Property
     @Persist
-    private Long referenceInstanceId;
+    private Long referenceId;
 
     @Inject
     ReferenceInstanceHibernate referenceInstanceHibernate;
 
     @Property
-    ReferenceInstance referenceInstance;
+    Reference reference;
 
     @Property
     private AttributeReferenceInstance attributeReferenceInstance;
@@ -45,22 +45,22 @@ public class ShowReferenceInstance {
     private PropertyConduitSource pcs;
 
     public List<AttributeReferenceInstance> getAttributeReferenceInstances() {
-        return referenceInstance.getAttributeReferenceInstances();
+        return reference.getAttributeReferenceInstances();
     }
 
-    void onActivate(Long referenceInstanceId) {
-        this.referenceInstanceId = referenceInstanceId;
+    void onActivate(Long referenceId) {
+        this.referenceId = referenceId;
     }
 
     Long passivate() {
-        return referenceInstanceId;
+        return referenceId;
     }
 
     void setupRender() throws Exception {
-        this.referenceInstance = referenceInstanceHibernate.getById(referenceInstanceId);
+        this.reference = referenceInstanceHibernate.getById(referenceId);
 
-        if (referenceInstance == null) {
-            throw new Exception("ReferenceType " + referenceInstanceId + " does not exist.");
+        if (reference == null) {
+            throw new Exception("ReferenceType " + referenceId + " does not exist.");
         }
 
         attributeReferenceInstanceBeanModel = beanModelSource.createDisplayModel(AttributeReferenceInstance.class, messages);

@@ -59,7 +59,7 @@
                     <h4 class="truncate no-margin-top">${referenceType.getName()}</h4>
                 </div>
                 <div class="col-md-2">
-                    <b>${numberOfReferenceInstancesForPerson}</b>
+                    <b>${numberOfReferencesForPerson}</b>
                 </div>
                 <div class="row ref-info-row-padding">
                     <div class="col-md-12">
@@ -91,7 +91,7 @@
                     <h4 class="truncate no-margin-top">${referenceType.getName()}</h4>
                 </div>
                 <div class="col-md-2">
-                    <b>${numberOfReferenceInstances}</b>
+                    <b>${numberOfReferences}</b>
                 </div>
                 <div class="row ref-info-row-padding">
                     <div class="col-md-12">

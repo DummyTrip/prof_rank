@@ -87,28 +87,28 @@ public class ReferenceTypeHibernate {
     }
 
     public List<ReferenceType> getPopular(Integer limit) {
-        List<ReferenceInstance> allReferenceInstances = session.createCriteria(ReferenceInstance.class).list();
+        List<Reference> allReferences = session.createCriteria(Reference.class).list();
 
-        return getSortedReferenceTypes(allReferenceInstances, limit);
+        return getSortedReferenceTypes(allReferences, limit);
     }
 
     public List<ReferenceType> getPopularByPerson(Person person, Integer limit) {
-        List<ReferenceInstance> allReferenceInstances = personHibernate.getReferenceInstances(person);
+        List<Reference> allReferences = personHibernate.getReferences(person);
 
-        return getSortedReferenceTypes(allReferenceInstances, limit);
+        return getSortedReferenceTypes(allReferences, limit);
     }
 
     public List<ReferenceType> getPopularByPerson(Person person, Integer limit, List<Section> sections) {
-        List<ReferenceInstance> allReferenceInstances = personHibernate.getReferenceInstances(person);
-        List<ReferenceInstance> references = new ArrayList<ReferenceInstance>();
+        List<Reference> allReferences = personHibernate.getReferences(person);
+        List<Reference> references = new ArrayList<Reference>();
 
-        for (ReferenceInstance referenceInstance : allReferenceInstances ) {
-            List<Section> refSections = getSections(referenceInstance.getReferenceType());
+        for (Reference reference : allReferences) {
+            List<Section> refSections = getSections(reference.getReferenceType());
 
             for (Section section : sections) {
                 for(Section refSection: refSections) {
                     if (refSection.getId().equals(section.getId())) {
-                        references.add(referenceInstance);
+                        references.add(reference);
                     }
                 }
             }
@@ -117,13 +117,13 @@ public class ReferenceTypeHibernate {
         return getSortedReferenceTypes(references, limit);
     }
 
-    private List<ReferenceType> getSortedReferenceTypes(List<ReferenceInstance> allReferenceInstances, Integer limit) {
+    private List<ReferenceType> getSortedReferenceTypes(List<Reference> allReferences, Integer limit) {
         List<ReferenceType> sortedReferenceTypes = new ArrayList<ReferenceType>();
 
         Map<ReferenceType, Integer> unsortedReferenceMap = new HashMap<ReferenceType, Integer>();
 
-        for (ReferenceInstance referenceInstance : allReferenceInstances) {
-            ReferenceType referenceType = referenceInstance.getReferenceType();
+        for (Reference reference : allReferences) {
+            ReferenceType referenceType = reference.getReferenceType();
 
             if (!unsortedReferenceMap.containsKey(referenceType)) {
                 unsortedReferenceMap.put(referenceType, 0);

@@ -203,14 +203,14 @@ public class ExcelWorkbook {
 
                 if (rowValues.size() == attributes.size()) {
                     ReferenceType referenceType = getReferenceType("Одржување на настава - од прв циклус студии", section);
-                    ReferenceInstance referenceInstance = createReferenceInstance(referenceType);
-                    personHibernate.setReferenceInstance(person, referenceInstance, 1);
+                    Reference reference = createReference(referenceType);
+                    personHibernate.setReference(person, reference, 1);
                     for (String cellValue : rowValues) {
                         Integer index = rowValues.indexOf(cellValue);
                         Attribute attribute = attributes.get(index);
 
                         boolean display = isDisplayAttribute(attribute);
-                        referenceInstanceHibernate.setAttributeValueIndexDisplay(referenceInstance, attribute, cellValue, index, display);
+                        referenceInstanceHibernate.setAttributeValueIndexDisplay(reference, attribute, cellValue, index, display);
                     }
                     categoryValues.add(rowValues);
                 }
@@ -364,9 +364,9 @@ public class ExcelWorkbook {
                             person = findPerson(bibtexAuthorName);
 
                             if (person == null) {
-                                persistReferenceInstance(referenceTypeName, bibtexAuthorName, rowValues, authorNum, section);
+                                persistReference(referenceTypeName, bibtexAuthorName, rowValues, authorNum, section);
                             } else {
-                                persistReferenceInstance(referenceTypeName, person, rowValues, authorNum, section);
+                                persistReference(referenceTypeName, person, rowValues, authorNum, section);
                             }
 
                             hasAuthors = true;
@@ -375,7 +375,7 @@ public class ExcelWorkbook {
 
                     // this sheet doesnt contain authors.
                     if (!hasAuthors) {
-                        persistReferenceInstance(referenceTypeName, person, rowValues, 1, section);
+                        persistReference(referenceTypeName, person, rowValues, 1, section);
                     }
                 }
             }
@@ -402,23 +402,23 @@ public class ExcelWorkbook {
         return fullName[lastNameIndex] + ", " + fullName[firstNameIndex];
     }
 
-    private void persistReferenceInstance(String referenceTypeName, Person person, List<String> rowValues, Integer authorNum, Section section) {
+    private void persistReference(String referenceTypeName, Person person, List<String> rowValues, Integer authorNum, Section section) {
         ReferenceType referenceType = getReferenceType(referenceTypeName, section);
-        ReferenceInstance referenceInstance = createReferenceInstance(referenceType);
-        personHibernate.setReferenceInstance(person, referenceInstance, authorNum);
+        Reference reference = createReference(referenceType);
+        personHibernate.setReference(person, reference, authorNum);
 
-        addCellValuesToReferenceInstance(rowValues, referenceType, referenceInstance);
+        addCellValuesToReference(rowValues, referenceType, reference);
     }
 
-    private void persistReferenceInstance(String referenceTypeName, String author, List<String> rowValues, Integer authorNum, Section section) {
+    private void persistReference(String referenceTypeName, String author, List<String> rowValues, Integer authorNum, Section section) {
         ReferenceType referenceType = getReferenceType(referenceTypeName, section);
-        ReferenceInstance referenceInstance = createReferenceInstance(referenceType);
-        personHibernate.setReferenceInstance(referenceInstance, author, authorNum);
+        Reference reference = createReference(referenceType);
+        personHibernate.setReference(reference, author, authorNum);
 
-        addCellValuesToReferenceInstance(rowValues, referenceType, referenceInstance);
+        addCellValuesToReference(rowValues, referenceType, reference);
     }
 
-    private void addCellValuesToReferenceInstance(List<String> rowValues, ReferenceType referenceType, ReferenceInstance referenceInstance) {
+    private void addCellValuesToReference(List<String> rowValues, ReferenceType referenceType, Reference reference) {
         for (int i = 0; i < rowValues.size() ; i++) {
             Attribute attribute = attributes.get(i);
 
@@ -428,7 +428,7 @@ public class ExcelWorkbook {
             }
 
             boolean display = isDisplayAttribute(attribute);
-            referenceInstanceHibernate.setAttributeValueIndexDisplay(referenceInstance, attribute, rowValues.get(i), i, display);
+            referenceInstanceHibernate.setAttributeValueIndexDisplay(reference, attribute, rowValues.get(i), i, display);
         }
     }
 
@@ -507,12 +507,12 @@ public class ExcelWorkbook {
         }
     }
 
-    private ReferenceInstance createReferenceInstance(ReferenceType referenceType) {
-        ReferenceInstance referenceInstance = new ReferenceInstance();
-        referenceInstance.setReferenceType(referenceType);
-        referenceInstanceHibernate.store(referenceInstance);
+    private Reference createReference(ReferenceType referenceType) {
+        Reference reference = new Reference();
+        reference.setReferenceType(referenceType);
+        referenceInstanceHibernate.store(reference);
 
-        return referenceInstance;
+        return reference;
     }
 
     private List<String> getAttributeValues(Row row, List<String> rowValues, String notNullColumnName) {

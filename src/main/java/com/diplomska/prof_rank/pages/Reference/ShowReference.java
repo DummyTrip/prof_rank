@@ -35,18 +35,18 @@ public class ShowReference {
     ReferenceType referenceType;
 
     @Property
-    ReferenceInstance referenceInstance;
+    Reference reference;
 
     @Property
     AttributeReferenceInstance ari;
 
     @Persist
     @Property
-    Long referenceId;
+    Long referenceTypeId;
 
     @Persist
     @Property
-    Long oldReferenceId;
+    Long oldreferenceTypeId;
 
     @Property
     String referenceName;
@@ -80,10 +80,10 @@ public class ShowReference {
 
     @Persist
     @Property
-    List<ReferenceInstance> allReferenceInstances;
+    List<Reference> allReferences;
 
     public String getDisplayName() {
-        return referenceInstanceHibernate.getDisplayName(referenceInstance);
+        return referenceInstanceHibernate.getDisplayName(reference);
     }
 
     public List<Attribute> getAttributes() {
@@ -91,15 +91,15 @@ public class ShowReference {
     }
 
     public List<AttributeReferenceInstance> getAttributeValues() {
-        return referenceInstanceHibernate.getSortedAttributeReferenceInstance(referenceInstance);
+        return referenceInstanceHibernate.getSortedAttributeReferenceInstance(reference);
     }
 
-    void onActivate(Long referenceId) {
-        this.referenceId = referenceId;
+    void onActivate(Long referenceTypeId) {
+        this.referenceTypeId = referenceTypeId;
     }
 
     Long passivate() {
-        return referenceId;
+        return referenceTypeId;
     }
 
     List<String> onProvideCompletionsFromSearchName(String partial) {
@@ -152,26 +152,26 @@ public class ShowReference {
     }
 
     void setupRender() throws Exception {
-        if (!referenceId.equals(oldReferenceId)) {
+        if (!referenceTypeId.equals(oldreferenceTypeId)) {
             selectedCheckboxes = null;
             toggleDisplay = true;
-            oldReferenceId = referenceId;
+            oldreferenceTypeId = referenceTypeId;
         }
 
-        this.referenceType = referenceTypeHibernate.getById(referenceId);
+        this.referenceType = referenceTypeHibernate.getById(referenceTypeId);
         this.referenceName = referenceNameQueryString;
         this.displayNames = referenceInstanceHibernate.getAllDisplayNames();
 //        testMap = new HashMap<String, String>();
 
-        refInstances = new ArrayList<ReferenceInstance>();
-        firstPageRefInstances = new ArrayList<ReferenceInstance>();
+        refInstances = new ArrayList<Reference>();
+        firstPageRefInstances = new ArrayList<Reference>();
 
         filterMap = filterQueryStringToMap(filtersQueryString);
 
         if (filterMap.keySet().size() > 0) {
-            allReferenceInstances = sortReferenceInstaces(filterMap);
+            allReferences = sortReferenceInstaces(filterMap);
         } else {
-            allReferenceInstances = sortReferenceInstaces();
+            allReferences = sortReferenceInstaces();
         }
 
         if (selectedCheckboxes == null) {
@@ -184,41 +184,41 @@ public class ShowReference {
         }
     }
 
-    private List<ReferenceInstance> sortReferenceInstaces() {
-        List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getByReferenceType(referenceType);
+    private List<Reference> sortReferenceInstaces() {
+        List<Reference> references = referenceInstanceHibernate.getByReferenceType(referenceType);
 
-        return getSortedReferenceInstances(referenceInstances);
+        return getSortedReferences(references);
     }
 
-    private List<ReferenceInstance> sortReferenceInstaces(Map<String, String> filterMap) {
+    private List<Reference> sortReferenceInstaces(Map<String, String> filterMap) {
         Person person = personHibernate.getById(Long.valueOf(1));
-        List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getByReferenceTypeFilterAndPerson(referenceType, filterMap, person);
+        List<Reference> references = referenceInstanceHibernate.getByReferenceTypeFilterAndPerson(referenceType, filterMap, person);
 
-        if (referenceInstances == null) {
-            return new ArrayList<ReferenceInstance>();
+        if (references == null) {
+            return new ArrayList<Reference>();
         }
 
-        return getSortedReferenceInstances(referenceInstances);
+        return getSortedReferences(references);
     }
 
-    private List<ReferenceInstance> getSortedReferenceInstances(List<ReferenceInstance> referenceInstances) {
+    private List<Reference> getSortedReferences(List<Reference> references) {
 
         Attribute orderAttribute = getOrderAttribute();
 
         if (orderAttribute == null) {
-            return referenceInstances;
+            return references;
         }
 
-        Map<ReferenceInstance, String> unsortedMap = getUnsortedMapOfReferenceInstaces(referenceInstances, orderAttribute);
+        Map<Reference, String> unsortedMap = getUnsortedMapOfReferenceInstaces(references, orderAttribute);
 
-        Map<ReferenceInstance, String> sortedMap = sortMapByValue(unsortedMap);
-        referenceInstances = new ArrayList<ReferenceInstance>();
+        Map<Reference, String> sortedMap = sortMapByValue(unsortedMap);
+        references = new ArrayList<Reference>();
 
-        for (ReferenceInstance ri : sortedMap.keySet()) {
-            referenceInstances.add(ri);
+        for (Reference ri : sortedMap.keySet()) {
+            references.add(ri);
         }
 
-        return referenceInstances;
+        return references;
     }
 
     private Attribute getOrderAttribute() {
@@ -238,10 +238,10 @@ public class ShowReference {
         return orderAttribute;
     }
 
-    private Map<ReferenceInstance, String> getUnsortedMapOfReferenceInstaces(List<ReferenceInstance> referenceInstances, Attribute orderAttribute) {
-        Map<ReferenceInstance, String> unsortedMap = new HashMap<ReferenceInstance, String>();
+    private Map<Reference, String> getUnsortedMapOfReferenceInstaces(List<Reference> references, Attribute orderAttribute) {
+        Map<Reference, String> unsortedMap = new HashMap<Reference, String>();
 
-        for (ReferenceInstance refInstance : referenceInstances) {
+        for (Reference refInstance : references) {
             for (AttributeReferenceInstance ari: refInstance.getAttributeReferenceInstances()) {
                 if (ari.getAttribute().equals(orderAttribute)) {
                     unsortedMap.put(refInstance, ari.getValue());
@@ -253,19 +253,19 @@ public class ShowReference {
         return unsortedMap;
     }
 
-    private Map<ReferenceInstance, String> sortMapByValue(Map<ReferenceInstance, String> unsortedMap) {
-        List<Map.Entry<ReferenceInstance, String>> list =
-                new LinkedList<Map.Entry<ReferenceInstance, String>>(unsortedMap.entrySet());
+    private Map<Reference, String> sortMapByValue(Map<Reference, String> unsortedMap) {
+        List<Map.Entry<Reference, String>> list =
+                new LinkedList<Map.Entry<Reference, String>>(unsortedMap.entrySet());
 
-        Collections.sort(list, new Comparator<Map.Entry<ReferenceInstance, String>>() {
-            public int compare(Map.Entry<ReferenceInstance, String> o1,
-                               Map.Entry<ReferenceInstance, String> o2) {
+        Collections.sort(list, new Comparator<Map.Entry<Reference, String>>() {
+            public int compare(Map.Entry<Reference, String> o1,
+                               Map.Entry<Reference, String> o2) {
                 return (o2.getValue()).compareTo(o1.getValue());
             }
         });
 
-        Map<ReferenceInstance, String> sortedMap = new LinkedHashMap<ReferenceInstance, String>();
-        for (Map.Entry<ReferenceInstance, String> entry : list) {
+        Map<Reference, String> sortedMap = new LinkedHashMap<Reference, String>();
+        for (Map.Entry<Reference, String> entry : list) {
             sortedMap.put(entry.getKey(), entry.getValue());
         }
 
@@ -295,25 +295,25 @@ public class ShowReference {
 
     @Persist
     @Property
-    List<ReferenceInstance> firstPageRefInstances;
+    List<Reference> firstPageRefInstances;
 
     @Persist
     @Property
-    List<ReferenceInstance> refInstances;
+    List<Reference> refInstances;
 
-    // ajax call, used fpr paging of ReferenceInstances
+    // ajax call, used fpr paging of References
     @OnEvent("nextPage")
-    List<ReferenceInstance> moreValues() throws InterruptedException {
-        Integer allReferenceInstancesSize = allReferenceInstances.size();
+    List<Reference> moreValues() throws InterruptedException {
+        Integer allReferencesSize = allReferences.size();
         // make sure first is not larger than the size of all instances
-        Integer first = allReferenceInstancesSize > pageNumber * PageSize ? pageNumber * PageSize : allReferenceInstancesSize;
+        Integer first = allReferencesSize > pageNumber * PageSize ? pageNumber * PageSize : allReferencesSize;
         // make sure last element index is not larger than the size of all instances
-        Integer last = allReferenceInstancesSize > first + PageSize ? first + PageSize : allReferenceInstancesSize;
+        Integer last = allReferencesSize > first + PageSize ? first + PageSize : allReferencesSize;
         // Delays the ajax call.
         // Sometimes the call returns almost instantly, which is a bad user experience.
         Thread.sleep(200);
 
-        List<ReferenceInstance> newInstances = allReferenceInstances.subList(first, last);
+        List<Reference> newInstances = allReferences.subList(first, last);
 
         // This if/else is a fix.
         // When items in page 0 are fewer than PageSize, the items get duplicated.
@@ -383,24 +383,24 @@ public class ShowReference {
     @CommitAfter
     @OnEvent(component = "saveDisplay", value = "selected")
     void saveDisplay() {
-        List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getByReferenceType(referenceType);
+        List<Reference> references = referenceInstanceHibernate.getByReferenceType(referenceType);
 
-        for (ReferenceInstance referenceInstance : referenceInstances) {
-            List<AttributeReferenceInstance> attributeReferenceInstances = referenceInstance.getAttributeReferenceInstances();
+        for (Reference reference : references) {
+            List<AttributeReferenceInstance> attributeReferenceInstances = reference.getAttributeReferenceInstances();
 
             for (AttributeReferenceInstance ari : attributeReferenceInstances) {
                 Attribute attribute = ari.getAttribute();
                 if (selectedCheckboxes.containsKey(attribute.getId())) {
                     boolean display = selectedCheckboxes.get(attribute.getId()) == 0 ? false : true;
 
-                    referenceInstanceHibernate.setAttributeDisplay(ari, referenceInstance, display);
+                    referenceInstanceHibernate.setAttributeDisplay(ari, reference, display);
                 }
             }
         }
     }
 
-    public Object onActionFromRefreshPage(Long referenceId) {
-        this.referenceId = referenceId;
+    public Object onActionFromRefreshPage(Long referenceTypeId) {
+        this.referenceTypeId = referenceTypeId;
         this.filtersQueryString = null;
 
         return this;

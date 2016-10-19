@@ -59,12 +59,12 @@ public class Index
     public Float getPoints() {
         Float points = 0f;
 
-        List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getAll();
+        List<Reference> references = referenceInstanceHibernate.getAll();
 
-        for (ReferenceInstance referenceInstance : referenceInstances) {
-            Float referencePoints = referenceInstance.getReferenceType().getPoints();
+        for (Reference reference : references) {
+            Float referencePoints = reference.getReferenceType().getPoints();
             if (referencePoints != null) {
-                points += referenceInstance.getReferenceType().getPoints();
+                points += reference.getReferenceType().getPoints();
             }
         }
 
@@ -88,18 +88,18 @@ public class Index
         return referenceTypeHibernate.getSections(referenceType).get(0);
     }
 
-    public Integer getNumberOfReferenceInstances() {
-        List<ReferenceInstance> referenceInstancesOfCurrentReference = referenceInstanceHibernate.getByReferenceType(referenceType);
+    public Integer getNumberOfReferences() {
+        List<Reference> referencesOfCurrentReferenceType = referenceInstanceHibernate.getByReferenceType(referenceType);
 
-        return referenceInstancesOfCurrentReference.size();
+        return referencesOfCurrentReferenceType.size();
     }
 
-    public Integer getNumberOfReferenceInstancesForPerson() {
+    public Integer getNumberOfReferencesForPerson() {
         Person person = personHibernate.getById(Long.valueOf(1));
 
-        List<ReferenceInstance> referenceInstancesOfCurrentReference = referenceInstanceHibernate.getByReferenceTypeAndPerson(referenceType, person);
+        List<Reference> referencesOfCurrentReferenceType = referenceInstanceHibernate.getByReferenceTypeAndPerson(referenceType, person);
 
-        return referenceInstancesOfCurrentReference.size();
+        return referencesOfCurrentReferenceType.size();
     }
 
     public boolean isPopularReferenceTypesNull() {

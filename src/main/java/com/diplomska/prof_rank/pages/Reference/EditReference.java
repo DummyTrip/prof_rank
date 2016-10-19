@@ -3,7 +3,7 @@ package com.diplomska.prof_rank.pages.Reference;
 import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.entities.Attribute;
 import com.diplomska.prof_rank.entities.AttributeReferenceInstance;
-import com.diplomska.prof_rank.entities.ReferenceInstance;
+import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.services.*;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import mk.ukim.finki.isis.model.entities.Person;
@@ -28,15 +28,15 @@ import java.util.*;
 public class EditReference {
     @Persist
     @Property
-    private Long referenceInstanceId;
+    private Long referenceId;
 
     @Persist
     @Property
-    private Long oldReferenceInstanceId;
+    private Long oldreferenceId;
 
     @Persist
     @Property
-    private ReferenceInstance referenceInstance;
+    private Reference reference;
 
     @Inject
     ReferenceInstanceHibernate referenceInstanceHibernate;
@@ -75,27 +75,27 @@ public class EditReference {
     @Property
     private Map<String, String> testMap;
 
-    void onActivate(Long referenceInstanceId) {
-        this.referenceInstanceId = referenceInstanceId;
+    void onActivate(Long referenceId) {
+        this.referenceId = referenceId;
     }
 
     Long passivate() {
-        return referenceInstanceId;
+        return referenceId;
     }
 
     void setupRender() throws Exception {
-        if (!referenceInstanceId.equals(oldReferenceInstanceId)) {
+        if (!referenceId.equals(oldreferenceId)) {
             resetPersistedVariables();
-            oldReferenceInstanceId = referenceInstanceId;
+            oldreferenceId = referenceId;
         }
 
-        this.referenceInstance = referenceInstanceHibernate.getById(referenceInstanceId);
+        this.reference = referenceInstanceHibernate.getById(referenceId);
 
         if (testMap == null) {
             testMap = new HashMap<String, String>();
             attributes = new ArrayList<Attribute>();
 
-            for (AttributeReferenceInstance ari: referenceInstanceHibernate.getSortedAttributeReferenceInstance(referenceInstance)) {
+            for (AttributeReferenceInstance ari: referenceInstanceHibernate.getSortedAttributeReferenceInstance(reference)) {
                 attributes.add(ari.getAttribute());
                 testMap.put(String.valueOf(ari.getAttribute().getId()), ari.getValue());
             }
@@ -108,7 +108,7 @@ public class EditReference {
         bibtexString = "";
 
         if (authors == null) {
-            List<String> personIdentifiers = personHibernate.getReferenceInstanceAuthors(referenceInstance);
+            List<String> personIdentifiers = personHibernate.getReferenceAuthors(reference);
             authors = new ArrayList<String>();
             int i = 0;
             String authorName;
@@ -132,9 +132,9 @@ public class EditReference {
             testMap.remove(author);
         }
 
-        referenceInstance = referenceInstanceHibernate.getById(referenceInstanceId);
+        reference = referenceInstanceHibernate.getById(referenceId);
 
-        referenceInstanceHibernate.updateAttributeReferenceInstances(referenceInstance, testMap, attributes);
+        referenceInstanceHibernate.updateAttributeReferenceInstances(reference, testMap, attributes);
 
         resetPersistedVariables();
 
@@ -350,12 +350,17 @@ public class EditReference {
     boolean missingAuthors;
 
     public boolean isPapersReferenceType() {
-        return referenceInstance.getReferenceType().getName().equals("Papers") ? true : false;
+        return reference.getReferenceType().getName().equals("Papers") ? true : false;
     }
 
     @OnEvent(component = "addAuthor", value = "selected")
     void addAuthor() {
-        String lastAuthor = authors.get(authors.size() - 1);
+        String lastAuthor;
+        if (authors.size() > 0){
+            lastAuthor = authors.get(authors.size() - 1);
+        } else{
+            lastAuthor = "author 0";
+        }
         Integer newAuthorNumber = Integer.valueOf(lastAuthor.split(" ")[1]) + 1;
         String authorName = "author " + newAuthorNumber;
         addAuthorToForm(authorName, "");

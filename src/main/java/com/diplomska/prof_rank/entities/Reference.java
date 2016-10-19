@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Aleksandar on 27.09.2016.
  */
 @Entity
-public class ReferenceInstance {
+public class Reference {
     private Long id;
 
     private ReferenceType referenceType;
@@ -39,7 +39,7 @@ public class ReferenceInstance {
         this.referenceType = referenceType;
     }
 
-    @OneToMany(mappedBy = "referenceInstance")
+    @OneToMany(mappedBy = "reference")
     public List<AttributeReferenceInstance> getAttributeReferenceInstances() {
         return attributeReferenceInstances;
     }
