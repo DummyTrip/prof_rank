@@ -22,8 +22,8 @@ public class ReferenceType {
     private ReferenceInputTemplate referenceInputTemplate;
 
     @Column
-    @ElementCollection(targetClass = AttributeReference.class)
-    private List<AttributeReference> attributeReferences = new ArrayList<AttributeReference>();
+    @ElementCollection(targetClass = AttributeReferenceType.class)
+    private List<AttributeReferenceType> attributeReferenceTypes = new ArrayList<AttributeReferenceType>();
 
     @Column
     @ElementCollection(targetClass = ReferenceTypeRulebookSection.class)
@@ -75,12 +75,12 @@ public class ReferenceType {
     }
 
     @OneToMany(mappedBy = "referenceType")
-    public List<AttributeReference> getAttributeReferences() {
-        return attributeReferences;
+    public List<AttributeReferenceType> getAttributeReferenceTypes() {
+        return attributeReferenceTypes;
     }
 
-    public void setAttributeReferences(List<AttributeReference> attributeReferences) {
-        this.attributeReferences = attributeReferences;
+    public void setAttributeReferenceTypes(List<AttributeReferenceType> attributeReferenceTypes) {
+        this.attributeReferenceTypes = attributeReferenceTypes;
     }
 
     @OneToMany(mappedBy = "referenceType")

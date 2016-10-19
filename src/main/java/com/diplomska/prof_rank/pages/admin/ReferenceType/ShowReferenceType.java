@@ -67,10 +67,10 @@ public class ShowReferenceType {
     }
 
     public List<Attribute> getAttributes() {
-        List<Attribute> attributeReferences = new ArrayList<Attribute>();
-        attributeReferences.addAll(referenceTypeHibernate.getAttributeValues(referenceType));
+        List<Attribute> attributes = new ArrayList<Attribute>();
+        attributes.addAll(referenceTypeHibernate.getAttributeValues(referenceType));
 
-        return attributeReferences;
+        return attributes;
     }
 
     public List<RulebookSection> getRulebookSections() {

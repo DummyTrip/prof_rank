@@ -8,7 +8,7 @@ import javax.persistence.*;
  * Created by Aleksandar on 23-Sep-16.
  */
 @Entity
-public class AttributeReference {
+public class AttributeReferenceType {
     private Long id;
 
     private boolean display;
