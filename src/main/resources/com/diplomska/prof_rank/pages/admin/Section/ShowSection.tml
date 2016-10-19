@@ -13,17 +13,17 @@
         <t:beandisplay object="rulebook"/>
     </t:if>
 
-    <h3>References</h3>
-    <t:grid source="references" row="reference" model="referenceBeanModel">
+    <h3>ReferenceTypes</h3>
+    <t:grid source="referenceTypes" row="referenceType" model="referenceTypeBeanModel">
         <p:deleteCell>
-            <t:actionlink t:id="delete" context="reference.id">Delete</t:actionlink>
+            <t:actionlink t:id="delete" context="referenceType.id">Delete</t:actionlink>
         </p:deleteCell>
     </t:grid>
 
-    <h3>Add References</h3>
-    <t:grid source="addReferences" row="addReference" model="addReferenceBeanModel">
+    <h3>Add ReferenceTypes</h3>
+    <t:grid source="addReferenceTypes" row="addReferenceType" model="addReferenceTypeBeanModel">
         <p:addCell>
-            <t:actionlink t:id="addReference" context="addReference.id">Add</t:actionlink>
+            <t:actionlink t:id="addReferenceType" context="addReferenceType.id">Add</t:actionlink>
         </p:addCell>
     </t:grid>
 

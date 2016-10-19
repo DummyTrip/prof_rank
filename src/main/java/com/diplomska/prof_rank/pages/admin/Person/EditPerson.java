@@ -1,9 +1,8 @@
 package com.diplomska.prof_rank.pages.admin.Person;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
-import com.diplomska.prof_rank.entities.Reference;
+import com.diplomska.prof_rank.entities.ReferenceType;
 import com.diplomska.prof_rank.entities.Role;
-import com.diplomska.prof_rank.pages.admin.Person.*;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
 import com.diplomska.prof_rank.services.RoleHibernate;
 import com.diplomska.prof_rank.services.PersonHibernate;
@@ -57,10 +56,10 @@ public class EditPerson {
 
     void setupRender() {
         List<Role> roles = roleHibernate.getAll();
-        List<Reference> references = referenceHibernate.getAll();
+        List<ReferenceType> referenceTypes = referenceHibernate.getAll();
 
         roleSelectModel = selectModelFactory.create(roles, "name");
-        referenceSelectModel = selectModelFactory.create(references, "name");
+        referenceSelectModel = selectModelFactory.create(referenceTypes, "name");
     }
 
     @Property

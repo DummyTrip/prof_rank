@@ -13,7 +13,7 @@ import java.util.List;
 public class ReferenceInstance {
     private Long id;
 
-    private Reference reference;
+    private ReferenceType referenceType;
 
     @Column
     @ElementCollection(targetClass = AttributeReferenceInstance.class)
@@ -31,12 +31,12 @@ public class ReferenceInstance {
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    public Reference getReference() {
-        return reference;
+    public ReferenceType getReferenceType() {
+        return referenceType;
     }
 
-    public void setReference(Reference reference) {
-        this.reference= reference;
+    public void setReferenceType(ReferenceType referenceType) {
+        this.referenceType = referenceType;
     }
 
     @OneToMany(mappedBy = "referenceInstance")
@@ -50,6 +50,6 @@ public class ReferenceInstance {
 
     @Override
     public String toString() {
-        return getReference().getName();
+        return getReferenceType().getName();
     }
 }

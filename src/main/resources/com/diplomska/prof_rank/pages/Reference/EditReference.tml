@@ -1,4 +1,4 @@
-<html t:type="layout" title="Reference Edit"
+<html t:type="layout" title="ReferenceType Edit"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
       xmlns:p="tapestry:parameter" xmlns:T="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
 
@@ -14,14 +14,14 @@
 
 <div class="row">
 
-    <t:if test="papersReference">
+    <t:if test="papersReferenceType">
         <div class="col-md-3">
-            <h2 class="float-right">${referenceInstance.getReference()}</h2>
+            <h2 class="float-right">${referenceInstance.getReferenceType()}</h2>
         </div>
 
         <p:else>
             <div class="col-md-offset-2 col-md-10">
-                <h2 class="">${referenceInstance.getReference()}</h2>
+                <h2 class="">${referenceInstance.getReferenceType()}</h2>
             </div>
         </p:else>
 

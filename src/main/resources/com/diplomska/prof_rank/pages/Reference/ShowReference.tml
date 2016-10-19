@@ -110,7 +110,7 @@
             <div class="col-md-12">
                 <h2>
                     <t:actionlink t:id="refreshPage" class="link-decoration black-color" context="referenceId">
-                        ${reference.getName()}
+                        ${referenceType.getName()}
                     </t:actionlink>
                 </h2>
             </div>
@@ -120,7 +120,7 @@
 
         <div class="row margin-bottom-15px">
             <div class="no-padding-left float-right">
-                <t:pagelink page="reference/createreference" context="reference.id" class="btn btn-default add-ref-ins-text-size">
+                <t:pagelink page="reference/createreference" context="referenceType.id" class="btn btn-default add-ref-ins-text-size">
                     <i class="fa fa-plus-square-o add-ref-ins-text-size" aria-hidden="true"/> Додај
                 </t:pagelink>
             </div>

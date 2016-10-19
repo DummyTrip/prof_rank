@@ -1,4 +1,4 @@
-<html t:type="layout" title="Reference Index"
+<html t:type="layout" title="ReferenceType Index"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
       xmlns:p="tapestry:parameter">
 
@@ -7,7 +7,7 @@
         <div class="row">
             <t:form t:id="form">
                 <div class="col-md-9">
-                    <t:textfield t:id="searchName" t:mixins="autocomplete" value="referenceName" placeholder="Пребарај..."/>
+                    <t:textfield t:id="searchName" t:mixins="autocomplete" value="referenceTypeName" placeholder="Пребарај..."/>
                 </div>
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-default">
@@ -63,8 +63,8 @@
             </div>
         </div>
 
-        <div t:type='pagescroll' row='reference' scroller='scroller' zone='zone' pageNumber="pageNumber">
-            <t:delegate to="block:referenceElement"/>
+        <div t:type='pagescroll' row='referenceType' scroller='scroller' zone='zone' pageNumber="pageNumber">
+            <t:delegate to="block:referenceTypeElement"/>
         </div>
 
         <div class='zone' t:type='zone' t:id="zone"></div>
@@ -72,14 +72,14 @@
 
     </div>
 </div>
-<t:block id="referenceElement">
+<t:block id="referenceTypeElement">
 
-    <t:pagelink page="reference/showreference" context="reference.id">
-        <!--<div class="row div-shadow white-background ref-list-padding" onclick="location.href='/prof_rank/reference/showreference/${reference.id}'">-->
+    <t:pagelink page="reference/showreference" context="referenceType.id">
+        <!--<div class="row div-shadow white-background ref-list-padding" onclick="location.href='/prof_rank/reference/showreference/${referenceType.id}'">-->
         <div class="row div-shadow white-background ref-list-padding">
 
             <div class="col-md-11">
-                <h4 class="no-margin truncate-ref-link black-color">${reference.getName()}</h4>
+                <h4 class="no-margin truncate-ref-link black-color">${referenceType.getName()}</h4>
             </div>
 
             <div class="col-md-1">

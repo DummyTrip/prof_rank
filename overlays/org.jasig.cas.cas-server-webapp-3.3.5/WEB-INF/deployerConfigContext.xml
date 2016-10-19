@@ -18,7 +18,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 	<!--
 		| This bean declares our AuthenticationManager.  The CentralAuthenticationService service bean
-		| declared in applicationContext.xml picks up this AuthenticationManager by reference to its id, 
+		| declared in applicationContext.xml picks up this AuthenticationManager by referenceType to its id,
 		| "authenticationManager".  Most deployers will be able to use the default AuthenticationManager
 		| implementation and so do not need to change the class of this bean.  We include the whole
 		| AuthenticationManager here in the userConfigContext.xml so that you can see the things you will

@@ -1,8 +1,8 @@
-package com.diplomska.prof_rank.pages.admin.Reference;
+package com.diplomska.prof_rank.pages.admin.ReferenceType;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.ReferenceInputTemplate;
-import com.diplomska.prof_rank.entities.Reference;
+import com.diplomska.prof_rank.entities.ReferenceType;
 import com.diplomska.prof_rank.services.ReferenceInputTemplateHibernate;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -18,9 +18,9 @@ import java.util.List;
  * Created by Aleksandar on 24-Sep-16.
  */
 @AdministratorPage
-public class CreateReference {
+public class CreateReferenceType {
     @Property
-    private Reference reference;
+    private ReferenceType referenceType;
 
     @Inject
     private ReferenceHibernate referenceHibernate;
@@ -46,21 +46,21 @@ public class CreateReference {
     void onPrepareForRender() throws Exception {
         // If fresh start, make sure there's a Person object available.
         if (form.isValid()) {
-            reference = new Reference();
+            referenceType = new ReferenceType();
         }
     }
 
     void onPrepareForSubmit() throws Exception {
         // Instantiate a Person for the form data to overlay.
-        reference = new Reference();
+        referenceType = new ReferenceType();
     }
 
     @CommitAfter
     Object onSuccess() {
-        referenceHibernate.store(reference);
+        referenceHibernate.store(referenceType);
 
         if (referenceInputTemplate != null){
-            referenceHibernate.setReferenceInputTemplate(reference, referenceInputTemplate);
+            referenceHibernate.setReferenceInputTemplate(referenceType, referenceInputTemplate);
         }
 
         return index;

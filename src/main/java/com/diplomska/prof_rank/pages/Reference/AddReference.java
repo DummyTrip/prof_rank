@@ -1,7 +1,7 @@
 package com.diplomska.prof_rank.pages.Reference;
 
 import com.diplomska.prof_rank.annotations.InstructorPage;
-import com.diplomska.prof_rank.entities.Reference;
+import com.diplomska.prof_rank.entities.ReferenceType;
 import com.diplomska.prof_rank.entities.Section;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
 import com.diplomska.prof_rank.services.RulebookHibernate;
@@ -27,27 +27,27 @@ public class AddReference {
     ReferenceHibernate referenceHibernate;
 
     @Property
-    Reference reference;
+    ReferenceType referenceType;
 
     @Property
-    String referenceName;
+    String referenceTypeName;
 
     @ActivationRequestParameter(value = "name")
-    private String referenceNameQueryString;
+    private String referenceTypeNameQueryString;
 
     @Inject
     private PageRenderLinkSource pageRenderLinkSource;
 
     @Persist
-    private List<String> referenecNames;
+    private List<String> referenceTypeNames;
 
-    public String getReferenceNameQueryString() {
-        return referenceNameQueryString;
+    public String getReferenceTypeNameQueryString() {
+        return referenceTypeNameQueryString;
     }
 
-    public List<Reference> getReferences() {
-        if (referenceNameQueryString != null) {
-            return referenceHibernate.getByColumn("name", referenceNameQueryString);
+    public List<ReferenceType> getReferenceTypes() {
+        if (referenceTypeNameQueryString != null) {
+            return referenceHibernate.getByColumn("name", referenceTypeNameQueryString);
         } else {
             return referenceHibernate.getPopular(Integer.MAX_VALUE);
         }
@@ -57,7 +57,7 @@ public class AddReference {
         List<String> matches = new ArrayList<String>();
         partial = partial.toUpperCase();
 
-        for (String name : referenecNames) {
+        for (String name : referenceTypeNames) {
             if (name.toUpperCase().startsWith(partial)) {
                 matches.add(name);
             }
@@ -66,18 +66,18 @@ public class AddReference {
         return matches;
     }
 
-    public Link set(String referenceName) {
-        this.referenceNameQueryString = referenceName;
+    public Link set(String referenceTypeName) {
+        this.referenceTypeNameQueryString = referenceTypeName;
 
         return pageRenderLinkSource.createPageRenderLink(this.getClass());
     }
 
     void setupRender() {
-        this.referenceName = referenceNameQueryString;
-        this.referenecNames = referenceHibernate.getAllNames();
+        this.referenceTypeName = referenceTypeNameQueryString;
+        this.referenceTypeNames = referenceHibernate.getAllNames();
 
-        refs = new ArrayList<Reference>();
-        firstPageRefs = new ArrayList<Reference>();
+        refs = new ArrayList<ReferenceType>();
+        firstPageRefs = new ArrayList<ReferenceType>();
 
         if (sections == null) {
             sections = sectionHibernate.getAll();
@@ -95,7 +95,7 @@ public class AddReference {
     }
 
     public Object onSuccessFromForm() {
-        Link link = this.set(referenceName);
+        Link link = this.set(referenceTypeName);
 
         return link;
     }
@@ -107,20 +107,20 @@ public class AddReference {
 
     @Persist
     @Property
-    List<Reference> refs;
+    List<ReferenceType> refs;
 
     @Persist
     @Property
-    List<Reference> firstPageRefs;
+    List<ReferenceType> firstPageRefs;
 
     // ajax call, used fpr paging of References
     @OnEvent("nextPage")
-    List<Reference> moreValues() throws InterruptedException {
+    List<ReferenceType> moreValues() throws InterruptedException {
         Integer first = Integer.valueOf(pageNumber) * PageSize;
         Thread.sleep(200);
 
         int size = refs.size();
-        List<Reference> newInstances;
+        List<ReferenceType> newInstances;
 
         newInstances = referenceHibernate.getBySections(first, PageSize, selectedSections);
 

@@ -1,9 +1,9 @@
 package com.diplomska.prof_rank.pages.admin.Section;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
+import com.diplomska.prof_rank.entities.ReferenceType;
 import com.diplomska.prof_rank.entities.Rulebook;
 import com.diplomska.prof_rank.entities.RulebookSection;
-import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.services.RulebookHibernate;
 import com.diplomska.prof_rank.services.SectionHibernate;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
@@ -38,10 +38,10 @@ public class ShowSection {
     private RulebookSection rulebookSection;
 
     @Property
-    private Reference reference;
+    private ReferenceType referenceType;
 
     @Property
-    private Reference addReference;
+    private ReferenceType addReferenceType;
 
     @Property
     private Rulebook addRulebook;
@@ -50,10 +50,10 @@ public class ShowSection {
     private ReferenceHibernate referenceHibernate;
 
     @Property
-    private BeanModel<Reference> referenceBeanModel;
+    private BeanModel<ReferenceType> referenceTypeBeanModel;
 
     @Property
-    private BeanModel<Reference> addReferenceBeanModel;
+    private BeanModel<ReferenceType> addReferenceTypeBeanModel;
 
     @Property
     private BeanModel<Rulebook> addRulebookBeanModel;
@@ -67,11 +67,11 @@ public class ShowSection {
     @Inject
     private PropertyConduitSource pcs;
 
-    public List<Reference> getReferences() {
-        return sectionHibernate.getReferences(rulebookSection.getSection());
+    public List<ReferenceType> getReferenceTypes() {
+        return sectionHibernate.getReferenceTypes(rulebookSection.getSection());
     }
 
-    public List<Reference> getAddReferences() {
+    public List<ReferenceType> getAddReferenceTypes() {
         return referenceHibernate.getAll();
     }
 
@@ -98,16 +98,13 @@ public class ShowSection {
             throw new Exception("Report " + rulebookSectionId + " does not exist.");
         }
 
-        referenceBeanModel = beanModelSource.createDisplayModel(Reference.class, messages);
-        referenceBeanModel.add("referenceName", pcs.create(Reference.class, "name"));
-        referenceBeanModel.add("delete", null);
+        referenceTypeBeanModel = beanModelSource.createDisplayModel(ReferenceType.class, messages);
+        referenceTypeBeanModel.add("delete", null);
 
-        addReferenceBeanModel = beanModelSource.createDisplayModel(Reference.class, messages);
-        addReferenceBeanModel.add("referenceName", pcs.create(Reference.class, "name"));
-        addReferenceBeanModel.add("add", null);
+        addReferenceTypeBeanModel = beanModelSource.createDisplayModel(ReferenceType.class, messages);
+        addReferenceTypeBeanModel.add("add", null);
 
         addRulebookBeanModel = beanModelSource.createDisplayModel(Rulebook.class, messages);
-        addRulebookBeanModel.add("rulebookName", pcs.create(Rulebook.class, "name"));
         addRulebookBeanModel.add("add", null);
     }
 
@@ -117,8 +114,8 @@ public class ShowSection {
     }
 
     @CommitAfter
-    void onActionFromAddReference(Long id) {
-        Reference entity = referenceHibernate.getById(id);
+    void onActionFromAddReferenceType(Long id) {
+        ReferenceType entity = referenceHibernate.getById(id);
         rulebookSection = sectionHibernate.getRulebookSectionById(rulebookSectionId);
 
         referenceHibernate.setSection(entity, rulebookSection);
@@ -134,7 +131,7 @@ public class ShowSection {
 
     @CommitAfter
     void onActionFromDelete(Long id) {
-        Reference entity = referenceHibernate.getById(id);
+        ReferenceType entity = referenceHibernate.getById(id);
 
         referenceHibernate.deleteSection(entity, rulebookSection);
     }

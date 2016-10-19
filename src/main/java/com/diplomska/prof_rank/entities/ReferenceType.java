@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Aleksandar on 23-Sep-16.
  */
 @Entity
-public class Reference {
+public class ReferenceType {
     private Long id;
 
     private String name;
@@ -74,7 +74,7 @@ public class Reference {
         this.referenceInputTemplate = referenceInputTemplate;
     }
 
-    @OneToMany(mappedBy = "reference")
+    @OneToMany(mappedBy = "referenceType")
     public List<AttributeReference> getAttributeReferences() {
         return attributeReferences;
     }
@@ -83,7 +83,7 @@ public class Reference {
         this.attributeReferences = attributeReferences;
     }
 
-    @OneToMany(mappedBy = "reference")
+    @OneToMany(mappedBy = "referenceType")
     public List<ReferenceTypeRulebookSection> getReferenceTypeRulebookSections() {
         return referenceTypeRulebookSections;
     }

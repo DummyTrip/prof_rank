@@ -38,7 +38,7 @@
                         <t:pagelink page="prop:pageName">${pageName}</t:pagelink>
                     </t:any>
                 </t:loop>
-                <li><t:pagelink page="reference/index">References</t:pagelink></li>
+                <li><t:pagelink page="reference/index">ReferenceTypes</t:pagelink></li>
             </ul>
             <span class="navbar-right">
                  <t:if test="loggedIn">

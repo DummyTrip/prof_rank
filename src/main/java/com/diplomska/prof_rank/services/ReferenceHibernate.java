@@ -29,81 +29,81 @@ public class ReferenceHibernate {
     PersonHibernate personHibernate;
 
     @CommitAfter
-    public void store(Reference reference) {
-        if (reference == null) {
+    public void store(ReferenceType referenceType) {
+        if (referenceType == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
-        session.persist(reference);
+        session.persist(referenceType);
     }
 
-    public List<Reference> getAll() {
-        return session.createCriteria(Reference.class).addOrder(Order.desc("id")).list();
+    public List<ReferenceType> getAll() {
+        return session.createCriteria(ReferenceType.class).addOrder(Order.desc("id")).list();
     }
 
-    public List<Reference> getAll(Integer offset, Integer limit) {
-        return session.createCriteria(Reference.class).addOrder(Order.desc("id")).setFirstResult(offset).setMaxResults(limit).list();
+    public List<ReferenceType> getAll(Integer offset, Integer limit) {
+        return session.createCriteria(ReferenceType.class).addOrder(Order.desc("id")).setFirstResult(offset).setMaxResults(limit).list();
     }
 
-    public List<Reference> getBySections(Integer offset, Integer limit, List<Section> sections) {
-        List<Reference> allReferences = session.createCriteria(Reference.class).addOrder(Order.desc("id")).list();
+    public List<ReferenceType> getBySections(Integer offset, Integer limit, List<Section> sections) {
+        List<ReferenceType> allReferenceTypes = session.createCriteria(ReferenceType.class).addOrder(Order.desc("id")).list();
 
-        List<Reference> references = new ArrayList<Reference>();
+        List<ReferenceType> referenceTypes = new ArrayList<ReferenceType>();
 
-        for (Reference reference : allReferences ) {
-            List<Section> refSections = getSections(reference);
+        for (ReferenceType referenceType : allReferenceTypes) {
+            List<Section> refSections = getSections(referenceType);
 
             for (Section section : sections) {
                 for(Section refSection: refSections) {
                     if (refSection.getId().equals(section.getId())) {
-                        references.add(reference);
+                        referenceTypes.add(referenceType);
                         break;
                     }
                 }
             }
 
-            if (references.size() == (offset + limit)) {
+            if (referenceTypes.size() == (offset + limit)) {
                 break;
             }
         }
         // TODO: refactor this code
-        if (offset > references.size()) {
-            return new ArrayList<Reference>();
+        if (offset > referenceTypes.size()) {
+            return new ArrayList<ReferenceType>();
         }
 
-        limit = references.size() > (limit + offset) ? (limit + offset) : references.size();
-        return references.subList(offset, limit);
+        limit = referenceTypes.size() > (limit + offset) ? (limit + offset) : referenceTypes.size();
+        return referenceTypes.subList(offset, limit);
     }
 
     public List<String> getAllNames() {
-        List<Reference> references = getAll();
-        List<String> referenceNames = new ArrayList<String>();
+        List<ReferenceType> referenceTypes = getAll();
+        List<String> referenceTypeNames = new ArrayList<String>();
 
-        for (Reference reference : references) {
-            referenceNames.add(reference.getName());
+        for (ReferenceType referenceType : referenceTypes) {
+            referenceTypeNames.add(referenceType.getName());
         }
 
-        return referenceNames;
+        return referenceTypeNames;
     }
 
-    public List<Reference> getPopular(Integer limit) {
+    public List<ReferenceType> getPopular(Integer limit) {
         List<ReferenceInstance> allReferenceInstances = session.createCriteria(ReferenceInstance.class).list();
 
-        return getSortedReferences(allReferenceInstances, limit);
+        return getSortedReferenceTypes(allReferenceInstances, limit);
     }
 
-    public List<Reference> getPopularByPerson(Person person, Integer limit) {
+    public List<ReferenceType> getPopularByPerson(Person person, Integer limit) {
         List<ReferenceInstance> allReferenceInstances = personHibernate.getReferenceInstances(person);
 
-        return getSortedReferences(allReferenceInstances, limit);
+        return getSortedReferenceTypes(allReferenceInstances, limit);
     }
 
-    public List<Reference> getPopularByPerson(Person person, Integer limit, List<Section> sections) {
+    public List<ReferenceType> getPopularByPerson(Person person, Integer limit, List<Section> sections) {
         List<ReferenceInstance> allReferenceInstances = personHibernate.getReferenceInstances(person);
         List<ReferenceInstance> references = new ArrayList<ReferenceInstance>();
 
         for (ReferenceInstance referenceInstance : allReferenceInstances ) {
-            List<Section> refSections = getSections(referenceInstance.getReference());
+            List<Section> refSections = getSections(referenceInstance.getReferenceType());
 
             for (Section section : sections) {
                 for(Section refSection: refSections) {
@@ -114,51 +114,51 @@ public class ReferenceHibernate {
             }
         }
 
-        return getSortedReferences(references, limit);
+        return getSortedReferenceTypes(references, limit);
     }
 
-    private List<Reference> getSortedReferences(List<ReferenceInstance> allReferenceInstances, Integer limit) {
-        List<Reference> sortedReferences = new ArrayList<Reference>();
+    private List<ReferenceType> getSortedReferenceTypes(List<ReferenceInstance> allReferenceInstances, Integer limit) {
+        List<ReferenceType> sortedReferenceTypes = new ArrayList<ReferenceType>();
 
-        Map<Reference, Integer> unsortedReferenceMap = new HashMap<Reference, Integer>();
+        Map<ReferenceType, Integer> unsortedReferenceMap = new HashMap<ReferenceType, Integer>();
 
         for (ReferenceInstance referenceInstance : allReferenceInstances) {
-            Reference reference = referenceInstance.getReference();
+            ReferenceType referenceType = referenceInstance.getReferenceType();
 
-            if (!unsortedReferenceMap.containsKey(reference)) {
-                unsortedReferenceMap.put(reference, 0);
+            if (!unsortedReferenceMap.containsKey(referenceType)) {
+                unsortedReferenceMap.put(referenceType, 0);
             }
 
-            unsortedReferenceMap.put(reference, unsortedReferenceMap.get(reference) + 1);
+            unsortedReferenceMap.put(referenceType, unsortedReferenceMap.get(referenceType) + 1);
         }
 
-        Map<Reference, Integer> sortedReferencesMap = sortMapByValue(unsortedReferenceMap);
+        Map<ReferenceType, Integer> sortedReferencesMap = sortMapByValue(unsortedReferenceMap);
 
         int i = 0;
-        for (Reference reference : sortedReferencesMap.keySet()) {
+        for (ReferenceType referenceType : sortedReferencesMap.keySet()) {
             if (i > limit) {
                 break;
             }
-            sortedReferences.add(reference);
+            sortedReferenceTypes.add(referenceType);
             i+=1;
         }
 
-        return sortedReferences;
+        return sortedReferenceTypes;
     }
 
-    private Map<Reference, Integer> sortMapByValue(Map<Reference, Integer> unsortedMap) {
-        List<Map.Entry<Reference, Integer>> list =
-                new LinkedList<Map.Entry<Reference, Integer>>(unsortedMap.entrySet());
+    private Map<ReferenceType, Integer> sortMapByValue(Map<ReferenceType, Integer> unsortedMap) {
+        List<Map.Entry<ReferenceType, Integer>> list =
+                new LinkedList<Map.Entry<ReferenceType, Integer>>(unsortedMap.entrySet());
 
-        Collections.sort(list, new Comparator<Map.Entry<Reference, Integer>>() {
-            public int compare(Map.Entry<Reference, Integer> o1,
-                               Map.Entry<Reference, Integer> o2) {
+        Collections.sort(list, new Comparator<Map.Entry<ReferenceType, Integer>>() {
+            public int compare(Map.Entry<ReferenceType, Integer> o1,
+                               Map.Entry<ReferenceType, Integer> o2) {
                 return (o2.getValue()).compareTo(o1.getValue());
             }
         });
 
-        Map<Reference, Integer> sortedMap = new LinkedHashMap<Reference, Integer>();
-        for (Map.Entry<Reference, Integer> entry : list) {
+        Map<ReferenceType, Integer> sortedMap = new LinkedHashMap<ReferenceType, Integer>();
+        for (Map.Entry<ReferenceType, Integer> entry : list) {
             sortedMap.put(entry.getKey(), entry.getValue());
         }
 
@@ -166,48 +166,48 @@ public class ReferenceHibernate {
     }
 
     @CommitAfter
-    public void update(Reference reference) {
-        if (reference == null) {
+    public void update(ReferenceType referenceType) {
+        if (referenceType == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
         }
 
-        session.update(reference);
+        session.update(referenceType);
     }
 
     @CommitAfter
-    public void delete(Reference reference) {
-        if (reference == null) {
+    public void delete(ReferenceType referenceType) {
+        if (referenceType == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
         }
 
-        session.delete(reference);
+        session.delete(referenceType);
     }
 
-    public Reference getById(Long id) {
+    public ReferenceType getById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        return (Reference) session.get(Reference.class, id);
+        return (ReferenceType) session.get(ReferenceType.class, id);
     }
 
-    public List<Reference> getByColumn(String column, String value) {
+    public List<ReferenceType> getByColumn(String column, String value) {
         if (column == null || value == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        Criteria criteria = session.createCriteria(Reference.class);
-        List<Reference> entities = criteria.add(eq(column, value)).list();
+        Criteria criteria = session.createCriteria(ReferenceType.class);
+        List<ReferenceType> entities = criteria.add(eq(column, value)).list();
 
         return entities;
     }
 
-    public List<Section> getSections(Reference reference) {
-        if (reference == null) {
+    public List<Section> getSections(ReferenceType referenceType) {
+        if (referenceType == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        List<ReferenceTypeRulebookSection> referenceTypeRulebookSections = reference.getReferenceTypeRulebookSections();
+        List<ReferenceTypeRulebookSection> referenceTypeRulebookSections = referenceType.getReferenceTypeRulebookSections();
         List<RulebookSection> rulebookSections = new ArrayList<RulebookSection>();
 
         for (ReferenceTypeRulebookSection referenceTypeRulebookSection : referenceTypeRulebookSections) {
@@ -224,27 +224,27 @@ public class ReferenceHibernate {
     }
 
     @CommitAfter
-    public void setSection(Reference reference, RulebookSection rulebookSection) {
-        if (reference == null || rulebookSection == null) {
+    public void setSection(ReferenceType referenceType, RulebookSection rulebookSection) {
+        if (referenceType == null || rulebookSection == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
         ReferenceTypeRulebookSection referenceTypeRulebookSection = new ReferenceTypeRulebookSection();
 
         referenceTypeRulebookSection.setRulebookSection(rulebookSection);
-        referenceTypeRulebookSection.setReference(reference);
+        referenceTypeRulebookSection.setReferenceType(referenceType);
 
         session.persist(referenceTypeRulebookSection);
     }
 
     @CommitAfter
-    public void deleteSection(Reference reference, RulebookSection rulebookSection) {
-        if (reference == null || rulebookSection == null) {
+    public void deleteSection(ReferenceType referenceType, RulebookSection rulebookSection) {
+        if (referenceType == null || rulebookSection == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
         Criteria criteria = session.createCriteria(ReferenceTypeRulebookSection.class);
         List<ReferenceTypeRulebookSection> entities = criteria
-                .add(eq("reference", reference))
+                .add(eq("referenceType", referenceType))
                 .add(eq("rulebookSection", rulebookSection))
                 .list();
 
@@ -253,73 +253,73 @@ public class ReferenceHibernate {
         }
 
         ReferenceTypeRulebookSection referenceTypeRulebookSection = entities.get(0);
-        referenceTypeRulebookSection.setReference(null);
-        reference.getReferenceTypeRulebookSections().remove(referenceTypeRulebookSection);
+        referenceTypeRulebookSection.setReferenceType(null);
+        referenceType.getReferenceTypeRulebookSections().remove(referenceTypeRulebookSection);
     }
 
-    public void setSection(Reference reference, Section section, Rulebook rulebook) {
-        if (reference == null || section == null || rulebook == null) {
+    public void setSection(ReferenceType referenceType, Section section, Rulebook rulebook) {
+        if (referenceType == null || section == null || rulebook == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
         RulebookSection rulebookSection = rulebookHibernate.getRulebookSection(rulebook, section);
 
-        setSection(reference, rulebookSection);
+        setSection(referenceType, rulebookSection);
     }
 
-    public ReferenceInputTemplate getReferenceInputTemplate(Reference reference) {
-        if (reference == null) {
+    public ReferenceInputTemplate getReferenceInputTemplate(ReferenceType referenceType) {
+        if (referenceType == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        return reference.getReferenceInputTemplate();
+        return referenceType.getReferenceInputTemplate();
     }
 
-    public void setReferenceInputTemplate(Reference reference, ReferenceInputTemplate referenceInputTemplate) {
-        if (reference == null || referenceInputTemplate == null) {
+    public void setReferenceInputTemplate(ReferenceType referenceType, ReferenceInputTemplate referenceInputTemplate) {
+        if (referenceType == null || referenceInputTemplate == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
-        reference.setReferenceInputTemplate(referenceInputTemplate);
-        session.saveOrUpdate(reference);
+        referenceType.setReferenceInputTemplate(referenceInputTemplate);
+        session.saveOrUpdate(referenceType);
 
         List<Attribute> attributes = referenceInputTemplateHibernate.getAttributes(referenceInputTemplate);
 
         for (Attribute attribute : attributes) {
-            setAttributeReference(reference, attribute);
+            setAttributeReference(referenceType, attribute);
         }
     }
 
-    public void setAttributeReference(Reference reference, Attribute attribute) {
+    public void setAttributeReference(ReferenceType referenceType, Attribute attribute) {
         AttributeReference attributeReference = new AttributeReference();
 
         attributeReference.setAttribute(attribute);
-        attributeReference.setReference(reference);
+        attributeReference.setReferenceType(referenceType);
 
         session.persist(attributeReference);
 
-        List<AttributeReference> attributeReferences = reference.getAttributeReferences();
+        List<AttributeReference> attributeReferences = referenceType.getAttributeReferences();
         attributeReferences.add(attributeReference);
 
-        reference.setAttributeReferences(attributeReferences);
+        referenceType.setAttributeReferences(attributeReferences);
     }
 
-    public List<Attribute> getAttributes(Reference reference) {
-        if (reference == null) {
+    public List<Attribute> getAttributes(ReferenceType referenceType) {
+        if (referenceType == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
-        ReferenceInputTemplate referenceInputTemplate = reference.getReferenceInputTemplate();
+        ReferenceInputTemplate referenceInputTemplate = referenceType.getReferenceInputTemplate();
         List<Attribute> attributes = referenceInputTemplateHibernate.getAttributes(referenceInputTemplate);
 
         return attributes;
     }
 
-    public List<Attribute> getAttributeValues(Reference reference) {
-        if (reference == null) {
+    public List<Attribute> getAttributeValues(ReferenceType referenceType) {
+        if (referenceType == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        List<AttributeReference> attributeReferences = reference.getAttributeReferences();
+        List<AttributeReference> attributeReferences = referenceType.getAttributeReferences();
         List<Attribute> attributes = new ArrayList<Attribute>();
 
         for (AttributeReference attributeReference : attributeReferences) {
@@ -329,14 +329,14 @@ public class ReferenceHibernate {
         return attributes;
     }
 
-    public AttributeReference getOrCreateAttributeReference(Reference reference, Attribute attribute) {
-        if (reference == null || attribute == null) {
+    public AttributeReference getOrCreateAttributeReference(ReferenceType referenceType, Attribute attribute) {
+        if (referenceType == null || attribute == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
         AttributeReference attributeReference;
         List<AttributeReference> attributeReferences = session.createCriteria(AttributeReference.class)
-                .add(eq("reference", reference))
+                .add(eq("referenceType", referenceType))
                 .add(eq("attribute", attribute))
                 .list();
 
@@ -349,7 +349,8 @@ public class ReferenceHibernate {
         return attributeReference;
     }
 
-    public boolean isDisplayAttribute(Reference reference, Attribute attribute) {
+    public boolean isDisplayAttribute(ReferenceType referenceType, Attribute attribute) {
+        // TODO: change this method. Don't hardcode the display attributes.
         String attributeName = attribute.getName();
         if (attributeName.equals("Наслов") ||
                 attributeName.equals("Предмет") ||
@@ -365,28 +366,28 @@ public class ReferenceHibernate {
         }
     }
 
-    public void setAttributeDisplay(Reference reference, Attribute attribute, boolean display) {
-        if (reference == null || attribute == null) {
+    public void setAttributeDisplay(ReferenceType referenceType, Attribute attribute, boolean display) {
+        if (referenceType == null || attribute == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        AttributeReference attributeReference = getOrCreateAttributeReference(reference, attribute);
+        AttributeReference attributeReference = getOrCreateAttributeReference(referenceType, attribute);
 
-        attributeReference.setReference(reference);
+        attributeReference.setReferenceType(referenceType);
         attributeReference.setAttribute(attribute);
         attributeReference.setDisplay(display);
 
         session.persist(attributeReference);
     }
 
-    public void deleteAttribute(Reference reference, Attribute attribute) {
-        if (reference == null || attribute == null) {
+    public void deleteAttribute(ReferenceType referenceType, Attribute attribute) {
+        if (referenceType == null || attribute == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
         Criteria criteria = session.createCriteria(AttributeReference.class);
         List<AttributeReference> entities = criteria
-                .add(eq("reference", reference))
+                .add(eq("referenceType", referenceType))
                 .add(eq("attribute", attribute))
                 .list();
 
@@ -395,7 +396,7 @@ public class ReferenceHibernate {
         }
 
         AttributeReference attributeReference = entities.get(0);
-        attributeReference.setReference(null);
-        reference.getAttributeReferences().remove(attributeReference);
+        attributeReference.setReferenceType(null);
+        referenceType.getAttributeReferences().remove(attributeReference);
     }
 }

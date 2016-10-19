@@ -2,7 +2,7 @@ package com.diplomska.prof_rank.pages.Reference;
 
 import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.entities.Attribute;
-import com.diplomska.prof_rank.entities.Reference;
+import com.diplomska.prof_rank.entities.ReferenceType;
 import com.diplomska.prof_rank.entities.ReferenceInstance;
 import com.diplomska.prof_rank.services.*;
 import mk.ukim.finki.isis.model.entities.Person;
@@ -35,7 +35,7 @@ public class CreateReference {
 
     @Persist
     @Property
-    private Reference reference;
+    private ReferenceType referenceType;
 
     @Inject
     ReferenceHibernate referenceHibernate;
@@ -52,7 +52,7 @@ public class CreateReference {
     @InjectPage
     private com.diplomska.prof_rank.pages.Index index;
 
-    public List<Reference> getReferences() {
+    public List<ReferenceType> getReferences() {
         return referenceHibernate.getAll();
     }
 
@@ -98,10 +98,10 @@ public class CreateReference {
             oldReferenceId = referenceId;
         }
 
-        this.reference = referenceHibernate.getById(referenceId);
+        this.referenceType = referenceHibernate.getById(referenceId);
 
         if (attributes == null) {
-            attributes = referenceHibernate.getAttributeValues(this.reference);
+            attributes = referenceHibernate.getAttributeValues(this.referenceType);
         }
 
         if (testMap == null) {
@@ -139,7 +139,7 @@ public class CreateReference {
 
         for (String authorName : authorNames) {
             referenceInstance = new ReferenceInstance();
-            referenceInstance.setReference(reference);
+            referenceInstance.setReferenceType(referenceType);
             referenceInstanceHibernate.store(referenceInstance);
 
             personHibernate.setReferenceInstance(referenceInstance, authorName, authorNames.indexOf(authorName));
@@ -352,8 +352,8 @@ public class CreateReference {
     @Property
     boolean missingAuthors;
 
-    public boolean isPapersReference() {
-        return reference.getName().equals("Papers") ? true : false;
+    public boolean isPapersReferenceType() {
+        return referenceType.getName().equals("Papers") ? true : false;
     }
 
     @OnEvent(component = "addAuthor", value = "selected")

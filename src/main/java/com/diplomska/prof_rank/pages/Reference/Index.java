@@ -7,7 +7,6 @@ import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Ajax;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
@@ -25,30 +24,30 @@ public class Index {
     ReferenceHibernate referenceHibernate;
 
     @Property
-    Reference reference;
+    ReferenceType referenceType;
 
     @Property
-    String referenceName;
+    String referenceTypeName;
 
     @ActivationRequestParameter(value = "name")
-    private String referenceNameQueryString;
+    private String referenceTypeNameQueryString;
 
     @Inject
     private PageRenderLinkSource pageRenderLinkSource;
 
     @Persist
-    private List<String> referenecNames;
+    private List<String> referenceTypeNames;
 
     @Inject
     PersonHibernate personHibernate;
 
-    public String getReferenceNameQueryString() {
-        return referenceNameQueryString;
+    public String getreferenceTypeNameQueryString() {
+        return referenceTypeNameQueryString;
     }
 
-    public List<Reference> getReferences() {
-        if (referenceNameQueryString != null) {
-            return referenceHibernate.getByColumn("name", referenceNameQueryString);
+    public List<ReferenceType> getReferences() {
+        if (referenceTypeNameQueryString != null) {
+            return referenceHibernate.getByColumn("name", referenceTypeNameQueryString);
         } else {
             return referenceHibernate.getPopular(Integer.MAX_VALUE);
         }
@@ -58,7 +57,7 @@ public class Index {
         List<String> matches = new ArrayList<String>();
         partial = partial.toUpperCase();
 
-        for (String name : referenecNames) {
+        for (String name : referenceTypeNames) {
             if (name.toUpperCase().startsWith(partial)) {
                 matches.add(name);
             }
@@ -67,18 +66,18 @@ public class Index {
         return matches;
     }
 
-    public Link set(String referenceName) {
-        this.referenceNameQueryString = referenceName;
+    public Link set(String referenceTypeName) {
+        this.referenceTypeNameQueryString = referenceTypeName;
 
         return pageRenderLinkSource.createPageRenderLink(this.getClass());
     }
 
     void setupRender() {
-        this.referenceName = referenceNameQueryString;
-        this.referenecNames = referenceHibernate.getAllNames();
+        this.referenceTypeName = referenceTypeNameQueryString;
+        this.referenceTypeNames = referenceHibernate.getAllNames();
 
-        refs = new ArrayList<Reference>();
-        firstPageRefs = new ArrayList<Reference>();
+        refs = new ArrayList<ReferenceType>();
+        firstPageRefs = new ArrayList<ReferenceType>();
 
         if (sections == null) {
             sections = sectionHibernate.getAll();
@@ -96,7 +95,7 @@ public class Index {
     }
 
     public Object onSuccessFromForm() {
-        Link link = this.set(referenceName);
+        Link link = this.set(referenceTypeName);
 
         return link;
     }
@@ -108,19 +107,19 @@ public class Index {
 
     @Persist
     @Property
-    List<Reference> refs;
+    List<ReferenceType> refs;
 
     @Persist
     @Property
-    List<Reference> firstPageRefs;
+    List<ReferenceType> firstPageRefs;
 
     // ajax call, used fpr paging of References
     @OnEvent("nextPage")
-    List<Reference> moreValues() throws InterruptedException {
+    List<ReferenceType> moreValues() throws InterruptedException {
         Integer first = Integer.valueOf(pageNumber) * PageSize;
         Thread.sleep(200);
 
-        List<Reference> newInstances;
+        List<ReferenceType> newInstances;
 
         newInstances = referenceHibernate.getPopularByPerson(personHibernate.getById(Long.valueOf(1)), Integer.MAX_VALUE, selectedSections);
 
@@ -196,11 +195,11 @@ public class Index {
     }
 
     private void updateSections() {
-        refs = new ArrayList<Reference>();
+        refs = new ArrayList<ReferenceType>();
 
         for (Long sectionId : selectedCheckboxes.keySet()) {
             Section section = sectionHibernate.getById(sectionId);
-            refs.addAll(sectionHibernate.getReferences(section));
+            refs.addAll(sectionHibernate.getReferenceTypes(section));
         }
     }
 }

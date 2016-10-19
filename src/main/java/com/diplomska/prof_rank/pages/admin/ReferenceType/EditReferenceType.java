@@ -1,8 +1,8 @@
-package com.diplomska.prof_rank.pages.admin.Reference;
+package com.diplomska.prof_rank.pages.admin.ReferenceType;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.ReferenceInputTemplate;
-import com.diplomska.prof_rank.entities.Reference;
+import com.diplomska.prof_rank.entities.ReferenceType;
 import com.diplomska.prof_rank.services.ReferenceInputTemplateHibernate;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
 import org.apache.tapestry5.SelectModel;
@@ -21,12 +21,12 @@ import java.util.List;
  * Created by Aleksandar on 24-Sep-16.
  */
 @AdministratorPage
-public class EditReference {
+public class EditReferenceType {
     @Persist
-    private Long referenceId;
+    private Long referenceTypeId;
 
     @Property
-    private Reference reference;
+    private ReferenceType referenceType;
 
     @InjectComponent
     private Form form;
@@ -60,31 +60,31 @@ public class EditReference {
 //        return referenceInputTemplateHibernate.getAll();
 //    }
 
-    void onActivate(Long referenceId) {
-        this.referenceId = referenceId;
+    void onActivate(Long referenceTypeId) {
+        this.referenceTypeId = referenceTypeId;
     }
 
     Long passivate() {
-        return referenceId;
+        return referenceTypeId;
     }
 
     void onPrepareForRender() throws Exception {
         if (form.isValid()) {
-            reference = findReference(referenceId);
+            referenceType = findReference(referenceTypeId);
 
-            if (reference == null) {
-                throw new Exception("Reference " + referenceId + " does not exist.");
+            if (referenceType == null) {
+                throw new Exception("ReferenceType " + referenceTypeId + " does not exist.");
             }
         }
     }
 
     void onPrepareForSubmit() {
-        reference = findReference(referenceId);
+        referenceType = findReference(referenceTypeId);
 
-        if (reference == null) {
+        if (referenceType == null) {
             form.recordError("Person has been deleted by another process.");
-            // Instantiate an empty reference to avoid NPE in the BeanEditForm.
-            reference = new Reference();
+            // Instantiate an empty referenceType to avoid NPE in the BeanEditForm.
+            referenceType = new ReferenceType();
         }
     }
 
@@ -98,8 +98,8 @@ public class EditReference {
 
     @CommitAfter
     Object onSuccess() {
-//        reference.setUloga(uloga);
-        referenceHibernate.update(reference);
+//        referenceType.setUloga(uloga);
+        referenceHibernate.update(referenceType);
 
         return index;
     }
@@ -108,13 +108,13 @@ public class EditReference {
         // By doing nothing the page will be displayed afresh.
     }
 
-    private Reference findReference(Long referenceId) {
-        Reference reference = referenceHibernate.getById(referenceId);
+    private ReferenceType findReference(Long referenceTypeId) {
+        ReferenceType referenceType = referenceHibernate.getById(referenceTypeId);
 
-        if (reference == null) {
+        if (referenceType == null) {
             throw new IllegalStateException("No data in database.");
         }
 
-        return reference;
+        return referenceType;
     }
 }

@@ -1,6 +1,6 @@
 package com.diplomska.prof_rank.services;
 
-import com.diplomska.prof_rank.entities.Reference;
+import com.diplomska.prof_rank.entities.ReferenceType;
 import com.diplomska.prof_rank.entities.RulebookSection;
 import com.diplomska.prof_rank.entities.Section;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
@@ -85,16 +85,16 @@ public class SectionHibernate {
         return entities;
     }
 
-    public List<Reference> getReferences(Section section) {
-        List<Reference> refs = referenceHibernate.getAll();
-        List<Reference> references = new ArrayList<Reference>();
+    public List<ReferenceType> getReferenceTypes(Section section) {
+        List<ReferenceType> refs = referenceHibernate.getAll();
+        List<ReferenceType> referenceTypes = new ArrayList<ReferenceType>();
 
-        for (Reference reference : refs ) {
-            if (referenceHibernate.getSections(reference).contains(section)) {
-                references.add(reference);
+        for (ReferenceType referenceType : refs ) {
+            if (referenceHibernate.getSections(referenceType).contains(section)) {
+                referenceTypes.add(referenceType);
             }
         }
 
-        return references;
+        return referenceTypes;
     }
 }

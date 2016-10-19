@@ -175,22 +175,22 @@ public class ReferenceInstanceHibernate {
         return entities;
     }
 
-    public List<ReferenceInstance> getByReference(Reference reference) {
+    public List<ReferenceInstance> getByReferenceType(ReferenceType referenceType) {
         return session.createCriteria(ReferenceInstance.class)
-                .add(eq("reference", reference)).addOrder(Order.desc("id")).list();
+                .add(eq("referenceType", referenceType)).addOrder(Order.desc("id")).list();
     }
 
-    public List<ReferenceInstance> getByReference(Reference reference, Integer offset, Integer limit) {
+    public List<ReferenceInstance> getByReferenceType(ReferenceType referenceType, Integer offset, Integer limit) {
         return session.createCriteria(ReferenceInstance.class)
-                .add(eq("reference", reference)).addOrder(Order.desc("id")).setFirstResult(offset).setMaxResults(limit).list();
+                .add(eq("referenceType", referenceType)).addOrder(Order.desc("id")).setFirstResult(offset).setMaxResults(limit).list();
     }
 
-    public List<ReferenceInstance> getByReferenceAndPerson(Reference reference, Person person) {
+    public List<ReferenceInstance> getByReferenceTypeAndPerson(ReferenceType referenceType, Person person) {
         List<ReferenceInstance> referenceInstances = personHibernate.getReferenceInstances(person);
         List<ReferenceInstance> referenceInstancesOfSpecificReference = new ArrayList<ReferenceInstance>();
 
         for (ReferenceInstance referenceInstance : referenceInstances) {
-            if (referenceInstance.getReference().getId().equals(reference.getId())) {
+            if (referenceInstance.getReferenceType().getId().equals(referenceType.getId())) {
                 referenceInstancesOfSpecificReference.add(referenceInstance);
             }
         }
@@ -198,14 +198,14 @@ public class ReferenceInstanceHibernate {
         return referenceInstancesOfSpecificReference;
     }
 
-    public List<ReferenceInstance> getByReferenceAndPerson(Reference reference, Person person, Integer offset, Integer limit) {
+    public List<ReferenceInstance> getByReferenceTypeAndPerson(ReferenceType referenceType, Person person, Integer offset, Integer limit) {
         List<ReferenceInstance> referenceInstances = personHibernate.getReferenceInstances(person);
         List<ReferenceInstance> referenceInstancesOfSpecificReference = new ArrayList<ReferenceInstance>();
 
         limit = limit + offset > referenceInstances.size() ? referenceInstances.size() : limit + offset;
 
         for (ReferenceInstance referenceInstance : referenceInstances) {
-            if (referenceInstance.getReference().getId().equals(reference.getId())) {
+            if (referenceInstance.getReferenceType().getId().equals(referenceType.getId())) {
                 referenceInstancesOfSpecificReference.add(referenceInstance);
             }
         }
@@ -213,9 +213,9 @@ public class ReferenceInstanceHibernate {
         return referenceInstancesOfSpecificReference.subList(offset, offset + limit);
     }
 
-    public List<ReferenceInstance> getByReferenceAndFilter(Reference reference, Map<String, String> filterMap, Integer offset, Integer limit) {
+    public List<ReferenceInstance> getByReferenceTypeAndFilter(ReferenceType referenceType, Map<String, String> filterMap, Integer offset, Integer limit) {
         Criteria criteria = session.createCriteria(ReferenceInstance.class, "referenceInstance");
-        criteria.add(eq("reference", reference));
+        criteria.add(eq("referenceType", referenceType));
         criteria.createAlias("referenceInstance.attributeReferenceInstances", "ari");
         criteria.createAlias("ari.attribute", "attribute");
 
@@ -228,11 +228,11 @@ public class ReferenceInstanceHibernate {
         return criteria.addOrder(Order.desc("referenceInstance.id")).setFirstResult(offset).setMaxResults(limit).list();
     }
 
-    public List<ReferenceInstance> getByReferenceFilterAndPerson(Reference reference, Map<String, String> filterMap, Person person) {
+    public List<ReferenceInstance> getByReferenceTypeFilterAndPerson(ReferenceType referenceType, Map<String, String> filterMap, Person person) {
         List<ReferenceInstance> filteredReferenceInstances = new ArrayList<ReferenceInstance>();
 
         Criteria criteria = session.createCriteria(ReferenceInstance.class, "refInstance");
-        criteria.add(eq("reference", reference));
+        criteria.add(eq("referenceType", referenceType));
         criteria.createAlias("refInstance.attributeReferenceInstances", "ari");
         criteria.createAlias("ari.attribute", "attribute");
 
@@ -259,8 +259,8 @@ public class ReferenceInstanceHibernate {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        Reference reference = referenceInstance.getReference();
-        return referenceHibernate.getAttributeValues(reference);
+        ReferenceType referenceType = referenceInstance.getReferenceType();
+        return referenceHibernate.getAttributeValues(referenceType);
     }
 
     public void updateAttributeReferenceInstances(ReferenceInstance referenceInstance, Map<String, String> newValues, List<Attribute> attributes) {

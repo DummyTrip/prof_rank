@@ -1,4 +1,4 @@
-package com.diplomska.prof_rank.pages.admin.Reference;
+package com.diplomska.prof_rank.pages.admin.ReferenceType;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.*;
@@ -20,10 +20,10 @@ import java.util.List;
  * Created by Aleksandar on 25-Sep-16.
  */
 @AdministratorPage
-public class ShowReference {
+public class ShowReferenceType {
     @Persist
     @Property
-    private Long referenceId;
+    private Long referenceTypeId;
 
     @Inject
     private ReferenceHibernate referenceHibernate;
@@ -33,7 +33,7 @@ public class ShowReference {
 
     @Persist
     @Property
-    private Reference reference;
+    private ReferenceType referenceType;
 
     @Property
     private Attribute addAttribute;
@@ -68,7 +68,7 @@ public class ShowReference {
 
     public List<Attribute> getAttributes() {
         List<Attribute> attributeReferences = new ArrayList<Attribute>();
-        attributeReferences.addAll(referenceHibernate.getAttributeValues(reference));
+        attributeReferences.addAll(referenceHibernate.getAttributeValues(referenceType));
 
         return attributeReferences;
     }
@@ -76,32 +76,32 @@ public class ShowReference {
     public List<RulebookSection> getRulebookSections() {
         List<ReferenceTypeRulebookSection> referenceTypeRulebookSections = new ArrayList<ReferenceTypeRulebookSection>();
         List<RulebookSection> rulebookSections = new ArrayList<RulebookSection>();
-        referenceTypeRulebookSections.addAll(reference.getReferenceTypeRulebookSections());
+        referenceTypeRulebookSections.addAll(referenceType.getReferenceTypeRulebookSections());
 
-        for( ReferenceTypeRulebookSection rrs : referenceTypeRulebookSections) {
-            rulebookSections.add(rrs.getRulebookSection());
+        for( ReferenceTypeRulebookSection rtrs : referenceTypeRulebookSections) {
+            rulebookSections.add(rtrs.getRulebookSection());
         }
 
         return rulebookSections;
     }
 
     public ReferenceInputTemplate getReferenceInputTemplate() {
-        return reference.getReferenceInputTemplate();
+        return referenceType.getReferenceInputTemplate();
     }
 
-    void onActivate(Long referenceId) {
-        this.referenceId = referenceId;
+    void onActivate(Long referenceTypeId) {
+        this.referenceTypeId = referenceTypeId;
     }
 
     Long passivate() {
-        return referenceId;
+        return referenceTypeId;
     }
 
     void setupRender() throws Exception {
-        this.reference = referenceHibernate.getById(referenceId);
+        this.referenceType = referenceHibernate.getById(referenceTypeId);
 
-        if (reference == null) {
-            throw new Exception("Reference " + referenceId + " does not exist.");
+        if (referenceType == null) {
+            throw new Exception("ReferenceType " + referenceTypeId + " does not exist.");
         }
 
         attributeBeanModel = beanModelSource.createDisplayModel(Attribute.class, messages);
@@ -119,7 +119,7 @@ public class ShowReference {
     }
 
     public boolean isRefTypeNull() {
-        return reference.getReferenceInputTemplate() == null ? false : true;
+        return referenceType.getReferenceInputTemplate() == null ? false : true;
     }
 
 //
@@ -127,13 +127,13 @@ public class ShowReference {
 //    void onActionFromAdd(Long attributeId) {
 //        attribute = attributeHibernate.getById(attributeId);
 //
-//        referenceHibernate.setAttributeValue(reference, attribute);
+//        referenceHibernate.setAttributeValue(referenceType, attribute);
 //    }
 
     @CommitAfter
     void onActionFromDelete(Long attributeId) {
         Attribute attr = attributeHibernate.getById(attributeId);
 
-        referenceHibernate.deleteAttribute(reference, attr);
+        referenceHibernate.deleteAttribute(referenceType, attr);
     }
 }

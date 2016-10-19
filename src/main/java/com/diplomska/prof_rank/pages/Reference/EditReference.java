@@ -4,13 +4,11 @@ import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.entities.Attribute;
 import com.diplomska.prof_rank.entities.AttributeReferenceInstance;
 import com.diplomska.prof_rank.entities.ReferenceInstance;
-import com.diplomska.prof_rank.entities.ReferenceInstance;
 import com.diplomska.prof_rank.services.*;
 import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
 import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.*;
-import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -351,8 +349,8 @@ public class EditReference {
     @Property
     boolean missingAuthors;
 
-    public boolean isPapersReference() {
-        return referenceInstance.getReference().getName().equals("Papers") ? true : false;
+    public boolean isPapersReferenceType() {
+        return referenceInstance.getReferenceType().getName().equals("Papers") ? true : false;
     }
 
     @OnEvent(component = "addAuthor", value = "selected")

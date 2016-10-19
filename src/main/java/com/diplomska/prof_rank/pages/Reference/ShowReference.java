@@ -8,7 +8,6 @@ import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
-import org.apache.tapestry5.internal.util.IntegerRange;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
@@ -33,7 +32,7 @@ public class ShowReference {
 
     @Persist
     @Property
-    Reference reference;
+    ReferenceType referenceType;
 
     @Property
     ReferenceInstance referenceInstance;
@@ -88,7 +87,7 @@ public class ShowReference {
     }
 
     public List<Attribute> getAttributes() {
-        return referenceHibernate.getAttributeValues(reference);
+        return referenceHibernate.getAttributeValues(referenceType);
     }
 
     public List<AttributeReferenceInstance> getAttributeValues() {
@@ -159,7 +158,7 @@ public class ShowReference {
             oldReferenceId = referenceId;
         }
 
-        this.reference = referenceHibernate.getById(referenceId);
+        this.referenceType = referenceHibernate.getById(referenceId);
         this.referenceName = referenceNameQueryString;
         this.displayNames = referenceInstanceHibernate.getAllDisplayNames();
 //        testMap = new HashMap<String, String>();
@@ -178,7 +177,7 @@ public class ShowReference {
         if (selectedCheckboxes == null) {
             selectedCheckboxes = new HashMap<Long, Integer>();
             for (Attribute attribute : getAttributes()) {
-                Integer value = referenceHibernate.isDisplayAttribute(reference, attribute) ? 1 : 0;
+                Integer value = referenceHibernate.isDisplayAttribute(referenceType, attribute) ? 1 : 0;
 
                 selectedCheckboxes.put(attribute.getId(), value);
             }
@@ -186,14 +185,14 @@ public class ShowReference {
     }
 
     private List<ReferenceInstance> sortReferenceInstaces() {
-        List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getByReference(reference);
+        List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getByReferenceType(referenceType);
 
         return getSortedReferenceInstances(referenceInstances);
     }
 
     private List<ReferenceInstance> sortReferenceInstaces(Map<String, String> filterMap) {
         Person person = personHibernate.getById(Long.valueOf(1));
-        List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getByReferenceFilterAndPerson(reference, filterMap, person);
+        List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getByReferenceTypeFilterAndPerson(referenceType, filterMap, person);
 
         if (referenceInstances == null) {
             return new ArrayList<ReferenceInstance>();
@@ -223,7 +222,7 @@ public class ShowReference {
     }
 
     private Attribute getOrderAttribute() {
-        List<Attribute> attributes = referenceHibernate.getAttributeValues(reference);
+        List<Attribute> attributes = referenceHibernate.getAttributeValues(referenceType);
         Attribute orderAttribute = null;
 
         for (Attribute attribute : attributes) {
@@ -384,7 +383,7 @@ public class ShowReference {
     @CommitAfter
     @OnEvent(component = "saveDisplay", value = "selected")
     void saveDisplay() {
-        List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getByReference(reference);
+        List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getByReferenceType(referenceType);
 
         for (ReferenceInstance referenceInstance : referenceInstances) {
             List<AttributeReferenceInstance> attributeReferenceInstances = referenceInstance.getAttributeReferenceInstances();

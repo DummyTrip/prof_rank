@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class ReferenceTypeRulebookSection {
     private Long id;
 
-    private Reference reference;
+    private ReferenceType referenceType;
 
     private RulebookSection rulebookSection;
 
@@ -27,13 +27,13 @@ public class ReferenceTypeRulebookSection {
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "reference_id")
-    public Reference getReference() {
-        return reference;
+    @JoinColumn(name = "referenceType_id")
+    public ReferenceType getReferenceType() {
+        return referenceType;
     }
 
-    public void setReference(Reference reference) {
-        this.reference = reference;
+    public void setReferenceType(ReferenceType referenceType) {
+        this.referenceType = referenceType;
     }
 
     @ManyToOne(cascade = CascadeType.ALL)

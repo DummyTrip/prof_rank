@@ -1,7 +1,7 @@
-package com.diplomska.prof_rank.pages.admin.Reference;
+package com.diplomska.prof_rank.pages.admin.ReferenceType;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
-import com.diplomska.prof_rank.entities.Reference;
+import com.diplomska.prof_rank.entities.ReferenceType;
 import com.diplomska.prof_rank.services.ExcelWorkbook;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
 import org.apache.tapestry5.annotations.Property;
@@ -26,10 +26,10 @@ public class Index {
     private ExcelWorkbook excelWorkbook;
 
     @Property
-    private Reference reference;
+    private ReferenceType referenceType;
 
     @Property
-    private BeanModel<Reference> referenceBeanModel;
+    private BeanModel<ReferenceType> referenceTypeBeanModel;
 
     @Inject
     private BeanModelSource beanModelSource;
@@ -40,23 +40,23 @@ public class Index {
     @Inject
     private PropertyConduitSource pcs;
 
-    public List<Reference> getReferences() {
+    public List<ReferenceType> getReferenceTypes() {
         return referenceHibernate.getAll();
     }
 
     void setupRender() {
-        referenceBeanModel = beanModelSource.createDisplayModel(Reference.class, messages);
-        referenceBeanModel.include("name", "points");
-        referenceBeanModel.add("referenceInputTemplate", pcs.create(Reference.class, "referenceInputTemplate"));
-        referenceBeanModel.add("show", null);
-        referenceBeanModel.add("edit", null);
-        referenceBeanModel.add("delete", null);
+        referenceTypeBeanModel = beanModelSource.createDisplayModel(ReferenceType.class, messages);
+        referenceTypeBeanModel.include("name", "points");
+        referenceTypeBeanModel.add("referenceInputTemplate", pcs.create(ReferenceType.class, "referenceInputTemplate"));
+        referenceTypeBeanModel.add("show", null);
+        referenceTypeBeanModel.add("edit", null);
+        referenceTypeBeanModel.add("delete", null);
     }
 
     @CommitAfter
-    void onActionFromDelete(Long referenceId) {
-        reference = referenceHibernate.getById(referenceId);
-        referenceHibernate.delete(reference);
+    void onActionFromDelete(Long referenceTypeId) {
+        referenceType = referenceHibernate.getById(referenceTypeId);
+        referenceHibernate.delete(referenceType);
     }
 
     @CommitAfter

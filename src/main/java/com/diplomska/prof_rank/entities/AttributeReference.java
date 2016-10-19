@@ -15,7 +15,7 @@ public class AttributeReference {
 
     private Attribute attribute;
 
-    private Reference reference;
+    private ReferenceType referenceType;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,13 +39,13 @@ public class AttributeReference {
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "reference_id")
-    public Reference getReference() {
-        return reference;
+    @JoinColumn(name = "referenceType_id")
+    public ReferenceType getReferenceType() {
+        return referenceType;
     }
 
-    public void setReference(Reference reference) {
-        this.reference = reference;
+    public void setReferenceType(ReferenceType referenceType) {
+        this.referenceType = referenceType;
     }
 
     public boolean isDisplay() {

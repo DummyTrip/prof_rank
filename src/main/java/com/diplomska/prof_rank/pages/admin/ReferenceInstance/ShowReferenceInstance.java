@@ -60,7 +60,7 @@ public class ShowReferenceInstance {
         this.referenceInstance = referenceInstanceHibernate.getById(referenceInstanceId);
 
         if (referenceInstance == null) {
-            throw new Exception("Reference " + referenceInstanceId + " does not exist.");
+            throw new Exception("ReferenceType " + referenceInstanceId + " does not exist.");
         }
 
         attributeReferenceInstanceBeanModel = beanModelSource.createDisplayModel(AttributeReferenceInstance.class, messages);

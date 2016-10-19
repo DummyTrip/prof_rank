@@ -33,7 +33,7 @@ public class Index
     PersonHibernate personHibernate;
 
     @Property
-    Reference reference;
+    ReferenceType referenceType;
 
     @Inject
     RequestGlobals requestGlobals;
@@ -62,34 +62,34 @@ public class Index
         List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getAll();
 
         for (ReferenceInstance referenceInstance : referenceInstances) {
-            Float referencePoints = referenceInstance.getReference().getPoints();
+            Float referencePoints = referenceInstance.getReferenceType().getPoints();
             if (referencePoints != null) {
-                points += referenceInstance.getReference().getPoints();
+                points += referenceInstance.getReferenceType().getPoints();
             }
         }
 
         return points;
     }
 
-    public List<Reference> getPopularReferences() {
+    public List<ReferenceType> getPopularReferenceTypes() {
         return referenceHibernate.getPopular(9);
     }
 
-    public List<Reference> getPopularReferencesForPerson() {
+    public List<ReferenceType> getPopularReferenceTypesForPerson() {
         Person person = personHibernate.getById(Long.valueOf(1));
         if (person != null) {
             return referenceHibernate.getPopularByPerson(person, 9);
         } else {
-            return new ArrayList<Reference>();
+            return new ArrayList<ReferenceType>();
         }
     }
 
     public Section getSection() {
-        return referenceHibernate.getSections(reference).get(0);
+        return referenceHibernate.getSections(referenceType).get(0);
     }
 
     public Integer getNumberOfReferenceInstances() {
-        List<ReferenceInstance> referenceInstancesOfCurrentReference = referenceInstanceHibernate.getByReference(reference);
+        List<ReferenceInstance> referenceInstancesOfCurrentReference = referenceInstanceHibernate.getByReferenceType(referenceType);
 
         return referenceInstancesOfCurrentReference.size();
     }
@@ -97,17 +97,17 @@ public class Index
     public Integer getNumberOfReferenceInstancesForPerson() {
         Person person = personHibernate.getById(Long.valueOf(1));
 
-        List<ReferenceInstance> referenceInstancesOfCurrentReference = referenceInstanceHibernate.getByReferenceAndPerson(reference, person);
+        List<ReferenceInstance> referenceInstancesOfCurrentReference = referenceInstanceHibernate.getByReferenceTypeAndPerson(referenceType, person);
 
         return referenceInstancesOfCurrentReference.size();
     }
 
-    public boolean isPopularReferencesNull() {
-        return getPopularReferences().size() > 0 ? true : false;
+    public boolean isPopularReferenceTypesNull() {
+        return getPopularReferenceTypes().size() > 0 ? true : false;
     }
 
-    public boolean isPopularReferencesForPersonNull() {
-        return getPopularReferencesForPerson().size() > 0 ? true : false;
+    public boolean isPopularReferenceTypesForPersonNull() {
+        return getPopularReferenceTypesForPerson().size() > 0 ? true : false;
     }
 
     private void createDefaultReferenceInputTemplate() {

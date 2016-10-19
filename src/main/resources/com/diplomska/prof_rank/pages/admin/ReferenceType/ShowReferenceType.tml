@@ -1,11 +1,11 @@
-<html t:type="layout" title="Reference Show"
+<html t:type="layout" title="ReferenceType Show"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
       xmlns:p="tapestry:parameter">
 
 <div>
-    <h2>Reference</h2>
+    <h2>ReferenceType</h2>
 
-    <t:beandisplay object="reference"/>
+    <t:beandisplay object="referenceType"/>
 
     <hr/>
 
