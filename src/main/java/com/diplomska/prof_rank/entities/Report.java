@@ -32,8 +32,8 @@ public class Report {
     private List<ReportSubjectDomain> reportSubjectDomains = new ArrayList<ReportSubjectDomain>();
 
     @Column
-    @ElementCollection(targetClass = ReferenceInstanceReport.class)
-    private List<ReferenceInstanceReport> referenceInstanceReports = new ArrayList<ReferenceInstanceReport>();
+    @ElementCollection(targetClass = ReferenceReport.class)
+    private List<ReferenceReport> referenceReports = new ArrayList<ReferenceReport>();
 
     private Person person;
 
@@ -99,12 +99,12 @@ public class Report {
     }
 
     @OneToMany(mappedBy = "report")
-    public List<ReferenceInstanceReport> getReferenceInstanceReports() {
-        return referenceInstanceReports;
+    public List<ReferenceReport> getReferenceReports() {
+        return referenceReports;
     }
 
-    public void setReferenceInstanceReports(List<ReferenceInstanceReport> referenceInstanceReports) {
-        this.referenceInstanceReports = referenceInstanceReports;
+    public void setReferenceReports(List<ReferenceReport> referenceReports) {
+        this.referenceReports = referenceReports;
     }
 
     @ManyToOne(cascade = CascadeType.ALL)

@@ -188,11 +188,11 @@ public class ReportHibernate {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        List<ReferenceInstanceReport> referenceInstanceReports = report.getReferenceInstanceReports();
+        List<ReferenceReport> referenceReports = report.getReferenceReports();
         List<Reference> references = new ArrayList<Reference>();
 
-        for (ReferenceInstanceReport referenceInstanceReport : referenceInstanceReports) {
-            references.add(referenceInstanceReport.getReference());
+        for (ReferenceReport referenceReport : referenceReports) {
+            references.add(referenceReport.getReference());
         }
 
         return references;
@@ -203,12 +203,12 @@ public class ReportHibernate {
         if (report == null || reference == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
-        ReferenceInstanceReport referenceInstanceReport = new ReferenceInstanceReport();
+        ReferenceReport referenceReport = new ReferenceReport();
 
-        referenceInstanceReport.setReport(report);
-        referenceInstanceReport.setReference(reference);
+        referenceReport.setReport(report);
+        referenceReport.setReference(reference);
 
-        session.saveOrUpdate(referenceInstanceReport);
+        session.saveOrUpdate(referenceReport);
     }
 
     @CommitAfter
@@ -217,8 +217,8 @@ public class ReportHibernate {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
-        Criteria criteria = session.createCriteria(ReferenceInstanceReport.class);
-        List<ReferenceInstanceReport> entities = criteria
+        Criteria criteria = session.createCriteria(ReferenceReport.class);
+        List<ReferenceReport> entities = criteria
                 .add(eq("report", report))
                 .add(eq("reference", reference))
                 .list();
@@ -227,8 +227,8 @@ public class ReportHibernate {
             throw new IllegalStateException("No data in database.");
         }
 
-        ReferenceInstanceReport referenceInstanceReport = entities.get(0);
-        referenceInstanceReport.setReport(null);
-        report.getReferenceInstanceReports().remove(referenceInstanceReport);
+        ReferenceReport referenceReport = entities.get(0);
+        referenceReport.setReport(null);
+        report.getReferenceReports().remove(referenceReport);
     }
 }

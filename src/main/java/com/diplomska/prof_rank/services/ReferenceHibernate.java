@@ -105,14 +105,14 @@ public class ReferenceHibernate {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        Criteria criteria = session.createCriteria(ReferenceInstancePerson.class);
+        Criteria criteria = session.createCriteria(ReferencePerson.class);
         criteria.add(eq("person", person))
                 .add(eq("reference", reference));
 
-        List<ReferenceInstancePerson> rips = criteria.list();
+        List<ReferencePerson> rips = criteria.list();
 
         if (rips.size() > 0) {
-            ReferenceInstancePerson rip = (ReferenceInstancePerson) criteria.list().get(0);
+            ReferencePerson rip = (ReferencePerson) criteria.list().get(0);
 
             return rip.getAuthorNum();
         } else {
@@ -125,14 +125,14 @@ public class ReferenceHibernate {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        Criteria criteria = session.createCriteria(ReferenceInstancePerson.class);
+        Criteria criteria = session.createCriteria(ReferencePerson.class);
         criteria.add(eq("author", author))
                 .add(eq("reference", reference));
 
-        List<ReferenceInstancePerson> rips = criteria.list();
+        List<ReferencePerson> rips = criteria.list();
 
         if (rips.size() > 0) {
-            ReferenceInstancePerson rip = (ReferenceInstancePerson) criteria.list().get(0);
+            ReferencePerson rip = (ReferencePerson) criteria.list().get(0);
 
             return rip.getAuthorNum();
         } else {

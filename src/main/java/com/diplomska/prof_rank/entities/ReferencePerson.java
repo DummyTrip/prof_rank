@@ -9,7 +9,7 @@ import javax.persistence.*;
  * Created by Aleksandar on 06-Oct-16.
  */
 @Entity
-public class ReferenceInstancePerson {
+public class ReferencePerson {
     private Long id;
 
     private Reference reference;

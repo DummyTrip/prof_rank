@@ -118,13 +118,13 @@ public class PersonHibernate {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        Criteria criteria = session.createCriteria(ReferenceInstancePerson.class);
+        Criteria criteria = session.createCriteria(ReferencePerson.class);
 
-        List<ReferenceInstancePerson> referenceInstancePersons = criteria.add(eq("person", person)).list();
+        List<ReferencePerson> referencePersons = criteria.add(eq("person", person)).list();
         List<Reference> references = new ArrayList<Reference>();
 
-        for (ReferenceInstancePerson referenceInstancePerson : referenceInstancePersons) {
-            references.add(referenceInstancePerson.getReference());
+        for (ReferencePerson referencePerson : referencePersons) {
+            references.add(referencePerson.getReference());
         }
 
         return references;
@@ -134,13 +134,13 @@ public class PersonHibernate {
         if (person == null || reference == null || authorNum == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
-        ReferenceInstancePerson referenceInstancePerson = new ReferenceInstancePerson();
+        ReferencePerson referencePerson = new ReferencePerson();
 
-        referenceInstancePerson.setPerson(person);
-        referenceInstancePerson.setAuthorNum(authorNum);
-        referenceInstancePerson.setReference(reference);
+        referencePerson.setPerson(person);
+        referencePerson.setAuthorNum(authorNum);
+        referencePerson.setReference(reference);
 
-        session.saveOrUpdate(referenceInstancePerson);
+        session.saveOrUpdate(referencePerson);
     }
 
     public void setReference(Reference reference, String personIdentifier, Integer authorNum) {
@@ -148,7 +148,7 @@ public class PersonHibernate {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
-        ReferenceInstancePerson referenceInstancePerson = new ReferenceInstancePerson();
+        ReferencePerson referencePerson = new ReferencePerson();
         Person person;
 
         String[] identifiers = personIdentifier.split("\\(");
@@ -156,15 +156,15 @@ public class PersonHibernate {
             List<Person> persons = getPersonFromIdentifier(personIdentifier);
 
             person = persons.get(0);
-            referenceInstancePerson.setPerson(person);
+            referencePerson.setPerson(person);
         } else {
-            referenceInstancePerson.setAuthor(personIdentifier);
+            referencePerson.setAuthor(personIdentifier);
         }
 
-        referenceInstancePerson.setAuthorNum(authorNum);
-        referenceInstancePerson.setReference(reference);
+        referencePerson.setAuthorNum(authorNum);
+        referencePerson.setReference(reference);
 
-        session.saveOrUpdate(referenceInstancePerson);
+        session.saveOrUpdate(referencePerson);
     }
 
     private List<Person> getPersonFromIdentifier(String personIdentifier) {
@@ -186,12 +186,12 @@ public class PersonHibernate {
 
         List<String> authors = new ArrayList<String>();
 
-        Criteria criteria = session.createCriteria(ReferenceInstancePerson.class);
+        Criteria criteria = session.createCriteria(ReferencePerson.class);
         criteria.add(eq("reference", reference));
 
-        List<ReferenceInstancePerson> rips = criteria.list();
+        List<ReferencePerson> rips = criteria.list();
 
-        for (ReferenceInstancePerson rip : rips) {
+        for (ReferencePerson rip : rips) {
             Person person = rip.getPerson();
             String identifier;
 
@@ -212,12 +212,12 @@ public class PersonHibernate {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
-        ReferenceInstancePerson referenceInstancePerson = new ReferenceInstancePerson();
+        ReferencePerson referencePerson = new ReferencePerson();
 
-        referenceInstancePerson.setAuthor(author);
-        referenceInstancePerson.setReference(reference);
+        referencePerson.setAuthor(author);
+        referencePerson.setReference(reference);
 
-        session.saveOrUpdate(referenceInstancePerson);
+        session.saveOrUpdate(referencePerson);
     }
 
     @CommitAfter
@@ -226,8 +226,8 @@ public class PersonHibernate {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
-        Criteria criteria = session.createCriteria(ReferenceInstancePerson.class);
-        List<ReferenceInstancePerson> entities = criteria
+        Criteria criteria = session.createCriteria(ReferencePerson.class);
+        List<ReferencePerson> entities = criteria
                 .add(eq("person", person))
                 .add(eq("reference", reference))
                 .list();
@@ -236,8 +236,8 @@ public class PersonHibernate {
             throw new IllegalStateException("No data in database.");
         }
 
-        ReferenceInstancePerson referenceInstancePerson = entities.get(0);
-        referenceInstancePerson.setPerson(null);
+        ReferencePerson referencePerson = entities.get(0);
+        referencePerson.setPerson(null);
     }
 
     public List<Report> getReports(Person person) {

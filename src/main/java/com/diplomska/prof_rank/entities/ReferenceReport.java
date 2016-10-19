@@ -8,7 +8,7 @@ import javax.persistence.*;
  * Created by Aleksandar on 27.09.2016.
  */
 @Entity
-public class ReferenceInstanceReport {
+public class ReferenceReport {
     private Long id;
 
     private Reference reference;
