@@ -9,7 +9,7 @@ import javax.persistence.*;
  * Created by Aleksandar on 27.09.2016.
  */
 @Entity
-public class AttributeReferenceInstance {
+public class AttributeReference {
     private Long id;
 
     private String value;

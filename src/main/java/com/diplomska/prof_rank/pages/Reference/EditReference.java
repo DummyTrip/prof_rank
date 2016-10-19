@@ -2,7 +2,7 @@ package com.diplomska.prof_rank.pages.Reference;
 
 import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.entities.Attribute;
-import com.diplomska.prof_rank.entities.AttributeReferenceInstance;
+import com.diplomska.prof_rank.entities.AttributeReference;
 import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.services.*;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
@@ -95,7 +95,7 @@ public class EditReference {
             testMap = new HashMap<String, String>();
             attributes = new ArrayList<Attribute>();
 
-            for (AttributeReferenceInstance ari: referenceHibernate.getSortedAttributeReferenceInstance(reference)) {
+            for (AttributeReference ari: referenceHibernate.getSortedAttributeReferences(reference)) {
                 attributes.add(ari.getAttribute());
                 testMap.put(String.valueOf(ari.getAttribute().getId()), ari.getValue());
             }
@@ -134,7 +134,7 @@ public class EditReference {
 
         reference = referenceHibernate.getById(referenceId);
 
-        referenceHibernate.updateAttributeReferenceInstances(reference, testMap, attributes);
+        referenceHibernate.updateAttributeReferences(reference, testMap, attributes);
 
         resetPersistedVariables();
 

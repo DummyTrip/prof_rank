@@ -38,7 +38,7 @@ public class ShowReference {
     Reference reference;
 
     @Property
-    AttributeReferenceInstance ari;
+    AttributeReference ari;
 
     @Persist
     @Property
@@ -90,8 +90,8 @@ public class ShowReference {
         return referenceTypeHibernate.getAttributeValues(referenceType);
     }
 
-    public List<AttributeReferenceInstance> getAttributeValues() {
-        return referenceHibernate.getSortedAttributeReferenceInstance(reference);
+    public List<AttributeReference> getAttributeValues() {
+        return referenceHibernate.getSortedAttributeReferences(reference);
     }
 
     void onActivate(Long referenceTypeId) {
@@ -242,7 +242,7 @@ public class ShowReference {
         Map<Reference, String> unsortedMap = new HashMap<Reference, String>();
 
         for (Reference refInstance : references) {
-            for (AttributeReferenceInstance ari: refInstance.getAttributeReferenceInstances()) {
+            for (AttributeReference ari: refInstance.getAttributeReferences()) {
                 if (ari.getAttribute().equals(orderAttribute)) {
                     unsortedMap.put(refInstance, ari.getValue());
                     break;
@@ -386,9 +386,9 @@ public class ShowReference {
         List<Reference> references = referenceHibernate.getByReferenceType(referenceType);
 
         for (Reference reference : references) {
-            List<AttributeReferenceInstance> attributeReferenceInstances = reference.getAttributeReferenceInstances();
+            List<AttributeReference> attributeReferences = reference.getAttributeReferences();
 
-            for (AttributeReferenceInstance ari : attributeReferenceInstances) {
+            for (AttributeReference ari : attributeReferences) {
                 Attribute attribute = ari.getAttribute();
                 if (selectedCheckboxes.containsKey(attribute.getId())) {
                     boolean display = selectedCheckboxes.get(attribute.getId()) == 0 ? false : true;

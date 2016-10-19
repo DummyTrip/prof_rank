@@ -144,7 +144,7 @@ public class CreateReference {
 
             personHibernate.setReference(reference, authorName, authorNames.indexOf(authorName));
 
-            referenceHibernate.updateAttributeReferenceInstances(reference, testMap, attributes);
+            referenceHibernate.updateAttributeReferences(reference, testMap, attributes);
         }
 
         resetPersistedVariables();

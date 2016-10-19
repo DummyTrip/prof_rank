@@ -9,8 +9,8 @@
 
     <hr/>
 
-    <h3>AttributeReferenceInstances</h3>
-    <t:grid source="attributeReferenceInstances" row="attributeReferenceInstance" model="attributeReferenceInstanceBeanModel">
+    <h3>AttributeReferences</h3>
+    <t:grid source="attributeReferences" row="attributeReference" model="attributeReferenceBeanModel">
     </t:grid>
 
     <hr/>

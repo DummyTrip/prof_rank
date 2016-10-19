@@ -1,7 +1,7 @@
 package com.diplomska.prof_rank.pages.admin.Reference;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
-import com.diplomska.prof_rank.entities.AttributeReferenceInstance;
+import com.diplomska.prof_rank.entities.AttributeReference;
 import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
 import org.apache.tapestry5.annotations.Persist;
@@ -30,10 +30,10 @@ public class ShowReference {
     Reference reference;
 
     @Property
-    private AttributeReferenceInstance attributeReferenceInstance;
+    private AttributeReference attributeReference;
 
     @Property
-    private BeanModel<AttributeReferenceInstance> attributeReferenceInstanceBeanModel;
+    private BeanModel<AttributeReference> attributeReferenceBeanModel;
 
     @Inject
     private BeanModelSource beanModelSource;
@@ -44,8 +44,8 @@ public class ShowReference {
     @Inject
     private PropertyConduitSource pcs;
 
-    public List<AttributeReferenceInstance> getAttributeReferenceInstances() {
-        return reference.getAttributeReferenceInstances();
+    public List<AttributeReference> getAttributeReferences() {
+        return reference.getAttributeReferences();
     }
 
     void onActivate(Long referenceId) {
@@ -63,12 +63,12 @@ public class ShowReference {
             throw new Exception("ReferenceType " + referenceId + " does not exist.");
         }
 
-        attributeReferenceInstanceBeanModel = beanModelSource.createDisplayModel(AttributeReferenceInstance.class, messages);
-        attributeReferenceInstanceBeanModel.include();
-        attributeReferenceInstanceBeanModel.add("attributeReferenceInstanceName", pcs.create(AttributeReferenceInstance.class, "attribute.name"));
-        attributeReferenceInstanceBeanModel.add("attributeReferenceInstanceInputType", pcs.create(AttributeReferenceInstance.class, "attribute.inputType"));
-        attributeReferenceInstanceBeanModel.add("attributeReferenceInstanceVal", pcs.create(AttributeReferenceInstance.class, "value"));
-        attributeReferenceInstanceBeanModel.add("delete", null);
+        attributeReferenceBeanModel = beanModelSource.createDisplayModel(AttributeReference.class, messages);
+        attributeReferenceBeanModel.include();
+        attributeReferenceBeanModel.add("attributeReferenceName", pcs.create(AttributeReference.class, "attribute.name"));
+        attributeReferenceBeanModel.add("attributeReferenceInputType", pcs.create(AttributeReference.class, "attribute.inputType"));
+        attributeReferenceBeanModel.add("attributeReferenceVal", pcs.create(AttributeReference.class, "value"));
+        attributeReferenceBeanModel.add("delete", null);
     }
 
 
