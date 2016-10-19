@@ -110,7 +110,7 @@ public class Index
         return getPopularReferencesForPerson().size() > 0 ? true : false;
     }
 
-    private void createDefaultReferenceType() {
+    private void createDefaultReferenceInputTemplate() {
         ReferenceInputTemplate referenceInputTemplate = new ReferenceInputTemplate();
         referenceInputTemplate.setName("Default");
         Attribute attribute = new Attribute();
@@ -202,7 +202,7 @@ public class Index
     @CommitAfter
     void onActionFromAddPersonAndReferenceInputTemplate() {
         addPerson();
-        createDefaultReferenceType();
+        createDefaultReferenceInputTemplate();
         addRulebookAndSections();
     }
 }

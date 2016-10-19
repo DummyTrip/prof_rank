@@ -41,7 +41,7 @@ public class EditReferenceInputTemplate {
 
     void onPrepareForRender() throws Exception {
         if (form.isValid()) {
-            referenceInputTemplate = findReferenceType(referenceInputTemplateId);
+            referenceInputTemplate = findReferenceInputTemplate(referenceInputTemplateId);
 
             if (referenceInputTemplate == null) {
                 throw new Exception("ReferenceInputTemplate " + referenceInputTemplateId + " does not exist.");
@@ -50,7 +50,7 @@ public class EditReferenceInputTemplate {
     }
 
     void onPrepareForSubmit() {
-        referenceInputTemplate = findReferenceType(referenceInputTemplateId);
+        referenceInputTemplate = findReferenceInputTemplate(referenceInputTemplateId);
 
         if (referenceInputTemplate == null) {
             form.recordError("Person has been deleted by another process.");
@@ -78,7 +78,7 @@ public class EditReferenceInputTemplate {
         // By doing nothing the page will be displayed afresh.
     }
 
-    private ReferenceInputTemplate findReferenceType(Long referenceInputTemplateId) {
+    private ReferenceInputTemplate findReferenceInputTemplate(Long referenceInputTemplateId) {
         ReferenceInputTemplate referenceInputTemplate = referenceInputTemplateHibernate.getById(referenceInputTemplateId);
 
         if (referenceInputTemplate == null) {

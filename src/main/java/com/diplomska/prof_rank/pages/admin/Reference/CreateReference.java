@@ -60,7 +60,7 @@ public class CreateReference {
         referenceHibernate.store(reference);
 
         if (referenceInputTemplate != null){
-            referenceHibernate.setReferenceType(reference, referenceInputTemplate);
+            referenceHibernate.setReferenceInputTemplate(reference, referenceInputTemplate);
         }
 
         return index;

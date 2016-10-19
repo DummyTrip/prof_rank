@@ -24,7 +24,7 @@ import java.util.List;
 public class ShowReferenceInputTemplate {
     @Persist
     @Property
-    private Long referenceTypeId;
+    private Long referenceInputTemplateId;
 
     @Inject
     private ReferenceInputTemplateHibernate referenceInputTemplateHibernate;
@@ -69,19 +69,19 @@ public class ShowReferenceInputTemplate {
         return attributeReferenceInputTemplates;
     }
 
-    void onActivate(Long referenceTypeId) {
-        this.referenceTypeId = referenceTypeId;
+    void onActivate(Long referenceInputTemplateId) {
+        this.referenceInputTemplateId = referenceInputTemplateId;
     }
 
     Long passivate() {
-        return referenceTypeId;
+        return referenceInputTemplateId;
     }
 
     void setupRender() throws Exception {
-        this.referenceInputTemplate = referenceInputTemplateHibernate.getById(referenceTypeId);
+        this.referenceInputTemplate = referenceInputTemplateHibernate.getById(referenceInputTemplateId);
 
         if (referenceInputTemplate == null) {
-            throw new Exception("ReferenceInputTemplate " + referenceTypeId + " does not exist.");
+            throw new Exception("ReferenceInputTemplate " + referenceInputTemplateId + " does not exist.");
         }
 
         attributeBeanModel = beanModelSource.createDisplayModel(Attribute.class, messages);

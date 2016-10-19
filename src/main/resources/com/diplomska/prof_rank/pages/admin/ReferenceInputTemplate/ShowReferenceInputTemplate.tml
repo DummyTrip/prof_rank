@@ -3,7 +3,7 @@
       xmlns:p="tapestry:parameter">
 
 <div>
-    <h2>ReferenceType</h2>
+    <h2>ReferenceInputTemplate</h2>
 
     <t:beandisplay object="referenceInputTemplate"/>
 

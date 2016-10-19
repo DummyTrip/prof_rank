@@ -91,7 +91,7 @@ public class ExcelWorkbook {
                 Rulebook rulebook = rulebookHibernate.getById(Long.valueOf(1));
 
                 referenceHibernate.store(reference);
-                referenceHibernate.setReferenceType(reference, referenceInputTemplate);
+                referenceHibernate.setReferenceInputTemplate(reference, referenceInputTemplate);
                 referenceHibernate.setSection(reference, section, rulebook);
             }
         }

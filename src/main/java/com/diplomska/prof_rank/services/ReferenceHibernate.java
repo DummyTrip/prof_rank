@@ -267,7 +267,7 @@ public class ReferenceHibernate {
         setSection(reference, rulebookSection);
     }
 
-    public ReferenceInputTemplate getReferenceType(Reference reference) {
+    public ReferenceInputTemplate getReferenceInputTemplate(Reference reference) {
         if (reference == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
@@ -275,8 +275,8 @@ public class ReferenceHibernate {
         return reference.getReferenceInputTemplate();
     }
 
-    public void setReferenceType(Reference reference, ReferenceInputTemplate referenceInputTemplate) {
-        if (reference == null || reference == null) {
+    public void setReferenceInputTemplate(Reference reference, ReferenceInputTemplate referenceInputTemplate) {
+        if (reference == null || referenceInputTemplate == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 

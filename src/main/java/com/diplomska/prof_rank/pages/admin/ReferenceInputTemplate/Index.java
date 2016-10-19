@@ -68,8 +68,8 @@ public class Index {
     }
 
     @CommitAfter
-    void onActionFromDelete(Long referenceTypeId) {
-        referenceInputTemplate = referenceInputTemplateHibernate.getById(referenceTypeId);
+    void onActionFromDelete(Long referenceInputTemplateId) {
+        referenceInputTemplate = referenceInputTemplateHibernate.getById(referenceInputTemplateId);
         referenceInputTemplateHibernate.delete(referenceInputTemplate);
     }
 }
