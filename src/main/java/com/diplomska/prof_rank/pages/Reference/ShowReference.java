@@ -29,9 +29,6 @@ public class ShowReference {
     ReferenceInstanceHibernate referenceInstanceHibernate;
 
     @Inject
-    UserHibernate userHibernate;
-
-    @Inject
     PersonHibernate personHibernate;
 
     @Persist

@@ -38,9 +38,6 @@ public class Index
     ReferenceInstanceHibernate referenceInstanceHibernate;
 
     @Inject
-    UserHibernate userHibernate;
-
-    @Inject
     PersonHibernate personHibernate;
 
     @Property
@@ -132,15 +129,6 @@ public class Index
         referenceTypeHibernate.setAttribute(referenceType, attribute);
     }
 
-    private void addUser() {
-        User user = new User();
-        user.setFirstName("TestFirstName");
-        user.setFatherName("TestFatherName");
-        user.setLastName("TestLastName");
-        user.setEmail("TestEmail");
-        userHibernate.store(user);
-    }
-
     private void addPerson() {
         Role role = new Role();
         role.setName("admin");
@@ -221,7 +209,6 @@ public class Index
 
     @CommitAfter
     void onActionFromAddPersonAndReferenceType() {
-        addUser();
         addPerson();
         createDefaultReferenceType();
         addRulebookAndSections();

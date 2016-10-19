@@ -6,7 +6,6 @@ import com.diplomska.prof_rank.entities.Section;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
 import com.diplomska.prof_rank.services.RulebookHibernate;
 import com.diplomska.prof_rank.services.SectionHibernate;
-import com.diplomska.prof_rank.services.UserHibernate;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Zone;
@@ -41,9 +40,6 @@ public class AddReference {
 
     @Persist
     private List<String> referenecNames;
-
-    @Inject
-    UserHibernate userHibernate;
 
     public String getReferenceNameQueryString() {
         return referenceNameQueryString;

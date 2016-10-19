@@ -30,9 +30,6 @@ public class ExcelWorkbook {
     AttributeHibernate attributeHibernate;
 
     @Inject
-    UserHibernate userHibernate;
-
-    @Inject
     PersonHibernate personHibernate;
 
     @Inject

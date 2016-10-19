@@ -28,9 +28,6 @@ public class ReferenceHibernate {
     ReferenceTypeHibernate referenceTypeHibernate;
 
     @Inject
-    UserHibernate userHibernate;
-
-    @Inject
     PersonHibernate personHibernate;
 
     @CommitAfter
@@ -93,12 +90,6 @@ public class ReferenceHibernate {
 
     public List<Reference> getPopular(Integer limit) {
         List<ReferenceInstance> allReferenceInstances = session.createCriteria(ReferenceInstance.class).list();
-
-        return getSortedReferences(allReferenceInstances, limit);
-    }
-
-    public List<Reference> getPopularByUser(User user, Integer limit) {
-        List<ReferenceInstance> allReferenceInstances = userHibernate.getReferenceInstances(user);
 
         return getSortedReferences(allReferenceInstances, limit);
     }

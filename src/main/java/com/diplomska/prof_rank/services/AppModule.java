@@ -33,7 +33,6 @@ public class AppModule
         // invoking the constructor.
         binder.bind(AccessController.class).withId("AccessController");
 
-        binder.bind(UserHibernate.class);
         binder.bind(RoleHibernate.class);
         binder.bind(RulebookHibernate.class);
         binder.bind(SectionHibernate.class);
