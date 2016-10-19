@@ -8,7 +8,7 @@ import javax.persistence.*;
  * Created by Aleksandar on 24-Sep-16.
  */
 @Entity
-public class ReferenceRulebookSection {
+public class ReferenceTypeRulebookSection {
     private Long id;
 
     private Reference reference;

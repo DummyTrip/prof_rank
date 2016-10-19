@@ -5,8 +5,6 @@ import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
-import org.hibernate.PersistentObjectException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
@@ -209,11 +207,11 @@ public class ReferenceHibernate {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        List<ReferenceRulebookSection> referenceRulebookSections= reference.getReferenceRulebookSections();
+        List<ReferenceTypeRulebookSection> referenceTypeRulebookSections = reference.getReferenceTypeRulebookSections();
         List<RulebookSection> rulebookSections = new ArrayList<RulebookSection>();
 
-        for (ReferenceRulebookSection referenceRulebookSection : referenceRulebookSections) {
-            rulebookSections.add(referenceRulebookSection.getRulebookSection());
+        for (ReferenceTypeRulebookSection referenceTypeRulebookSection : referenceTypeRulebookSections) {
+            rulebookSections.add(referenceTypeRulebookSection.getRulebookSection());
         }
 
         List<Section> sections = new ArrayList<Section>();
@@ -230,12 +228,12 @@ public class ReferenceHibernate {
         if (reference == null || rulebookSection == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
-        ReferenceRulebookSection referenceRulebookSection = new ReferenceRulebookSection();
+        ReferenceTypeRulebookSection referenceTypeRulebookSection = new ReferenceTypeRulebookSection();
 
-        referenceRulebookSection.setRulebookSection(rulebookSection);
-        referenceRulebookSection.setReference(reference);
+        referenceTypeRulebookSection.setRulebookSection(rulebookSection);
+        referenceTypeRulebookSection.setReference(reference);
 
-        session.persist(referenceRulebookSection);
+        session.persist(referenceTypeRulebookSection);
     }
 
     @CommitAfter
@@ -244,8 +242,8 @@ public class ReferenceHibernate {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
-        Criteria criteria = session.createCriteria(ReferenceRulebookSection.class);
-        List<ReferenceRulebookSection> entities = criteria
+        Criteria criteria = session.createCriteria(ReferenceTypeRulebookSection.class);
+        List<ReferenceTypeRulebookSection> entities = criteria
                 .add(eq("reference", reference))
                 .add(eq("rulebookSection", rulebookSection))
                 .list();
@@ -254,9 +252,9 @@ public class ReferenceHibernate {
             throw new IllegalStateException("No data in database.");
         }
 
-        ReferenceRulebookSection referenceRulebookSection = entities.get(0);
-        referenceRulebookSection.setReference(null);
-        reference.getReferenceRulebookSections().remove(referenceRulebookSection);
+        ReferenceTypeRulebookSection referenceTypeRulebookSection = entities.get(0);
+        referenceTypeRulebookSection.setReference(null);
+        reference.getReferenceTypeRulebookSections().remove(referenceTypeRulebookSection);
     }
 
     public void setSection(Reference reference, Section section, Rulebook rulebook) {

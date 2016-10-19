@@ -26,8 +26,8 @@ public class Reference {
     private List<AttributeReference> attributeReferences = new ArrayList<AttributeReference>();
 
     @Column
-    @ElementCollection(targetClass = ReferenceRulebookSection.class)
-    private List<ReferenceRulebookSection> referenceRulebookSections = new ArrayList<ReferenceRulebookSection>();
+    @ElementCollection(targetClass = ReferenceTypeRulebookSection.class)
+    private List<ReferenceTypeRulebookSection> referenceTypeRulebookSections = new ArrayList<ReferenceTypeRulebookSection>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -84,12 +84,12 @@ public class Reference {
     }
 
     @OneToMany(mappedBy = "reference")
-    public List<ReferenceRulebookSection> getReferenceRulebookSections() {
-        return referenceRulebookSections;
+    public List<ReferenceTypeRulebookSection> getReferenceTypeRulebookSections() {
+        return referenceTypeRulebookSections;
     }
 
-    public void setReferenceRulebookSections(List<ReferenceRulebookSection> referenceRulebookSections) {
-        this.referenceRulebookSections = referenceRulebookSections;
+    public void setReferenceTypeRulebookSections(List<ReferenceTypeRulebookSection> referenceTypeRulebookSections) {
+        this.referenceTypeRulebookSections = referenceTypeRulebookSections;
     }
 
     @Override

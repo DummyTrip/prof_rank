@@ -74,11 +74,11 @@ public class ShowReference {
     }
 
     public List<RulebookSection> getRulebookSections() {
-        List<ReferenceRulebookSection> referenceRulebookSections = new ArrayList<ReferenceRulebookSection>();
+        List<ReferenceTypeRulebookSection> referenceTypeRulebookSections = new ArrayList<ReferenceTypeRulebookSection>();
         List<RulebookSection> rulebookSections = new ArrayList<RulebookSection>();
-        referenceRulebookSections.addAll(reference.getReferenceRulebookSections());
+        referenceTypeRulebookSections.addAll(reference.getReferenceTypeRulebookSections());
 
-        for( ReferenceRulebookSection rrs : referenceRulebookSections) {
+        for( ReferenceTypeRulebookSection rrs : referenceTypeRulebookSections) {
             rulebookSections.add(rrs.getRulebookSection());
         }
 
