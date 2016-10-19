@@ -15,7 +15,7 @@
     <h3>References</h3>
     <t:grid source="references" row="reference" model="referenceBeanModel">
         <p:showCell>
-            <t:pagelink page="admin/referenceinstance/showreferenceinstance" context="reference.id">Show</t:pagelink>
+            <t:pagelink page="admin/reference/showreference" context="reference.id">Show</t:pagelink>
         </p:showCell>
         <p:deleteCell>
             <t:actionlink t:id="deleteReference" context="reference.id">Delete</t:actionlink>
@@ -46,7 +46,7 @@
     <h3>Add References</h3>
     <t:grid source="addReferences" row="addReference" model="addReferenceBeanModel">
         <p:showCell>
-            <t:pagelink page="admin/referenceinstance/showreferenceinstance" context="addReference.id">Show</t:pagelink>
+            <t:pagelink page="admin/reference/showreference" context="addReference.id">Show</t:pagelink>
         </p:showCell>
         <p:addCell>
             <t:actionlink t:id="addReference" context="addReference.id">Add</t:actionlink>

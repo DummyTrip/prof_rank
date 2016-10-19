@@ -2,7 +2,7 @@ package com.diplomska.prof_rank.pages.admin.Person;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.*;
-import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
+import com.diplomska.prof_rank.services.ReferenceHibernate;
 import com.diplomska.prof_rank.services.ReportHibernate;
 import com.diplomska.prof_rank.services.PersonHibernate;
 import mk.ukim.finki.isis.model.entities.Person;
@@ -34,7 +34,7 @@ public class ShowPerson {
     private Person person;
 
     @Inject
-    private ReferenceInstanceHibernate referenceInstanceHibernate;
+    private ReferenceHibernate referenceHibernate;
 
     @Inject
     private ReportHibernate reportHibernate;
@@ -81,7 +81,7 @@ public class ShowPerson {
     }
 
     public List<Reference> getAddReferences() {
-        return referenceInstanceHibernate.getAll();
+        return referenceHibernate.getAll();
     }
 
     public List<Report> getReports() {
@@ -108,12 +108,12 @@ public class ShowPerson {
         }
 
         referenceBeanModel = beanModelSource.createDisplayModel(Reference.class, messages);
-        referenceBeanModel.add("referenceName", pcs.create(Reference.class, "reference.name"));
+        referenceBeanModel.add("referenceName", pcs.create(Reference.class, "referenceType.name"));
         referenceBeanModel.add("show", null);
         referenceBeanModel.add("delete", null);
 
         addreferenceBeanModel = beanModelSource.createDisplayModel(Reference.class, messages);
-        addreferenceBeanModel.add("referenceName", pcs.create(Reference.class, "reference.name"));
+        addreferenceBeanModel.add("referenceName", pcs.create(Reference.class, "referenceType.name"));
         addreferenceBeanModel.add("show", null);
         addreferenceBeanModel.add("add", null);
 
@@ -139,7 +139,7 @@ public class ShowPerson {
 
     @CommitAfter
     void onActionFromAddReference(Long id) {
-        Reference entity = referenceInstanceHibernate.getById(id);
+        Reference entity = referenceHibernate.getById(id);
 
 //        personHibernate.setReference(person, entity);
     }
@@ -154,7 +154,7 @@ public class ShowPerson {
 
     @CommitAfter
     void onActionFromDeleteReference(Long id) {
-        Reference entity = referenceInstanceHibernate.getById(id);
+        Reference entity = referenceHibernate.getById(id);
 
         personHibernate.deleteReference(person, entity);
     }

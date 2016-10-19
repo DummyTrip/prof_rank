@@ -1,9 +1,9 @@
-package com.diplomska.prof_rank.pages.admin.ReferenceInstance;
+package com.diplomska.prof_rank.pages.admin.Reference;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.AttributeReferenceInstance;
 import com.diplomska.prof_rank.entities.Reference;
-import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
+import com.diplomska.prof_rank.services.ReferenceHibernate;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
@@ -18,13 +18,13 @@ import java.util.List;
  * Created by Aleksandar on 28-Sep-16.
  */
 @AdministratorPage
-public class ShowReferenceInstance {
+public class ShowReference {
     @Property
     @Persist
     private Long referenceId;
 
     @Inject
-    ReferenceInstanceHibernate referenceInstanceHibernate;
+    ReferenceHibernate referenceHibernate;
 
     @Property
     Reference reference;
@@ -57,7 +57,7 @@ public class ShowReferenceInstance {
     }
 
     void setupRender() throws Exception {
-        this.reference = referenceInstanceHibernate.getById(referenceId);
+        this.reference = referenceHibernate.getById(referenceId);
 
         if (reference == null) {
             throw new Exception("ReferenceType " + referenceId + " does not exist.");

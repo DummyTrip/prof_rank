@@ -17,7 +17,7 @@ import static org.hibernate.criterion.Restrictions.in;
 /**
  * Created by Aleksandar on 27.09.2016.
  */
-public class ReferenceInstanceHibernate {
+public class ReferenceHibernate {
     @Inject
     Session session;
 

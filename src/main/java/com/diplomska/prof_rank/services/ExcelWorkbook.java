@@ -23,7 +23,7 @@ public class ExcelWorkbook {
     private ReferenceTypeHibernate referenceTypeHibernate;
 
     @Inject
-    ReferenceInstanceHibernate referenceInstanceHibernate;
+    ReferenceHibernate referenceHibernate;
 
     @Inject
     AttributeHibernate attributeHibernate;
@@ -210,7 +210,7 @@ public class ExcelWorkbook {
                         Attribute attribute = attributes.get(index);
 
                         boolean display = isDisplayAttribute(attribute);
-                        referenceInstanceHibernate.setAttributeValueIndexDisplay(reference, attribute, cellValue, index, display);
+                        referenceHibernate.setAttributeValueIndexDisplay(reference, attribute, cellValue, index, display);
                     }
                     categoryValues.add(rowValues);
                 }
@@ -428,7 +428,7 @@ public class ExcelWorkbook {
             }
 
             boolean display = isDisplayAttribute(attribute);
-            referenceInstanceHibernate.setAttributeValueIndexDisplay(reference, attribute, rowValues.get(i), i, display);
+            referenceHibernate.setAttributeValueIndexDisplay(reference, attribute, rowValues.get(i), i, display);
         }
     }
 
@@ -510,7 +510,7 @@ public class ExcelWorkbook {
     private Reference createReference(ReferenceType referenceType) {
         Reference reference = new Reference();
         reference.setReferenceType(referenceType);
-        referenceInstanceHibernate.store(reference);
+        referenceHibernate.store(reference);
 
         return reference;
     }

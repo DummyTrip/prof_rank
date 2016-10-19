@@ -5,7 +5,7 @@ import com.diplomska.prof_rank.entities.Attribute;
 import com.diplomska.prof_rank.entities.AttributeReferenceInstance;
 import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.services.*;
-import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
+import com.diplomska.prof_rank.services.ReferenceHibernate;
 import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.*;
@@ -39,7 +39,7 @@ public class EditReference {
     private Reference reference;
 
     @Inject
-    ReferenceInstanceHibernate referenceInstanceHibernate;
+    ReferenceHibernate referenceHibernate;
 
     @Inject
     AttributeHibernate attributeHibernate;
@@ -89,13 +89,13 @@ public class EditReference {
             oldreferenceId = referenceId;
         }
 
-        this.reference = referenceInstanceHibernate.getById(referenceId);
+        this.reference = referenceHibernate.getById(referenceId);
 
         if (testMap == null) {
             testMap = new HashMap<String, String>();
             attributes = new ArrayList<Attribute>();
 
-            for (AttributeReferenceInstance ari: referenceInstanceHibernate.getSortedAttributeReferenceInstance(reference)) {
+            for (AttributeReferenceInstance ari: referenceHibernate.getSortedAttributeReferenceInstance(reference)) {
                 attributes.add(ari.getAttribute());
                 testMap.put(String.valueOf(ari.getAttribute().getId()), ari.getValue());
             }
@@ -132,9 +132,9 @@ public class EditReference {
             testMap.remove(author);
         }
 
-        reference = referenceInstanceHibernate.getById(referenceId);
+        reference = referenceHibernate.getById(referenceId);
 
-        referenceInstanceHibernate.updateAttributeReferenceInstances(reference, testMap, attributes);
+        referenceHibernate.updateAttributeReferenceInstances(reference, testMap, attributes);
 
         resetPersistedVariables();
 

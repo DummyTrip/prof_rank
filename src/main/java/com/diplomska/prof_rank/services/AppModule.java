@@ -41,7 +41,7 @@ public class AppModule
         binder.bind(InstitutionHibernate.class);
         binder.bind(SubjectDomainHibernate.class);
         binder.bind(CountryNames.class);
-        binder.bind(ReferenceInstanceHibernate.class);
+        binder.bind(ReferenceHibernate.class);
         binder.bind(ExcelWorkbook.class);
         binder.bind(PersonHibernate.class);
     }

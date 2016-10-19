@@ -34,7 +34,7 @@ public class ShowReport {
     private SubjectDomainHibernate subjectDomainHibernate;
 
     @Inject
-    private ReferenceInstanceHibernate referenceInstanceHibernate;
+    private ReferenceHibernate referenceHibernate;
 
     @Inject
     private PersonHibernate personHibernate;
@@ -123,7 +123,7 @@ public class ShowReport {
     }
 
     public List<Reference> getAddReferences() {
-        return referenceInstanceHibernate.getAll();
+        return referenceHibernate.getAll();
     }
 
     void onActivate(Long reportId) {
@@ -217,14 +217,14 @@ public class ShowReport {
 
     @CommitAfter
     void onActionFromDeleteReference(Long id) {
-        Reference entity = referenceInstanceHibernate.getById(id);
+        Reference entity = referenceHibernate.getById(id);
 
         reportHibernate.deleteReference(report, entity);
     }
 
     @CommitAfter
     void onActionFromAddReference(Long id) {
-        Reference entity = referenceInstanceHibernate.getById(id);
+        Reference entity = referenceHibernate.getById(id);
 
         reportHibernate.setReference(report, entity);
     }

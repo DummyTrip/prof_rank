@@ -27,7 +27,7 @@ public class Index
     ReferenceTypeHibernate referenceTypeHibernate;
 
     @Inject
-    ReferenceInstanceHibernate referenceInstanceHibernate;
+    ReferenceHibernate referenceHibernate;
 
     @Inject
     PersonHibernate personHibernate;
@@ -59,7 +59,7 @@ public class Index
     public Float getPoints() {
         Float points = 0f;
 
-        List<Reference> references = referenceInstanceHibernate.getAll();
+        List<Reference> references = referenceHibernate.getAll();
 
         for (Reference reference : references) {
             Float referencePoints = reference.getReferenceType().getPoints();
@@ -89,7 +89,7 @@ public class Index
     }
 
     public Integer getNumberOfReferences() {
-        List<Reference> referencesOfCurrentReferenceType = referenceInstanceHibernate.getByReferenceType(referenceType);
+        List<Reference> referencesOfCurrentReferenceType = referenceHibernate.getByReferenceType(referenceType);
 
         return referencesOfCurrentReferenceType.size();
     }
@@ -97,7 +97,7 @@ public class Index
     public Integer getNumberOfReferencesForPerson() {
         Person person = personHibernate.getById(Long.valueOf(1));
 
-        List<Reference> referencesOfCurrentReferenceType = referenceInstanceHibernate.getByReferenceTypeAndPerson(referenceType, person);
+        List<Reference> referencesOfCurrentReferenceType = referenceHibernate.getByReferenceTypeAndPerson(referenceType, person);
 
         return referencesOfCurrentReferenceType.size();
     }

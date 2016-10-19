@@ -25,7 +25,7 @@ public class ShowReference {
     ReferenceTypeHibernate referenceTypeHibernate;
 
     @Inject
-    ReferenceInstanceHibernate referenceInstanceHibernate;
+    ReferenceHibernate referenceHibernate;
 
     @Inject
     PersonHibernate personHibernate;
@@ -83,7 +83,7 @@ public class ShowReference {
     List<Reference> allReferences;
 
     public String getDisplayName() {
-        return referenceInstanceHibernate.getDisplayName(reference);
+        return referenceHibernate.getDisplayName(reference);
     }
 
     public List<Attribute> getAttributes() {
@@ -91,7 +91,7 @@ public class ShowReference {
     }
 
     public List<AttributeReferenceInstance> getAttributeValues() {
-        return referenceInstanceHibernate.getSortedAttributeReferenceInstance(reference);
+        return referenceHibernate.getSortedAttributeReferenceInstance(reference);
     }
 
     void onActivate(Long referenceTypeId) {
@@ -160,7 +160,7 @@ public class ShowReference {
 
         this.referenceType = referenceTypeHibernate.getById(referenceTypeId);
         this.referenceName = referenceNameQueryString;
-        this.displayNames = referenceInstanceHibernate.getAllDisplayNames();
+        this.displayNames = referenceHibernate.getAllDisplayNames();
 //        testMap = new HashMap<String, String>();
 
         refInstances = new ArrayList<Reference>();
@@ -185,14 +185,14 @@ public class ShowReference {
     }
 
     private List<Reference> sortReferenceInstaces() {
-        List<Reference> references = referenceInstanceHibernate.getByReferenceType(referenceType);
+        List<Reference> references = referenceHibernate.getByReferenceType(referenceType);
 
         return getSortedReferences(references);
     }
 
     private List<Reference> sortReferenceInstaces(Map<String, String> filterMap) {
         Person person = personHibernate.getById(Long.valueOf(1));
-        List<Reference> references = referenceInstanceHibernate.getByReferenceTypeFilterAndPerson(referenceType, filterMap, person);
+        List<Reference> references = referenceHibernate.getByReferenceTypeFilterAndPerson(referenceType, filterMap, person);
 
         if (references == null) {
             return new ArrayList<Reference>();
@@ -383,7 +383,7 @@ public class ShowReference {
     @CommitAfter
     @OnEvent(component = "saveDisplay", value = "selected")
     void saveDisplay() {
-        List<Reference> references = referenceInstanceHibernate.getByReferenceType(referenceType);
+        List<Reference> references = referenceHibernate.getByReferenceType(referenceType);
 
         for (Reference reference : references) {
             List<AttributeReferenceInstance> attributeReferenceInstances = reference.getAttributeReferenceInstances();
@@ -393,7 +393,7 @@ public class ShowReference {
                 if (selectedCheckboxes.containsKey(attribute.getId())) {
                     boolean display = selectedCheckboxes.get(attribute.getId()) == 0 ? false : true;
 
-                    referenceInstanceHibernate.setAttributeDisplay(ari, reference, display);
+                    referenceHibernate.setAttributeDisplay(ari, reference, display);
                 }
             }
         }

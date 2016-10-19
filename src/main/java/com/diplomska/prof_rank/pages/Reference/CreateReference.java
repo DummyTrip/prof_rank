@@ -44,7 +44,7 @@ public class CreateReference {
     private Reference reference;
 
     @Inject
-    ReferenceInstanceHibernate referenceInstanceHibernate;
+    ReferenceHibernate referenceHibernate;
 
     @Inject
     AttributeHibernate attributeHibernate;
@@ -140,11 +140,11 @@ public class CreateReference {
         for (String authorName : authorNames) {
             reference = new Reference();
             reference.setReferenceType(referenceType);
-            referenceInstanceHibernate.store(reference);
+            referenceHibernate.store(reference);
 
             personHibernate.setReference(reference, authorName, authorNames.indexOf(authorName));
 
-            referenceInstanceHibernate.updateAttributeReferenceInstances(reference, testMap, attributes);
+            referenceHibernate.updateAttributeReferenceInstances(reference, testMap, attributes);
         }
 
         resetPersistedVariables();
