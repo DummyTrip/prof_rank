@@ -4,7 +4,7 @@ import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.Attribute;
 import com.diplomska.prof_rank.entities.ReferenceInputTemplate;
 import com.diplomska.prof_rank.services.AttributeHibernate;
-import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
+import com.diplomska.prof_rank.services.ReferenceInputTemplateHibernate;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
@@ -21,7 +21,7 @@ import java.util.List;
 @AdministratorPage
 public class Index {
     @Inject
-    private ReferenceTypeHibernate referenceTypeHibernate;
+    private ReferenceInputTemplateHibernate referenceInputTemplateHibernate;
 
     @Inject
     private AttributeHibernate attributeHibernate;
@@ -48,7 +48,7 @@ public class Index {
     private PropertyConduitSource pcs;
 
     public List<ReferenceInputTemplate> getReferenceInputTemplates() {
-        return referenceTypeHibernate.getAll();
+        return referenceInputTemplateHibernate.getAll();
     }
 
     public List<Attribute> getAttributes() {
@@ -69,7 +69,7 @@ public class Index {
 
     @CommitAfter
     void onActionFromDelete(Long referenceTypeId) {
-        referenceInputTemplate = referenceTypeHibernate.getById(referenceTypeId);
-        referenceTypeHibernate.delete(referenceInputTemplate);
+        referenceInputTemplate = referenceInputTemplateHibernate.getById(referenceTypeId);
+        referenceInputTemplateHibernate.delete(referenceInputTemplate);
     }
 }

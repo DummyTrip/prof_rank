@@ -23,7 +23,7 @@ public class ReferenceHibernate {
     RulebookHibernate rulebookHibernate;
 
     @Inject
-    ReferenceTypeHibernate referenceTypeHibernate;
+    ReferenceInputTemplateHibernate referenceInputTemplateHibernate;
 
     @Inject
     PersonHibernate personHibernate;
@@ -283,7 +283,7 @@ public class ReferenceHibernate {
         reference.setReferenceInputTemplate(referenceInputTemplate);
         session.saveOrUpdate(reference);
 
-        List<Attribute> attributes = referenceTypeHibernate.getAttributes(referenceInputTemplate);
+        List<Attribute> attributes = referenceInputTemplateHibernate.getAttributes(referenceInputTemplate);
 
         for (Attribute attribute : attributes) {
             setAttributeReference(reference, attribute);
@@ -309,7 +309,7 @@ public class ReferenceHibernate {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
         ReferenceInputTemplate referenceInputTemplate = reference.getReferenceInputTemplate();
-        List<Attribute> attributes = referenceTypeHibernate.getAttributes(referenceInputTemplate);
+        List<Attribute> attributes = referenceInputTemplateHibernate.getAttributes(referenceInputTemplate);
 
         return attributes;
     }

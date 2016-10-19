@@ -7,15 +7,11 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Subqueries;
-import org.w3c.dom.Attr;
 
 import java.util.*;
 
 import static org.hibernate.criterion.Restrictions.eq;
-import static org.hibernate.criterion.Restrictions.eqProperty;
 import static org.hibernate.criterion.Restrictions.in;
 
 /**
@@ -29,7 +25,7 @@ public class ReferenceInstanceHibernate {
     RulebookHibernate rulebookHibernate;
 
     @Inject
-    ReferenceTypeHibernate referenceTypeHibernate;
+    ReferenceInputTemplateHibernate referenceInputTemplateHibernate;
 
     @Inject
     ReferenceHibernate referenceHibernate;

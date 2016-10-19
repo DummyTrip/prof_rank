@@ -2,7 +2,7 @@ package com.diplomska.prof_rank.pages.admin.ReferenceInputTemplate;
 
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.ReferenceInputTemplate;
-import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
+import com.diplomska.prof_rank.services.ReferenceInputTemplateHibernate;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Persist;
@@ -26,7 +26,7 @@ public class EditReferenceInputTemplate {
     private Form form;
 
     @Inject
-    private ReferenceTypeHibernate referenceTypeHibernate;
+    private ReferenceInputTemplateHibernate referenceInputTemplateHibernate;
 
     @InjectPage
     private Index index;
@@ -69,7 +69,7 @@ public class EditReferenceInputTemplate {
 
     @CommitAfter
     Object onSuccess() {
-        referenceTypeHibernate.update(referenceInputTemplate);
+        referenceInputTemplateHibernate.update(referenceInputTemplate);
 
         return index;
     }
@@ -79,7 +79,7 @@ public class EditReferenceInputTemplate {
     }
 
     private ReferenceInputTemplate findReferenceType(Long referenceInputTemplateId) {
-        ReferenceInputTemplate referenceInputTemplate = referenceTypeHibernate.getById(referenceInputTemplateId);
+        ReferenceInputTemplate referenceInputTemplate = referenceInputTemplateHibernate.getById(referenceInputTemplateId);
 
         if (referenceInputTemplate == null) {
             throw new IllegalStateException("No data in database.");

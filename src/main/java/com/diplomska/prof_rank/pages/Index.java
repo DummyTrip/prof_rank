@@ -42,7 +42,7 @@ public class Index
     Logger logger;
 
     @Inject
-    ReferenceTypeHibernate referenceTypeHibernate;
+    ReferenceInputTemplateHibernate referenceInputTemplateHibernate;
 
     @Inject
     AttributeHibernate attributeHibernate;
@@ -117,8 +117,8 @@ public class Index
         attribute.setName("Title");
         attribute.setInputType("text");
         attributeHibernate.store(attribute);
-        referenceTypeHibernate.store(referenceInputTemplate);
-        referenceTypeHibernate.setAttribute(referenceInputTemplate, attribute);
+        referenceInputTemplateHibernate.store(referenceInputTemplate);
+        referenceInputTemplateHibernate.setAttribute(referenceInputTemplate, attribute);
     }
 
     private void addPerson() {

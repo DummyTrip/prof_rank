@@ -4,7 +4,7 @@ import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.Attribute;
 import com.diplomska.prof_rank.entities.ReferenceInputTemplate;
 import com.diplomska.prof_rank.services.AttributeHibernate;
-import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
+import com.diplomska.prof_rank.services.ReferenceInputTemplateHibernate;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
@@ -27,7 +27,7 @@ public class ShowReferenceInputTemplate {
     private Long referenceTypeId;
 
     @Inject
-    private ReferenceTypeHibernate referenceTypeHibernate;
+    private ReferenceInputTemplateHibernate referenceInputTemplateHibernate;
 
     @Inject
     private AttributeHibernate attributeHibernate;
@@ -64,7 +64,7 @@ public class ShowReferenceInputTemplate {
     public List<Attribute> getAttributes() {
         List<Attribute> attributeReferenceTypes = new ArrayList<Attribute>();
 
-        attributeReferenceTypes.addAll(referenceTypeHibernate.getAttributes(referenceInputTemplate));
+        attributeReferenceTypes.addAll(referenceInputTemplateHibernate.getAttributes(referenceInputTemplate));
 
         return attributeReferenceTypes;
     }
@@ -78,7 +78,7 @@ public class ShowReferenceInputTemplate {
     }
 
     void setupRender() throws Exception {
-        this.referenceInputTemplate = referenceTypeHibernate.getById(referenceTypeId);
+        this.referenceInputTemplate = referenceInputTemplateHibernate.getById(referenceTypeId);
 
         if (referenceInputTemplate == null) {
             throw new Exception("ReferenceInputTemplate " + referenceTypeId + " does not exist.");
@@ -98,13 +98,13 @@ public class ShowReferenceInputTemplate {
     void onActionFromAdd(Long attributeId) {
         attribute = attributeHibernate.getById(attributeId);
 
-        referenceTypeHibernate.setAttribute(referenceInputTemplate, attribute);
+        referenceInputTemplateHibernate.setAttribute(referenceInputTemplate, attribute);
     }
 
     @CommitAfter
     void onActionFromDelete(Long attributeId) {
         Attribute attr = attributeHibernate.getById(attributeId);
 
-        referenceTypeHibernate.deleteAttribute(referenceInputTemplate, attr);
+        referenceInputTemplateHibernate.deleteAttribute(referenceInputTemplate, attr);
     }
 }

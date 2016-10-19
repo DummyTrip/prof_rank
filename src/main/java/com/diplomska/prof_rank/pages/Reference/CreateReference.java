@@ -2,15 +2,12 @@ package com.diplomska.prof_rank.pages.Reference;
 
 import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.entities.Attribute;
-import com.diplomska.prof_rank.entities.AttributeReferenceInstance;
 import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.entities.ReferenceInstance;
-import com.diplomska.prof_rank.pages.*;
 import com.diplomska.prof_rank.services.*;
 import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.*;
-import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -63,7 +60,7 @@ public class CreateReference {
     private Attribute attribute;
 
     @Inject
-    private ReferenceTypeHibernate referenceTypeHibernate;
+    private ReferenceInputTemplateHibernate referenceInputTemplateHibernate;
 
     @Persist
     @Property

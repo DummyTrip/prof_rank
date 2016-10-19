@@ -32,7 +32,7 @@ public class ExcelWorkbook {
     PersonHibernate personHibernate;
 
     @Inject
-    ReferenceTypeHibernate referenceTypeHibernate;
+    ReferenceInputTemplateHibernate referenceInputTemplateHibernate;
 
     @Inject
     RulebookHibernate rulebookHibernate;
@@ -87,7 +87,7 @@ public class ExcelWorkbook {
             if (rowValues.size() > 0) {
                 categoryValues.add(rowValues);
                 // comment next lines to stop storing references
-                ReferenceInputTemplate referenceInputTemplate = referenceTypeHibernate.getById(Long.valueOf(1));
+                ReferenceInputTemplate referenceInputTemplate = referenceInputTemplateHibernate.getById(Long.valueOf(1));
                 Rulebook rulebook = rulebookHibernate.getById(Long.valueOf(1));
 
                 referenceHibernate.store(reference);

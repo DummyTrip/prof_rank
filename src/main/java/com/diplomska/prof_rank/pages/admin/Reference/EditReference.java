@@ -3,7 +3,7 @@ package com.diplomska.prof_rank.pages.admin.Reference;
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.ReferenceInputTemplate;
 import com.diplomska.prof_rank.entities.Reference;
-import com.diplomska.prof_rank.services.ReferenceTypeHibernate;
+import com.diplomska.prof_rank.services.ReferenceInputTemplateHibernate;
 import com.diplomska.prof_rank.services.ReferenceHibernate;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -35,7 +35,7 @@ public class EditReference {
     private ReferenceHibernate referenceHibernate;
 
     @Inject
-    private ReferenceTypeHibernate referenceTypeHibernate;
+    private ReferenceInputTemplateHibernate referenceInputTemplateHibernate;
 
     @InjectPage
     private Index index;
@@ -47,7 +47,7 @@ public class EditReference {
     SelectModelFactory selectModelFactory;
 
     void setupRender() {
-        List<ReferenceInputTemplate> referenceInputTemplates = referenceTypeHibernate.getAll();
+        List<ReferenceInputTemplate> referenceInputTemplates = referenceInputTemplateHibernate.getAll();
 
         referenceInputTemplateSelectModel = selectModelFactory.create(referenceInputTemplates, "name");
     }
@@ -57,7 +57,7 @@ public class EditReference {
 //    private List<ReferenceInputTemplate> referenceTypes;
 //
 //    public List<ReferenceInputTemplate> getReferenceInputTemplates() {
-//        return referenceTypeHibernate.getAll();
+//        return referenceInputTemplateHibernate.getAll();
 //    }
 
     void onActivate(Long referenceId) {
