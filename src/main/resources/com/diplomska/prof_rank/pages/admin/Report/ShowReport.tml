@@ -9,9 +9,9 @@
 
     <hr/>
 
-    <t:if test="userNull">
-        <h3>User</h3>
-        <t:beandisplay object="user"/>
+    <t:if test="personNull">
+        <h3>Person</h3>
+        <t:beandisplay object="person"/>
         <hr/>
     </t:if>
 
@@ -48,19 +48,19 @@
     <br/>
     <hr/>
 
-    <h3>Add Users</h3>
-    <t:grid source="addUsers" row="addUser" model="addUserBeanModel">
+    <h3>Add Persons</h3>
+    <t:grid source="addPersons" row="addPerson" model="addPersonBeanModel">
         <p:addCell>
-            <t:actionlink t:id="addUser" context="addUser.id">Add</t:actionlink>
+            <t:actionlink t:id="addPerson" context="addPerson.getPersonId()">Add</t:actionlink>
         </p:addCell>
     </t:grid>
 
     <hr/>
 
     <h3>Add Institutions</h3>
-    <t:grid source="addInstitutions" row="addInstitution" model="addInstitutionBeanModel">
+    <t:grid source="addInstitutionProfRanks" row="addInstitutionProfRank" model="addInstitutionBeanModel">
         <p:addCell>
-            <t:actionlink t:id="addInstitution" context="addInstitution.id">Add</t:actionlink>
+            <t:actionlink t:id="addInstitution" context="addInstitutionProfRank.id">Add</t:actionlink>
         </p:addCell>
     </t:grid>
 

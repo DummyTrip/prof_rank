@@ -7,12 +7,15 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Subqueries;
 import org.w3c.dom.Attr;
 
 import java.util.*;
 
 import static org.hibernate.criterion.Restrictions.eq;
+import static org.hibernate.criterion.Restrictions.eqProperty;
 import static org.hibernate.criterion.Restrictions.in;
 
 /**
@@ -30,9 +33,6 @@ public class ReferenceInstanceHibernate {
 
     @Inject
     ReferenceHibernate referenceHibernate;
-
-    @Inject
-    UserHibernate userHibernate;
 
     @Inject
     AttributeHibernate attributeHibernate;
@@ -189,19 +189,6 @@ public class ReferenceInstanceHibernate {
                 .add(eq("reference", reference)).addOrder(Order.desc("id")).setFirstResult(offset).setMaxResults(limit).list();
     }
 
-    public List<ReferenceInstance> getByReferenceAndUser(Reference reference, User user) {
-        List<ReferenceInstance> referenceInstances = userHibernate.getReferenceInstances(user);
-        List<ReferenceInstance> referenceInstancesOfSpecificReference = new ArrayList<ReferenceInstance>();
-
-        for (ReferenceInstance referenceInstance : referenceInstances) {
-            if (referenceInstance.getReference().getId().equals(reference.getId())) {
-                referenceInstancesOfSpecificReference.add(referenceInstance);
-            }
-        }
-
-        return referenceInstancesOfSpecificReference;
-    }
-
     public List<ReferenceInstance> getByReferenceAndPerson(Reference reference, Person person) {
         List<ReferenceInstance> referenceInstances = personHibernate.getReferenceInstances(person);
         List<ReferenceInstance> referenceInstancesOfSpecificReference = new ArrayList<ReferenceInstance>();
@@ -213,21 +200,6 @@ public class ReferenceInstanceHibernate {
         }
 
         return referenceInstancesOfSpecificReference;
-    }
-
-    public List<ReferenceInstance> getByReferenceAndUser(Reference reference, User user, Integer offset, Integer limit) {
-        List<ReferenceInstance> referenceInstances = userHibernate.getReferenceInstances(user);
-        List<ReferenceInstance> referenceInstancesOfSpecificReference = new ArrayList<ReferenceInstance>();
-
-        limit = limit + offset > referenceInstances.size() ? referenceInstances.size() : limit + offset;
-
-        for (ReferenceInstance referenceInstance : referenceInstances) {
-            if (referenceInstance.getReference().getId().equals(reference.getId())) {
-                referenceInstancesOfSpecificReference.add(referenceInstance);
-            }
-        }
-
-        return referenceInstancesOfSpecificReference.subList(offset, offset + limit);
     }
 
     public List<ReferenceInstance> getByReferenceAndPerson(Reference reference, Person person, Integer offset, Integer limit) {
@@ -246,8 +218,6 @@ public class ReferenceInstanceHibernate {
     }
 
     public List<ReferenceInstance> getByReferenceAndFilter(Reference reference, Map<String, String> filterMap, Integer offset, Integer limit) {
-        List<ReferenceInstance> referenceInstances = new ArrayList<ReferenceInstance>();
-
         Criteria criteria = session.createCriteria(ReferenceInstance.class, "referenceInstance");
         criteria.add(eq("reference", reference));
         criteria.createAlias("referenceInstance.attributeReferenceInstances", "ari");
@@ -260,6 +230,32 @@ public class ReferenceInstanceHibernate {
 
         criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         return criteria.addOrder(Order.desc("referenceInstance.id")).setFirstResult(offset).setMaxResults(limit).list();
+    }
+
+    public List<ReferenceInstance> getByReferenceFilterAndPerson(Reference reference, Map<String, String> filterMap, Person person) {
+        List<ReferenceInstance> filteredReferenceInstances = new ArrayList<ReferenceInstance>();
+
+        Criteria criteria = session.createCriteria(ReferenceInstance.class, "refInstance");
+        criteria.add(eq("reference", reference));
+        criteria.createAlias("refInstance.attributeReferenceInstances", "ari");
+        criteria.createAlias("ari.attribute", "attribute");
+
+        for (String key : filterMap.keySet()) {
+            criteria.add(eq("attribute.name", key));
+            criteria.add(eq("ari.value", filterMap.get(key)));
+        }
+
+        criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+        List<ReferenceInstance> referenceInstances = criteria.addOrder(Order.desc("refInstance.id")).list();
+        List<ReferenceInstance> personReferenceInstances = personHibernate.getReferenceInstances(person);
+
+        for (ReferenceInstance referenceInstance : referenceInstances) {
+            if (personReferenceInstances.contains(referenceInstance)) {
+                filteredReferenceInstances.add(referenceInstance);
+            }
+        }
+
+        return filteredReferenceInstances;
     }
 
     public List<Attribute> getAttributes(ReferenceInstance referenceInstance) {

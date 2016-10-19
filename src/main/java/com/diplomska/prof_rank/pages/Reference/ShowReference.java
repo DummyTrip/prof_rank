@@ -2,10 +2,8 @@ package com.diplomska.prof_rank.pages.Reference;
 
 import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.entities.*;
-import com.diplomska.prof_rank.services.AttributeHibernate;
-import com.diplomska.prof_rank.services.ReferenceHibernate;
-import com.diplomska.prof_rank.services.ReferenceInstanceHibernate;
-import com.diplomska.prof_rank.services.UserHibernate;
+import com.diplomska.prof_rank.services.*;
+import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Zone;
@@ -32,6 +30,9 @@ public class ShowReference {
 
     @Inject
     UserHibernate userHibernate;
+
+    @Inject
+    PersonHibernate personHibernate;
 
     @Persist
     @Property
@@ -84,24 +85,6 @@ public class ShowReference {
     @Persist
     @Property
     List<ReferenceInstance> allReferenceInstances;
-
-    public List<ReferenceInstance> getReferenceInstances() {
-        User user = userHibernate.getById(Long.valueOf(1));
-        if (user != null) {
-//            return referenceInstanceHibernate.getByReferenceAndUser(reference, user);
-            List<ReferenceInstance> referenceInstances;
-
-            if (filterMap.keySet().size() > 0) {
-                referenceInstances = referenceInstanceHibernate.getByReferenceAndFilter(reference, filterMap, 0, 1000);
-            } else {
-                referenceInstances = referenceInstanceHibernate.getByReference(reference);
-            }
-
-            return referenceInstances;
-        } else {
-            return new ArrayList<ReferenceInstance>();
-        }
-    }
 
     public String getDisplayName() {
         return referenceInstanceHibernate.getDisplayName(referenceInstance);
@@ -212,7 +195,12 @@ public class ShowReference {
     }
 
     private List<ReferenceInstance> sortReferenceInstaces(Map<String, String> filterMap) {
-        List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getByReferenceAndFilter(reference, filterMap, 0, Integer.MAX_VALUE);
+        Person person = personHibernate.getById(Long.valueOf(1));
+        List<ReferenceInstance> referenceInstances = referenceInstanceHibernate.getByReferenceFilterAndPerson(reference, filterMap, person);
+
+        if (referenceInstances == null) {
+            return new ArrayList<ReferenceInstance>();
+        }
 
         return getSortedReferenceInstances(referenceInstances);
     }

@@ -3,6 +3,7 @@ package com.diplomska.prof_rank.pages.admin.Report;
 import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.*;
 import com.diplomska.prof_rank.services.*;
+import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
@@ -36,14 +37,14 @@ public class ShowReport {
     private ReferenceInstanceHibernate referenceInstanceHibernate;
 
     @Inject
-    private UserHibernate userHibernate;
+    private PersonHibernate personHibernate;
 
     @Persist
     @Property
     private Report report;
 
     @Property
-    private User addUser;
+    private Person addPerson;
 
     @Property
     private InstitutionProfRank institutionProfRank;
@@ -64,7 +65,7 @@ public class ShowReport {
     private ReferenceInstance addReferenceInstance;
 
     @Property
-    private BeanModel<User> addUserBeanModel;
+    private BeanModel<Person> addPersonBeanModel;
 
     @Property
     private BeanModel<InstitutionProfRank> institutionBeanModel;
@@ -93,19 +94,19 @@ public class ShowReport {
     @Inject
     private PropertyConduitSource pcs;
 
-    public User getUser() {
-        return reportHibernate.getUser(report);
+    public Person getPerson() {
+        return reportHibernate.getPerson(report);
     }
 
-    public List<User> getAddUsers() {
-        return userHibernate.getAll();
+    public List<Person> getAddPersons() {
+        return personHibernate.getAll();
     }
 
-    public List<InstitutionProfRank> getInstitutions() {
+    public List<InstitutionProfRank> getInstitutionProfRanks() {
         return reportHibernate.getInstitutions(report);
     }
 
-    public List<InstitutionProfRank> getAddInstitutions() {
+    public List<InstitutionProfRank> getAddInstitutionProfRanks() {
         return institutionHibernate.getAll();
     }
 
@@ -140,12 +141,8 @@ public class ShowReport {
             throw new Exception("Report " + reportId + " does not exist.");
         }
 
-        addUserBeanModel = beanModelSource.createDisplayModel(User.class, messages);
-        addUserBeanModel.add("userFirstName", pcs.create(User.class, "firstName"));
-        addUserBeanModel.add("userFatherName", pcs.create(User.class, "fatherName"));
-        addUserBeanModel.add("userLastName", pcs.create(User.class, "lastName"));
-        addUserBeanModel.add("userEmail", pcs.create(User.class, "email"));
-        addUserBeanModel.add("add", null);
+        addPersonBeanModel = beanModelSource.createDisplayModel(Person.class, messages);
+        addPersonBeanModel.add("add", null);
 
         institutionBeanModel = beanModelSource.createDisplayModel(InstitutionProfRank.class, messages);
         institutionBeanModel.add("institutionName", pcs.create(InstitutionProfRank.class, "name"));
@@ -178,16 +175,16 @@ public class ShowReport {
         addReferenceInstanceBeanModel.add("add", null);
     }
 
-    public boolean isUserNull() {
-        return report.getUser() == null ? false : true;
+    public boolean isPersonNull() {
+        return report.getPerson() == null ? false : true;
 //        return false;
     }
 
     @CommitAfter
-    void onActionFromAddUser(Long id) {
-        User entity = userHibernate.getById(id);
+    void onActionFromAddPerson(Long id) {
+        Person entity = personHibernate.getById(id);
 
-        reportHibernate.setUser(report, entity);
+        reportHibernate.setPerson(report, entity);
     }
 
     @CommitAfter

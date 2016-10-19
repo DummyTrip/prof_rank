@@ -135,10 +135,6 @@
         <div class='zone' t:type='zone' t:id="zone"></div>
         <div id='scroller' class="padding-top-80px"></div>
 
-        <!--<t:loop source="referenceInstances" value="referenceInstance">-->
-            <!--<t:delegate to="block:referenceElement"/>-->
-        <!--</t:loop>-->
-
     </div>
 </div>
 

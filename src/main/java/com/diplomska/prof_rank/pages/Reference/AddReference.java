@@ -81,6 +81,7 @@ public class AddReference {
         this.referenecNames = referenceHibernate.getAllNames();
 
         refs = new ArrayList<Reference>();
+        firstPageRefs = new ArrayList<Reference>();
 
         if (sections == null) {
             sections = sectionHibernate.getAll();
@@ -112,6 +113,10 @@ public class AddReference {
     @Property
     List<Reference> refs;
 
+    @Persist
+    @Property
+    List<Reference> firstPageRefs;
+
     // ajax call, used fpr paging of References
     @OnEvent("nextPage")
     List<Reference> moreValues() throws InterruptedException {
@@ -120,12 +125,19 @@ public class AddReference {
 
         int size = refs.size();
         List<Reference> newInstances;
-        // TODO: fix duplicate records.
+
         newInstances = referenceHibernate.getBySections(first, PageSize, selectedSections);
 
-        refs.addAll(newInstances);
+        // This fix makes sure the items from page 0 don't duplicate
+        // by separating the items of page 0 from the rest.
+        if (pageNumber == 0) {
+            firstPageRefs.addAll(newInstances);
+            return firstPageRefs;
+        } else {
+            refs.addAll(newInstances);
 
-        return refs;
+            return refs;
+        }
     }
 
 

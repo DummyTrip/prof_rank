@@ -516,12 +516,6 @@ public class ExcelWorkbook {
         referenceInstance.setReference(reference);
         referenceInstanceHibernate.store(referenceInstance);
 
-        User user = userHibernate.getById(Long.valueOf(1));
-        userHibernate.setReferenceInstance(user, referenceInstance);
-
-//        Person person = personHibernate.getById(Long.valueOf(1));
-//        personHibernate.setReferenceInstance(person, referenceInstance);
-
         return referenceInstance;
     }
 

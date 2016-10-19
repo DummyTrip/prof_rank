@@ -78,6 +78,7 @@ public class Index {
         this.referenecNames = referenceHibernate.getAllNames();
 
         refs = new ArrayList<Reference>();
+        firstPageRefs = new ArrayList<Reference>();
 
         if (sections == null) {
             sections = sectionHibernate.getAll();
@@ -109,6 +110,10 @@ public class Index {
     @Property
     List<Reference> refs;
 
+    @Persist
+    @Property
+    List<Reference> firstPageRefs;
+
     // ajax call, used fpr paging of References
     @OnEvent("nextPage")
     List<Reference> moreValues() throws InterruptedException {
@@ -117,12 +122,18 @@ public class Index {
 
         List<Reference> newInstances;
 
-        // TODO: make sure pagination works.
         newInstances = referenceHibernate.getPopularByPerson(personHibernate.getById(Long.valueOf(1)), Integer.MAX_VALUE, selectedSections);
 
-        refs.addAll(newInstances);
+        // This fix makes sure the items from page 0 don't duplicate
+        // by separating the items of page 0 from the rest.
+        if (pageNumber == 0) {
+            firstPageRefs.addAll(newInstances);
+            return firstPageRefs;
+        } else {
+            refs.addAll(newInstances);
 
-        return refs;
+            return refs;
+        }
     }
 
     @InjectComponent

@@ -1,6 +1,7 @@
 package com.diplomska.prof_rank.services;
 
 import com.diplomska.prof_rank.entities.*;
+import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
@@ -19,7 +20,7 @@ public class ReportHibernate {
     Session session;
 
     @Inject
-    UserHibernate userHibernate;
+    PersonHibernate personHibernate;
 
     @CommitAfter
     public void store(Report report) {
@@ -71,16 +72,16 @@ public class ReportHibernate {
         return entities;
     }
 
-    public User getUser(Report report) {
+    public Person getPerson(Report report) {
         if (report == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        return report.getUser();
+        return report.getPerson();
     }
 
-    public void setUser(Report report, User user) {
-        userHibernate.setReport(user, report);
+    public void setPerson(Report report, Person person) {
+        personHibernate.setReport(person, report);
     }
 
     public List<InstitutionProfRank> getInstitutions(Report report) {
