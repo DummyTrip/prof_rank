@@ -137,14 +137,14 @@ public class CreateReference {
             testMap.remove(author);
         }
 
+        reference = new Reference();
+        reference.setReferenceType(referenceType);
+        referenceHibernate.store(reference);
+        referenceHibernate.updateAttributeReferences(reference, testMap, attributes);
+
         for (String authorName : authorNames) {
-            reference = new Reference();
-            reference.setReferenceType(referenceType);
-            referenceHibernate.store(reference);
-
+            // TODO: create new referencePerson for every author
             personHibernate.setReference(reference, authorName, authorNames.indexOf(authorName));
-
-            referenceHibernate.updateAttributeReferences(reference, testMap, attributes);
         }
 
         resetPersistedVariables();

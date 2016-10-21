@@ -46,24 +46,18 @@ public class ExcelWorkbook {
     private String parentYear = "";
     private String parentSemester = "";
 
-    public List<List<String>> readCategorySpreadsheet(String fileName, Integer spreadsheetNumber, Section section) throws Exception{
-        // List of row values of Category Spreadsheet.
-        // Row values are a list of strings.
-        List<List<String>> categoryValues = new ArrayList<List<String>>();
-
+    public void readCategorySpreadsheet(String fileName, Integer spreadsheetNumber, Rulebook rulebook, Section section, ReferenceInputTemplate referenceInputTemplate) throws Exception{
         FileInputStream fis = new FileInputStream(new File(fileName));
         XSSFWorkbook workbook = new XSSFWorkbook(fis);
-        // 1, 2 and 3 spreadsheets are categories
+        // 1st, 2nd and 3rd spreadsheets are categories
         XSSFSheet spreadsheet = workbook.getSheetAt(spreadsheetNumber);
 
         Iterator<Row> rowIterator = spreadsheet.iterator();
 
-        categoryValues = iterateAndStoreCategorySpreadsheet(rowIterator, categoryValues, section);
-
-        return categoryValues;
+        storeReferenceTypes(rowIterator, rulebook, section, referenceInputTemplate);
     }
 
-    private List<List<String>> iterateAndStoreCategorySpreadsheet(Iterator<Row> rowIterator, List<List<String>> categoryValues, Section section) {
+    private void storeReferenceTypes(Iterator<Row> rowIterator, Rulebook rulebook, Section section, ReferenceInputTemplate referenceInputTemplate) {
         while (rowIterator.hasNext()) {
             XSSFRow row = (XSSFRow) rowIterator.next();
 
@@ -72,35 +66,24 @@ public class ExcelWorkbook {
                 continue;
             }
 
-            List<String> rowValues = new ArrayList<String>();
-            ReferenceType referenceType = new ReferenceType();
-            // uncomment to add row number to output
-//            String tmp = String.valueOf(row.getRowNum());
-//            rowValues.add(tmp);
-
-            Iterator<Cell> cellIterator = row.cellIterator();
-            while (cellIterator.hasNext()) {
-                Cell cell = cellIterator.next();
-
-                rowValues = storeCategoryCell(rowValues, cell, referenceType);
-            }
-            if (rowValues.size() > 0) {
-                categoryValues.add(rowValues);
-                // comment next lines to stop storing references
-                ReferenceInputTemplate referenceInputTemplate = referenceInputTemplateHibernate.getById(Long.valueOf(1));
-                Rulebook rulebook = rulebookHibernate.getById(Long.valueOf(1));
-
-                referenceTypeHibernate.store(referenceType);
-                referenceTypeHibernate.setReferenceInputTemplate(referenceType, referenceInputTemplate);
-                referenceTypeHibernate.setSection(referenceType, section, rulebook);
-            }
+            List<String> rowValues = readCategoryRow(row);
+            storeReferenceType(rowValues, rulebook, section, referenceInputTemplate);
         }
-
-        return categoryValues;
     }
 
+    private List<String> readCategoryRow(XSSFRow row) {
+        List<String> rowValues = new ArrayList<String>();
 
-    private List<String> storeCategoryCell(List<String> rowValues, Cell cell, ReferenceType referenceType) {
+        Iterator<Cell> cellIterator = row.cellIterator();
+        while (cellIterator.hasNext()) {
+            Cell cell = cellIterator.next();
+            rowValues = readCategoryCell(rowValues, cell);
+        }
+
+        return rowValues;
+    }
+
+    private List<String> readCategoryCell(List<String> rowValues, Cell cell) {
         Integer columnIndex = cell.getColumnIndex();
 
         // ignore this column and row. it has no name.
@@ -115,15 +98,39 @@ public class ExcelWorkbook {
             return new ArrayList<String>();
         }
 
-        if (columnIndex.equals(0)) {
-            referenceType.setName(cellValue);
-        } else if (columnIndex.equals(1)) {
-            referenceType.setPoints(Float.valueOf(cellValue));
-        }
-
         rowValues.add(cellValue);
 
         return rowValues;
+    }
+
+    private void storeReferenceType(List<String> rowValues, Rulebook rulebook, Section section, ReferenceInputTemplate referenceInputTemplate) {
+        if (rowValues.size() > 0) {
+            ReferenceType referenceType = createReferenceType(rowValues);
+
+            persistReferenceType(referenceType, rulebook, section, referenceInputTemplate);
+        }
+    }
+
+    private ReferenceType createReferenceType(List<String> rowValues) {
+        ReferenceType referenceType = new ReferenceType();
+
+        for (String cellValue : rowValues) {
+            Integer columnIndex = rowValues.indexOf(cellValue);
+
+            if (columnIndex.equals(0)) {
+                referenceType.setName(cellValue);
+            } else if (columnIndex.equals(1)) {
+                referenceType.setPoints(Float.valueOf(cellValue));
+            }
+        }
+
+        return referenceType;
+    }
+
+    private void persistReferenceType(ReferenceType referenceType, Rulebook rulebook, Section section, ReferenceInputTemplate referenceInputTemplate) {
+        referenceTypeHibernate.store(referenceType);
+        referenceTypeHibernate.setReferenceInputTemplate(referenceType, referenceInputTemplate);
+        referenceTypeHibernate.setSection(referenceType, section, rulebook);
     }
 
     private String parseCategoryCell(Cell cell) {
@@ -165,61 +172,6 @@ public class ExcelWorkbook {
         return cellValue;
     }
 
-    public List<List<String>> readNastavaSpreadsheet(String fileName, Integer spreadsheetNumber, Person person, Section section) throws Exception{
-        // List of row values of Category Spreadsheet.
-        // Row values are a list of strings.
-        List<List<String>> categoryValues = new ArrayList<List<String>>();
-
-        FileInputStream fis = new FileInputStream(new File(fileName));
-        XSSFWorkbook workbook = new XSSFWorkbook(fis);
-        // 1, 2 and 3 spreadsheets are categories
-        XSSFSheet spreadsheet = workbook.getSheetAt(spreadsheetNumber);
-
-        Iterator<Row> rowIterator = spreadsheet.iterator();
-
-        categoryValues = iterateAndStoreNastavaSpreadsheet(rowIterator, categoryValues, person, section);
-
-        return categoryValues;
-    }
-
-    private List<List<String>> iterateAndStoreNastavaSpreadsheet(Iterator<Row> rowIterator, List<List<String>> categoryValues, Person person, Section section) {
-        while (rowIterator.hasNext()) {
-            XSSFRow row = (XSSFRow) rowIterator.next();
-
-            // ignore the first two rows for now.
-            if (row.getRowNum() < 2) {
-                continue;
-            }
-
-            if (row.getRowNum() == 2){
-                // remember attribute names.
-                // remember column index
-                attributes = getNastavaAttributes(row);
-                columnNum = attributes.size();
-            } else {
-                List<String> rowValues = new ArrayList<String>();
-
-                rowValues = getNastavaAttributeValues(row, rowValues);
-
-                if (rowValues.size() == attributes.size()) {
-                    ReferenceType referenceType = getReferenceType("Одржување на настава - од прв циклус студии", section);
-                    Reference reference = createReference(referenceType);
-                    personHibernate.setReference(person, reference, 1);
-                    for (String cellValue : rowValues) {
-                        Integer index = rowValues.indexOf(cellValue);
-                        Attribute attribute = attributes.get(index);
-
-                        boolean display = isDisplayAttribute(attribute);
-                        referenceHibernate.setAttributeValueIndexDisplay(reference, attribute, cellValue, index, display);
-                    }
-                    categoryValues.add(rowValues);
-                }
-            }
-        }
-
-        return categoryValues;
-    }
-
     private boolean isDisplayAttribute(Attribute attribute) {
         String attributeName = attribute.getName();
         if (attributeName.equals("Наслов") ||
@@ -236,13 +188,48 @@ public class ExcelWorkbook {
         }
     }
 
-    private List<Attribute> getNastavaAttributes(Row row) {
-        List<Attribute> rowValues = new ArrayList<Attribute>();
+    public void readNastavaSpreadsheet(String fileName, Integer spreadsheetNumber, Person person, Rulebook rulebook, Section section) throws Exception{
+        FileInputStream fis = new FileInputStream(new File(fileName));
+        XSSFWorkbook workbook = new XSSFWorkbook(fis);
 
+        XSSFSheet spreadsheet = workbook.getSheetAt(spreadsheetNumber);
+        Iterator<Row> rowIterator = spreadsheet.iterator();
+
+        storeNastavaReferences(rowIterator, person, rulebook, section);
+    }
+
+    private void storeNastavaReferences(Iterator<Row> rowIterator, Person person, Rulebook rulebook, Section section) {
+        while (rowIterator.hasNext()) {
+            XSSFRow row = (XSSFRow) rowIterator.next();
+
+            // ignore the first two rows for now.
+            if (row.getRowNum() < 2) {
+                continue;
+            }
+
+            if (row.getRowNum() == 2){
+                readNastavaColumnNames(row);
+            } else {
+                List<String> rowValues = readNastavaRow(row);
+
+                if (rowValues.size() == columnNum) {
+                    createNastavaReference(rowValues, person, rulebook, section);
+                }
+            }
+        }
+    }
+
+    private void readNastavaColumnNames(XSSFRow row) {
+        // remember attribute names.
+        getNastavaAttributes(row);
+        // remember attributes size
+        columnNum = attributes.size();
+    }
+
+    private void getNastavaAttributes(Row row) {
         Iterator<Cell> cellIterator = row.cellIterator();
         while (cellIterator.hasNext()) {
             Cell cell = cellIterator.next();
-
             String cellValue = parseNastavaCell(cell);
 
             if (cellValue.startsWith("Вкупно")){
@@ -250,14 +237,27 @@ public class ExcelWorkbook {
             }
 
             Attribute attribute = createAttribute(cellValue);
-
-            rowValues.add(attribute);
+            attributes.add(attribute);
         }
-        
-        return rowValues;
     }
 
-    private List<String> getNastavaAttributeValues(Row row, List<String> rowValues) {
+    private void createNastavaReference(List<String> rowValues, Person person, Rulebook rulebook, Section section) {
+        ReferenceType referenceType = getReferenceType("Одржување на настава - од прв циклус студии", rulebook, section);
+        Reference reference = createReference(referenceType);
+        personHibernate.setReference(reference, person, 1);
+
+        for (String cellValue : rowValues) {
+            Integer index = rowValues.indexOf(cellValue);
+            Attribute attribute = attributes.get(index);
+
+            boolean display = isDisplayAttribute(attribute);
+            referenceHibernate.setAttributeValueIndexDisplay(reference, attribute, cellValue, index, display);
+        }
+    }
+
+    private List<String> readNastavaRow(Row row) {
+        List<String> rowValues = new ArrayList<String>();
+
         Iterator<Cell> cellIterator = row.cellIterator();
         while (cellIterator.hasNext()) {
             Cell cell = cellIterator.next();
@@ -278,6 +278,8 @@ public class ExcelWorkbook {
 
     private String parseNastavaCell(Cell cell) {
         String cellValue = "";
+        Integer columnIndex = cell.getColumnIndex();
+
         // a column can have string or numeric value
         if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
             cellValue = cell.getStringCellValue();
@@ -285,13 +287,13 @@ public class ExcelWorkbook {
             cellValue = String.valueOf(cell.getNumericCellValue());
         }
 
-        if (cell.getColumnIndex() == 0) {
+        if (columnIndex.equals(0)) {
             if (cellValue.equals("")) {
                 cellValue = parentYear;
             } else {
                 parentYear = cellValue;
             }
-        } else if (cell.getColumnIndex() == 1) {
+        } else if (columnIndex.equals(1)) {
             if (cellValue.equals("")) {
                 cellValue = parentSemester;
             } else {
@@ -299,28 +301,21 @@ public class ExcelWorkbook {
             }
         }
 
-
         return cellValue;
     }
 
     // Reads spreadsheets: projects, papers and books
-    public List<List<String>> readSpreadsheet(String fileName, Integer spreadsheetNumber, String referenceTypeName, Integer startAtRow, String notNullColumnName, String stopReadingAtColumn, Person person, Section section) throws Exception{
-        // Row values are a list of strings.
-        List<List<String>> categoryValues = new ArrayList<List<String>>();
-
+    public void readSpreadsheet(String fileName, Integer spreadsheetNumber, String referenceTypeName, Integer startAtRow, String notNullColumnName, String stopReadingAtColumn, Person person, Rulebook rulebook, Section section) throws Exception{
         FileInputStream fis = new FileInputStream(new File(fileName));
         XSSFWorkbook workbook = new XSSFWorkbook(fis);
         // 1, 2 and 3 spreadsheets are categories
         XSSFSheet spreadsheet = workbook.getSheetAt(spreadsheetNumber);
-
         Iterator<Row> rowIterator = spreadsheet.iterator();
 
-        categoryValues = iterateAndStoreSpreadsheet(rowIterator, categoryValues, referenceTypeName, stopReadingAtColumn, startAtRow, notNullColumnName, person, section);
-
-        return categoryValues;
+        storeReferences(rowIterator, referenceTypeName, stopReadingAtColumn, startAtRow, notNullColumnName, person, rulebook, section);
     }
 
-    private List<List<String>> iterateAndStoreSpreadsheet(Iterator<Row> rowIterator, List<List<String>> categoryValues, String referenceTypeName, String stopReadingAtColumn, Integer startAtRow, String notNullColumnName, Person person, Section section) {
+    private void storeReferences(Iterator<Row> rowIterator, String referenceTypeName, String stopReadingAtColumn, Integer startAtRow, String notNullColumnName, Person person, Rulebook rulebook, Section section) {
         while (rowIterator.hasNext()) {
             XSSFRow row = (XSSFRow) rowIterator.next();
 
@@ -330,58 +325,66 @@ public class ExcelWorkbook {
             }
 
             if (row.getRowNum() == startAtRow){
-                // remember attribute names.
-                // remember column index
-                attributes = getAttributes(row, stopReadingAtColumn);
-                columnNum = attributes.size();
+                readColumnNames(row, stopReadingAtColumn);
             } else {
-                List<String> rowValues = new ArrayList<String>();
+                List<String> rowValues = readRow(row, notNullColumnName);
 
-                rowValues = getAttributeValues(row, rowValues, notNullColumnName);
-
-                if (rowValues.size() == attributes.size()) {
-                    categoryValues.add(rowValues);
-
-                    boolean hasAuthors = false;
-                    for (Attribute attribute : attributes) {
-                        String attrubuteName = attribute.getName();
-                        if (attrubuteName.startsWith("Автор")) {
-                            String authorName = rowValues.get(attributes.indexOf(attribute));
-
-                            // empty cell
-                            if (authorName.equals("")) {
-                                continue;
-                            }
-
-                            Integer authorNum;
-                            if (attrubuteName.contains(" ")){
-                                authorNum = Integer.valueOf(attrubuteName.split(" ")[1]);
-                            } else {
-                                authorNum = 1;
-                            }
-
-                            String bibtexAuthorName = buildBibtexName(authorName);
-                            person = findPerson(bibtexAuthorName);
-
-                            if (person == null) {
-                                persistReference(referenceTypeName, bibtexAuthorName, rowValues, authorNum, section);
-                            } else {
-                                persistReference(referenceTypeName, person, rowValues, authorNum, section);
-                            }
-
-                            hasAuthors = true;
-                        }
-                    }
-
-                    // this sheet doesnt contain authors.
-                    if (!hasAuthors) {
-                        persistReference(referenceTypeName, person, rowValues, 1, section);
-                    }
+                if (rowValues.size() == columnNum) {
+                    storeReference(rowValues, referenceTypeName, person, rulebook, section);
                 }
             }
         }
+    }
 
-        return categoryValues;
+    private void readColumnNames(XSSFRow row, String stopReadingAtColumn) {
+        // remember attribute names.
+        getAttributes(row, stopReadingAtColumn);
+        // remember attributes size
+        columnNum = attributes.size();
+    }
+
+    private void storeReference(List<String> rowValues, String referenceTypeName, Person person, Rulebook rulebook, Section section) {
+        Reference reference = persistReference(referenceTypeName, rowValues, rulebook, section);
+        boolean hasAuthors = false;
+
+        for (Attribute attribute : attributes) {
+            String attributeName = attribute.getName();
+
+            if (attributeName.startsWith("Автор")) {
+                storeReferenceAuthor(rowValues, person, reference, attribute, attributeName);
+                hasAuthors = true;
+            }
+        }
+
+        // this sheet doesn't contain authors.
+        if (!hasAuthors) {
+            personHibernate.setReference(reference, person, 1);
+        }
+    }
+
+    private void storeReferenceAuthor(List<String> rowValues, Person person, Reference reference, Attribute attribute, String attributeName) {
+        String authorName = rowValues.get(attributes.indexOf(attribute));
+        Integer authorNum;
+
+        // empty cell
+        if (authorName.equals("")) {
+            return;
+        }
+
+        if (attributeName.contains(" ")){
+            authorNum = Integer.valueOf(attributeName.split(" ")[1]);
+        } else {
+            authorNum = 1;
+        }
+
+        String bibtexAuthorName = buildBibtexName(authorName);
+        person = findPerson(bibtexAuthorName);
+
+        if (person == null) {
+            personHibernate.setReference(reference, bibtexAuthorName, authorNum);
+        } else {
+            personHibernate.setReference(reference, person, authorNum);
+        }
     }
 
     private Person findPerson(String bibtexAuthorName) {
@@ -402,20 +405,13 @@ public class ExcelWorkbook {
         return fullName[lastNameIndex] + ", " + fullName[firstNameIndex];
     }
 
-    private void persistReference(String referenceTypeName, Person person, List<String> rowValues, Integer authorNum, Section section) {
-        ReferenceType referenceType = getReferenceType(referenceTypeName, section);
+    private Reference persistReference(String referenceTypeName, List<String> rowValues, Rulebook rulebook, Section section) {
+        ReferenceType referenceType = getReferenceType(referenceTypeName, rulebook, section);
         Reference reference = createReference(referenceType);
-        personHibernate.setReference(person, reference, authorNum);
 
         addCellValuesToReference(rowValues, referenceType, reference);
-    }
 
-    private void persistReference(String referenceTypeName, String author, List<String> rowValues, Integer authorNum, Section section) {
-        ReferenceType referenceType = getReferenceType(referenceTypeName, section);
-        Reference reference = createReference(referenceType);
-        personHibernate.setReference(reference, author, authorNum);
-
-        addCellValuesToReference(rowValues, referenceType, reference);
+        return reference;
     }
 
     private void addCellValuesToReference(List<String> rowValues, ReferenceType referenceType, Reference reference) {
@@ -432,8 +428,8 @@ public class ExcelWorkbook {
         }
     }
 
-    private List<Attribute> getAttributes(Row row, String stopReadingAtColumn) {
-        List<Attribute> rowValues = new ArrayList<Attribute>();
+    private void getAttributes(Row row, String stopReadingAtColumn) {
+        attributes = new ArrayList<Attribute>();
 
         Iterator<Cell> cellIterator = row.cellIterator();
         while (cellIterator.hasNext()) {
@@ -448,11 +444,9 @@ public class ExcelWorkbook {
             if (!columnName.equals("")) {
                 Attribute attribute = createAttribute(columnName);
 
-                rowValues.add(attribute);
+                attributes.add(attribute);
             }
         }
-
-        return rowValues;
     }
 
     private Attribute createAttribute(String columnName) {
@@ -470,23 +464,21 @@ public class ExcelWorkbook {
         return attribute;
     }
 
-    private ReferenceType getReferenceType(String name, Section section) {
+    private ReferenceType getReferenceType(String name, Rulebook rulebook, Section section) {
         List<ReferenceType> referenceTypes = referenceTypeHibernate.getByColumn("name", name);
         ReferenceType referenceType;
-        // second part of the clause is used when the referenceType is already created,
-        // but it's attributes are not.
+
         if (referenceTypes.size() == 0) {
             referenceType = new ReferenceType();
             referenceType.setName(name);
             referenceTypeHibernate.store(referenceType);
-
-            Rulebook rulebook = rulebookHibernate.getById(Long.valueOf(1));
             referenceTypeHibernate.setSection(referenceType, section, rulebook);
 
             addAttributesToReferenceType(referenceType);
         } else {
             referenceType = referenceTypes.get(0);
-
+            // The referenceType is already created,
+            // but it's attributes are not.
             if (referenceTypeHibernate.getAttributeValues(referenceType).size() == 1) {
                 addAttributesToReferenceType(referenceType);
             }
@@ -515,7 +507,9 @@ public class ExcelWorkbook {
         return reference;
     }
 
-    private List<String> getAttributeValues(Row row, List<String> rowValues, String notNullColumnName) {
+    private List<String> readRow(Row row, String notNullColumnName) {
+        List<String> rowValues = new ArrayList<String>();
+
         Iterator<Cell> cellIterator = row.cellIterator();
         while (cellIterator.hasNext()) {
             Cell cell = cellIterator.next();

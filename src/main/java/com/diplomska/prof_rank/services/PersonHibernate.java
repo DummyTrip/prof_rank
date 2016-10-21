@@ -130,7 +130,7 @@ public class PersonHibernate {
         return references;
     }
 
-    public void setReference(Person person, Reference reference, Integer authorNum) {
+    public void setReference(Reference reference, Person person, Integer authorNum) {
         if (person == null || reference == null || authorNum == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
