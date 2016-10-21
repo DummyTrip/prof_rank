@@ -364,24 +364,26 @@ public class ShowReference {
     @Inject
     AttributeHibernate attributeHibernate;
 
+    @CommitAfter
     @OnEvent(component = "addDisplay", value = "selected")
     public void addDisplay(Long attributeId) {
         selectedCheckboxes.put(attributeId, 1);
-
-        ajaxResponseRenderer.addRender(leftPanelZone);
-
-    }
-
-    @OnEvent(component = "removeDisplay", value = "selected")
-    public void removeDisplay(Long attributeId) {
-        selectedCheckboxes.put(attributeId, 0);
+        saveDisplay();
 
         ajaxResponseRenderer.addRender(leftPanelZone);
 
     }
 
     @CommitAfter
-    @OnEvent(component = "saveDisplay", value = "selected")
+    @OnEvent(component = "removeDisplay", value = "selected")
+    public void removeDisplay(Long attributeId) {
+        selectedCheckboxes.put(attributeId, 0);
+        saveDisplay();
+
+        ajaxResponseRenderer.addRender(leftPanelZone);
+
+    }
+
     void saveDisplay() {
         List<Reference> references = referenceHibernate.getByReferenceType(referenceType);
 
