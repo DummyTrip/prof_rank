@@ -20,3 +20,5 @@ target/
 log/
 build/
 env-config/
+
+*.pyc

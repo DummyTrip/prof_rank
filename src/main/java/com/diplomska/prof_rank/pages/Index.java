@@ -7,14 +7,19 @@ import com.diplomska.prof_rank.services.*;
 import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.commons.beanutils.converters.LongConverter;
 import org.apache.commons.codec.language.bm.Rule;
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.RequestGlobals;
 import org.slf4j.Logger;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Start page of application prof_rank.
@@ -195,12 +200,11 @@ public class Index
     }
 
     @CommitAfter
-    void onActionFromAddPersonAndReferenceInputTemplate() {
+    void onActionFromAddPersonAndReferenceInputTemplate(){
         addPerson();
         createDefaultReferenceInputTemplate();
         addRulebookAndSections();
     }
-
 
     @CommitAfter
     void onActionFromAddReferencesFromExcel() throws Exception{
@@ -210,5 +214,52 @@ public class Index
 
         addCategories(fileName, rulebook, referenceInputTemplate);
         addRefs(fileName);
+    }
+
+    @Persist
+    @Property
+    Integer numScholar;
+
+    @Persist
+    @Property
+    List<String> scholars;
+
+    @Property
+    String scholar;
+
+    void setupRender() {
+        if (numScholar == null) {
+            numScholar = -1;
+        }
+
+        if (scholars == null) {
+            scholars = new ArrayList<String>();
+        }
+    }
+
+    void onActionFromScholar() throws Exception{
+        String command = "py scholar.py --author \"vangel ajanovski\"";
+
+        ProcessBuilder builder = new ProcessBuilder(
+                "cmd.exe", "/c", command);
+        builder.redirectErrorStream(true);
+        Process p = builder.start();
+
+        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+        String line;
+        numScholar = 0;
+        scholars = new ArrayList<String>();
+
+        while (true) {
+            line = r.readLine();
+            if (line == null) { break; }
+            line = line.trim();
+            if (line.startsWith("Title")) {
+                scholars.add(line);
+                numScholar++;
+            }
+        }
+
     }
 }
