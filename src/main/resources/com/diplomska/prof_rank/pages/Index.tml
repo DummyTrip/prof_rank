@@ -34,14 +34,8 @@
         </div>
 
         <div>
-            <t:actionlink t:id="scholar">Check scholar ${numScholar}</t:actionlink>
+            <t:pagelink page="scholar/index">Scholar</t:pagelink>
         </div>
-
-        <ul>
-            <t:loop source="scholars" value="scholar">
-                <li>${scholar}</li>
-            </t:loop>
-        </ul>
 
         <div>
             <h2>Pages</h2>

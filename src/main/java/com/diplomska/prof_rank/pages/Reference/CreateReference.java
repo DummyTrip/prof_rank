@@ -6,16 +6,20 @@ import com.diplomska.prof_rank.entities.ReferenceType;
 import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.services.*;
 import mk.ukim.finki.isis.model.entities.Person;
+import org.apache.tapestry5.Link;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.SelectModelFactory;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 import org.jbibtex.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.*;
@@ -123,6 +127,10 @@ public class CreateReference {
             String authorName = "author 1";
             authors.add(authorName);
             testMap.put(authorName, "");
+        }
+
+        if (phrase != null) {
+            readScholarBibtex();
         }
     }
 
@@ -241,6 +249,7 @@ public class CreateReference {
 
             parseBibtexEntries(entries);
             showBibtexImport = false;
+            phrase = null;
         }
     }
 
@@ -379,6 +388,7 @@ public class CreateReference {
         authors = null;
         missingAuthors = false;
         showBibtexImport = false;
+        phrase = null;
     }
 
     @Property
@@ -392,6 +402,44 @@ public class CreateReference {
         showBibtexImport = !showBibtexImport;
 
         ajaxResponseRenderer.addRender(bibtexZone);
+    }
+
+    @ActivationRequestParameter(value = "bibtex")
+    private String phrase;
+
+    @Inject
+    private PageRenderLinkSource pageRenderLinkSource;
+
+    public Link setPhrase(String paperTitle) {
+        phrase = paperTitle;
+
+        return pageRenderLinkSource.createPageRenderLink(this.getClass());
+    }
+
+    void readScholarBibtex() throws Exception{
+        String command = "py scholar.py -c 1 --author \"vangel ajanovski\" --citation bt --phrase " + phrase;
+
+        ProcessBuilder builder = new ProcessBuilder(
+                "cmd.exe", "/c", command);
+        builder.redirectErrorStream(true);
+        Process p = builder.start();
+
+        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+        String line;
+
+        while (true) {
+            line = r.readLine();
+            if (line == null) { break; }
+            if (line.trim().equals("")) {
+                continue;
+            }
+//            line = line.trim();
+
+            bibtexString += line + "\n";
+        }
+
+        showBibtexImport = true;
     }
 
 }

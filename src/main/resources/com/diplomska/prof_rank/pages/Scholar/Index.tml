@@ -1,0 +1,33 @@
+<html t:type="layout" title="prof_rank Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+>
+
+<div class="row">
+    <div class="col-md-offset-2 col-md-8">
+        <ul>
+            <t:loop source="scholars" value="scholar">
+                <t:delegate to="block:scholarElement"/>
+            </t:loop>
+        </ul>
+    </div>
+</div>
+
+
+<t:block id="scholarElement">
+
+    <div class="row div-shadow white-background ref-list-padding">
+        <div class="col-md-11">
+            <h4 class="no-margin black-color">${scholar}</h4>
+        </div>
+
+        <t:actionlink t:id="createReference" context="${scholar}">
+            <div class="col-md-1">
+                <i class="fa fa-plus ref-list-icon-size black-color" aria-hidden="true"></i>
+            </div>
+        </t:actionlink>
+    </div>
+
+</t:block>
+
+
+</html>

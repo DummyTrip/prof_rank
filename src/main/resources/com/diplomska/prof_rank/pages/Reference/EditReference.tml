@@ -98,7 +98,7 @@
                                 </div>
                             </t:if>
                             <div class="col-sm-1">
-                                <input t:type="submit" t:id="delete" class="btn btn-danger" defer="false" value="Х" context="attribute.id"/>
+                                <input t:type="submit" t:id="delete" class="btn btn-danger btn-outline" defer="false" value="Х" context="attribute.id"/>
                             </div>
                         </div>
                     </t:loop>
