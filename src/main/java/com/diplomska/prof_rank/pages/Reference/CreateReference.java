@@ -420,7 +420,7 @@ public class CreateReference {
     }
 
     void readScholarBibtex() throws Exception{
-        String command = "python scholar.py -c 1 --author \"vangel ajanovski\" --citation bt --phrase " + phrase;
+        String command = "py scholar.py -c 1 --author \"vangel ajanovski\" --citation bt --phrase " + phrase;
 
         ProcessBuilder builder = new ProcessBuilder(
                 "cmd.exe", "/c", command);

@@ -16,9 +16,7 @@ import org.apache.tapestry5.services.PageRenderLinkSource;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Aleksandar on 21-Oct-16.
@@ -54,6 +52,11 @@ public class Index {
             numScholar = -1;
         }
 
+//        filtersQueryString = null;
+        if (filtersQueryString != null) {
+            scholarResults = filterScholarResults(filterMap);
+        }
+
         if (allScholarResults == null) {
             allScholarResults = new ArrayList<String>();
             scholarResults = new ArrayList<String>();
@@ -72,13 +75,25 @@ public class Index {
                 scholarResults = allScholarResults;
             }
         }
+
+        if (attributes == null) {
+            attributes = new ArrayList<String>();
+            attributes.add("Title");
+            attributes.add("Year");
+        }
+
+        if (filterMap == null) {
+            filterMap = new HashMap<String, String>();
+//            filterMap.put("Title", "");
+//            filterMap.put("Year", "");
+        }
     }
 
     @Inject
     ReferenceHibernate referenceHibernate;
 
     void readScholar() throws Exception{
-        String command = "python scholar.py --author \"vangel ajanovski\"";
+        String command = "py scholar.py --author \"vangel ajanovski\"";
 
         ProcessBuilder builder = new ProcessBuilder(
                 "cmd.exe", "/c", command);
@@ -193,4 +208,79 @@ public class Index {
 
         return pageRenderLinkSource.createPageRenderLink(this.getClass());
     }
+
+    // This query is used to send a dynamic list of filters.
+    // The filters are sent in this format:
+    //      key1:;%value1,:%key2:;%value2...
+    // The filters are written to Map<String, String> filterMap in setupRender.
+    @ActivationRequestParameter(value = "filters")
+    private String filtersQueryString;
+
+    @Persist
+    @Property
+    List<String> attributes;
+
+    @Persist
+    @Property
+    String attribute;
+
+    @Persist
+    @Property
+    Map<String, String> filterMap;
+
+    public Object onSuccessFromFilterForm() {
+        Link link = this.setFilters(filterMap);
+
+        return link;
+    }
+
+    public Link setFilters(Map<String, String> filterMap) {
+        if (filterMap.keySet().size() > 0) {
+            filtersQueryString = "";
+
+            for (String key : filterMap.keySet()) {
+                if (filterMap.get(key) != null) {
+                    filtersQueryString += key + ":;%" + filterMap.get(key) + ",;%";
+                }
+            }
+        }
+
+        return pageRenderLinkSource.createPageRenderLink(this.getClass());
+    }
+
+    public Object onActionFromResetFilter() {
+        this.filtersQueryString = null;
+        this.filterMap = null;
+        scholarResults = allScholarResults;
+
+        return this;
+    }
+
+    private List<String> filterScholarResults(Map<String, String> filterMap) {
+        List<String> matches = new ArrayList<String>();
+        String title = filterMap.get("Title") == null ? "-1" : filterMap.get("Title").toUpperCase();
+        String year = filterMap.get("Year") == null ? "-1" : filterMap.get("Year").toUpperCase();
+
+        for (String name : allScholarResults) {
+            String[] splitName = name.split(", ");
+            String scholarTitle = name;
+            String scholarYear = "";
+
+            if (splitName.length > 1) {
+                scholarTitle = splitName[1];
+                scholarYear = splitName[0];
+            }
+
+            if (scholarTitle.toUpperCase().startsWith(title) || scholarYear.startsWith(year)) {
+                matches.add(name);
+            }
+        }
+
+        if (matches.size() == 0) {
+            return allScholarResults;
+        } else {
+            return matches;
+        }
+    }
+
 }

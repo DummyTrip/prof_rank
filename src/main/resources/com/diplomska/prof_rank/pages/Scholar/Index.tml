@@ -25,33 +25,31 @@
 
         <div class="row margin-top-20px">
 
-                <!--<t:form t:id="filterForm">-->
-                    <!--<t:loop source="attributes" value="attribute">-->
+                <t:form t:id="filterForm">
+                    <t:loop source="attributes" value="attribute">
 
-                        <!--<div class="col-md-12 padding-top-10px">-->
-                            <!--<label class="control-label">${attribute.getName()}</label>-->
-                        <!--</div>-->
+                        <div class="col-md-12 padding-top-10px">
+                            <label class="control-label">${attribute}</label>
+                        </div>
 
-                        <!--<div class="col-md-12 padding-top-10px">-->
-                            <!--<t:if test="textInput">-->
-                                <!--<div class="">-->
-                                    <!--<t:mapfield key="${attribute.getName()}" t:map="filterMap"/>-->
-                                <!--</div>-->
-                            <!--</t:if>-->
-                        <!--</div>-->
+                        <div class="col-md-12 padding-top-10px">
+                            <div class="">
+                                <t:mapfield key="${attribute}" t:map="filterMap"/>
+                            </div>
+                        </div>
 
-                    <!--</t:loop>-->
-                    <!--<div class="col-md-12 padding-top-15px">-->
-                        <!--<div class="form-group">-->
-                            <!--<div class="col-md-5 no-padding-left">-->
-                                <!--<t:submit value="Филтрирај" class="btn btn-default"/>-->
-                            <!--</div>-->
-                            <!--<div class="col-md-7">-->
-                                <!--<t:actionlink t:id="resetFilter" class="btn btn-default">Откажи</t:actionlink>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</t:form>-->
+                    </t:loop>
+                    <div class="col-md-12 padding-top-15px">
+                        <div class="form-group">
+                            <div class="col-md-5 no-padding-left">
+                                <t:submit value="Филтрирај" class="btn btn-default"/>
+                            </div>
+                            <div class="col-md-7">
+                                <t:actionlink t:id="resetFilter" class="btn btn-default">Откажи</t:actionlink>
+                            </div>
+                        </div>
+                    </div>
+                </t:form>
 
         </div>
     </div>
@@ -66,11 +64,9 @@
         <hr/>
 
         <div class="">
-            <!--<div class="col-md-offset-2 col-md-8">-->
-                <t:loop source="scholarResults" value="scholarResult">
-                    <t:delegate to="block:scholarElement"/>
-                </t:loop>
-            <!--</div>-->
+            <t:loop source="scholarResults" value="scholarResult">
+                <t:delegate to="block:scholarElement"/>
+            </t:loop>
         </div>
 
         <div class='zone' t:type='zone' t:id="zone"></div>
