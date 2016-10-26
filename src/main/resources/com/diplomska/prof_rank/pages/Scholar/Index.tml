@@ -1,33 +1,99 @@
-<html t:type="layout" title="prof_rank Index"
+<html t:type="layout" title="Scholar"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
->
+      xmlns:p="tapestry:parameter">
 
 <div class="row">
-    <div class="col-md-offset-2 col-md-8">
-        <ul>
-            <t:loop source="scholars" value="scholar">
-                <t:delegate to="block:scholarElement"/>
-            </t:loop>
-        </ul>
+    <div class="col-md-3 margin-top-20px">
+        <div class="row">
+            <t:form t:id="form">
+                <div class="col-md-10">
+                    <t:textfield t:id="searchName" t:mixins="autocomplete" value="searchScholarResult" placeholder="Пребарај..." />
+                </div>
+                <div class="col-md-1 no-padding-left">
+                    <button type="submit" class="btn btn-default">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </t:form>
+        </div>
+
+        <div class="row margin-top-20px">
+            <div class="col-md-9">
+                <h3 class="">Филтрирај:</h3>
+            </div>
+        </div>
+
+        <div class="row margin-top-20px">
+
+                <!--<t:form t:id="filterForm">-->
+                    <!--<t:loop source="attributes" value="attribute">-->
+
+                        <!--<div class="col-md-12 padding-top-10px">-->
+                            <!--<label class="control-label">${attribute.getName()}</label>-->
+                        <!--</div>-->
+
+                        <!--<div class="col-md-12 padding-top-10px">-->
+                            <!--<t:if test="textInput">-->
+                                <!--<div class="">-->
+                                    <!--<t:mapfield key="${attribute.getName()}" t:map="filterMap"/>-->
+                                <!--</div>-->
+                            <!--</t:if>-->
+                        <!--</div>-->
+
+                    <!--</t:loop>-->
+                    <!--<div class="col-md-12 padding-top-15px">-->
+                        <!--<div class="form-group">-->
+                            <!--<div class="col-md-5 no-padding-left">-->
+                                <!--<t:submit value="Филтрирај" class="btn btn-default"/>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-7">-->
+                                <!--<t:actionlink t:id="resetFilter" class="btn btn-default">Откажи</t:actionlink>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</t:form>-->
+
+        </div>
+    </div>
+
+    <div class="col-md-offset-1 col-md-8">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Резултати од Google Scholar</h2>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="">
+            <!--<div class="col-md-offset-2 col-md-8">-->
+                <t:loop source="scholarResults" value="scholarResult">
+                    <t:delegate to="block:scholarElement"/>
+                </t:loop>
+            <!--</div>-->
+        </div>
+
+        <div class='zone' t:type='zone' t:id="zone"></div>
+        <div id='scroller' class="padding-top-80px"></div>
+
     </div>
 </div>
 
-
 <t:block id="scholarElement">
+    <t:actionlink t:id="createReference" context="${scholarResult}">
+        <div class="row div-shadow white-background ref-list-padding">
+            <div class="col-md-11">
+                <h4 class="no-margin black-color">${scholarResult}</h4>
+            </div>
 
-    <div class="row div-shadow white-background ref-list-padding">
-        <div class="col-md-11">
-            <h4 class="no-margin black-color">${scholar}</h4>
-        </div>
-
-        <t:actionlink t:id="createReference" context="${scholar}">
             <div class="col-md-1">
                 <i class="fa fa-plus ref-list-icon-size black-color" aria-hidden="true"></i>
             </div>
-        </t:actionlink>
-    </div>
+        </div>
+    </t:actionlink>
 
 </t:block>
 
 
 </html>
+

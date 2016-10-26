@@ -70,10 +70,6 @@ public class ShowReference {
     @Persist
     private List<String> displayNames;
 
-//    @Persist
-//    @Property
-//    private Map<String, String> testMap;
-
     @Persist
     @Property
     Map<String, String> filterMap;
@@ -102,6 +98,7 @@ public class ShowReference {
         return referenceTypeId;
     }
 
+    // TODO: make the search bar work
     List<String> onProvideCompletionsFromSearchName(String partial) {
         List<String> matches = new ArrayList<String>();
         partial = partial.toUpperCase();
@@ -161,7 +158,6 @@ public class ShowReference {
         this.referenceType = referenceTypeHibernate.getById(referenceTypeId);
         this.referenceName = referenceNameQueryString;
         this.displayNames = referenceHibernate.getAllDisplayNames();
-//        testMap = new HashMap<String, String>();
 
         refInstances = new ArrayList<Reference>();
         firstPageRefInstances = new ArrayList<Reference>();

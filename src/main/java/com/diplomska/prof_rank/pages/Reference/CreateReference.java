@@ -131,6 +131,7 @@ public class CreateReference {
 
         if (phrase != null) {
             readScholarBibtex();
+            onActionFromParseBibtex();
         }
     }
 
@@ -410,14 +411,16 @@ public class CreateReference {
     @Inject
     private PageRenderLinkSource pageRenderLinkSource;
 
-    public Link setPhrase(String paperTitle) {
+    public Link setPhrase(Long referenceTypeId, String paperTitle) {
+        resetPersistedVariables();
         phrase = paperTitle;
+        this.referenceTypeId = referenceTypeId;
 
         return pageRenderLinkSource.createPageRenderLink(this.getClass());
     }
 
     void readScholarBibtex() throws Exception{
-        String command = "py scholar.py -c 1 --author \"vangel ajanovski\" --citation bt --phrase " + phrase;
+        String command = "python scholar.py -c 1 --author \"vangel ajanovski\" --citation bt --phrase " + phrase;
 
         ProcessBuilder builder = new ProcessBuilder(
                 "cmd.exe", "/c", command);
@@ -439,7 +442,7 @@ public class CreateReference {
             bibtexString += line + "\n";
         }
 
-        showBibtexImport = true;
+//        showBibtexImport = true;
     }
 
 }
