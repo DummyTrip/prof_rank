@@ -1,0 +1,96 @@
+<html t:type="layout" title="Scholar"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+
+
+<t:if test="missingCommissioners">
+    <div class="row">
+        <div class="alert alert-warning">
+            <strong>Предупредување!</strong>
+            Некои од авторите не беа пронајдени.
+            Внесете го името, презимето или емаил-от на авторот за да ви биде понуден избор за автоматско дополнување.
+        </div>
+    </div>
+</t:if>
+
+<div class="row">
+
+    <div class="col-md-3">
+        <h2 class="float-right">Commission</h2>
+    </div>
+
+</div>
+
+<hr/>
+
+<div class="row">
+    <div class="col-md-12">
+
+        <t:form t:id="form" class="form-horizontal">
+
+            <t:if test="testMapPopulated">
+                <div class="form-group">
+                    <label class="control-label col-sm-3">${person}</label>
+                    <div class="col-sm-8">
+                        <t:authormapfield key="${person}" t:map="testMap"/>
+                    </div>
+                </div>
+
+                <t:if test="!showCommission">
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <t:submit t:id="editCommission" class="btn btn-primary btn-outline" value="Додај комисија"/>
+                        </div>
+                    </div>
+
+                </t:if>
+
+                <hr/>
+
+                <t:if test="showCommission">
+
+                    <t:loop source="commissioners" value="commissioner">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">${commissioner}</label>
+                            <div class="col-sm-8">
+                                <t:authormapfield key="${commissioner}" t:map="testMap"/>
+                            </div>
+                            <div class="col-sm-1">
+                                <input t:type="submit" t:id="deleteCommissioner" class="btn btn-danger btn-outline" defer="false" value="Х" context="commissioner"/>
+                            </div>
+                        </div>
+                    </t:loop>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <t:submit t:id="addCommissioner" class="btn btn-primary btn-outline" value="Додај нов член на комисија"/>
+                        </div>
+                    </div>
+
+                </t:if>
+            </t:if>
+
+            <t:if test="showCommission">
+
+                <div class="form-group">
+                    <div class="col-sm-3 col-sm-offset-3">
+                        <t:submit t:id="save" value="Зачувај" class="btn btn-primary"/>
+                        <t:actionlink t:id="cancel" class="btn btn-danger margin-left-danger">Откажи</t:actionlink>
+                    </div>
+                </div>
+
+            </t:if>
+
+
+        </t:form>
+
+    </div>
+
+
+</div>
+
+
+</html>
+

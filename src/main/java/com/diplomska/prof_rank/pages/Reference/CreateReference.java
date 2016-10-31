@@ -346,7 +346,6 @@ public class CreateReference {
         }
     }
 
-    @CommitAfter
     @OnEvent(component = "deleteAuthor", value = "selected")
     public void deleteAuthor(String author) {
         for (Iterator<String> iterator = authors.iterator(); iterator.hasNext(); ) {

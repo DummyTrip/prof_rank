@@ -33,8 +33,12 @@
             <t:actionlink t:id="addReferencesFromExcel">Add References From Excel</t:actionlink>
         </div>
 
+        <br/>
         <div>
             <t:pagelink page="scholar/index">Scholar</t:pagelink>
+        </div>
+        <div>
+            <t:pagelink page="commission/index">Commission</t:pagelink>
         </div>
 
         <div>

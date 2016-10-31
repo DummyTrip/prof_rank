@@ -9,6 +9,8 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.hibernate.criterion.Restrictions.*;
@@ -58,11 +60,19 @@ public class PersonHibernate {
     }
 
     public Person getPersonByUsername(String username) {
+        if (username == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
         return (Person) session.createCriteria(Person.class)
                 .add(eq("userName", username)).uniqueResult();
     }
 
     public List<Person> getByBibtexAuthorName(String author) {
+        if (author == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
         String lastName = author.split(", ")[0];
         String firstName = author.split(", ")[1].split(" ")[0];
 
@@ -97,7 +107,7 @@ public class PersonHibernate {
         return identifiers;
     }
 
-    private StringBuilder buildPersonIdentifier(Person person) {
+    public StringBuilder buildPersonIdentifier(Person person) {
         StringBuilder sb = new StringBuilder();
         sb.append(person.getFirstName());
         sb.append(" ");
@@ -167,7 +177,7 @@ public class PersonHibernate {
         session.saveOrUpdate(referencePerson);
     }
 
-    private List<Person> getPersonFromIdentifier(String personIdentifier) {
+    public List<Person> getPersonFromIdentifier(String personIdentifier) {
         if (personIdentifier == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
@@ -338,7 +348,7 @@ public class PersonHibernate {
 
     public void deleteRole(Person person) {
         if (person == null) {
-            throw new IllegalArgumentException("Cannot persist by null value.");
+            throw new IllegalArgumentException("Cannot persist null value.");
         }
 
         List<PersonRole> personRoles = session.createCriteria(PersonRole.class)
@@ -350,6 +360,76 @@ public class PersonHibernate {
             personRole.setRole(null);
             personRole.setPerson(null);
             session.delete(personRole);
+        }
+    }
+
+    public List<Person> getCommission(Person person) {
+        if (person == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        List<Person> persons = new ArrayList<Person>();
+        List<Commission> commissions = session.createCriteria(Commission.class)
+                .add(eq("person", person)).list();
+
+        Collections.sort(commissions, new Comparator<Commission>() {
+            @Override
+            public int compare(Commission o1, Commission o2) {
+                return o1.getCommissionerNum().compareTo(o2.getCommissionerNum());
+            }
+        });
+
+        for (Commission commission : commissions) {
+            persons.add(commission.getCommissioner());
+        }
+
+        return persons;
+    }
+
+    public void setCommissioner(Person person, Person commissioner, Integer commissionerNum) {
+        if (person == null || commissioner == null || commissionerNum == null) {
+            throw new IllegalArgumentException("Cannot persist null value.");
+        }
+
+        Commission commission = new Commission();
+        commission.setPerson(person);
+        commission.setCommissioner(commissioner);
+        commission.setCommissionerNum(commissionerNum);
+
+        session.persist(commission);
+    }
+
+    public void deleteCommisioner(Person person, Person commissioner) {
+        if (person == null || commissioner == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        List<Commission> commissions = session.createCriteria(Commission.class)
+                .add(eq("person", person))
+                .add(eq("commissioner", commissioner))
+                .list();
+
+        if (commissions.size() > 0) {
+            Commission commission = commissions.get(0);
+            commission.setCommissioner(null);
+            commission.setPerson(null);
+            session.delete(commission);
+        }
+    }
+
+    public void deleteCommission(Person person) {
+        if (person == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        List<Commission> commissions = session.createCriteria(Commission.class)
+                .add(eq("person", person))
+                .list();
+
+        for (Commission commission: commissions) {
+            commission.setCommissioner(null);
+            commission.setPerson(null);
+            session.delete(commission);
         }
     }
 }
