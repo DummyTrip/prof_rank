@@ -8,10 +8,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static org.hibernate.criterion.Restrictions.*;
 import static org.hibernate.criterion.Restrictions.eq;
@@ -259,6 +256,37 @@ public class PersonHibernate {
         List<Report> reports = criteria.add(eq("person", person)).list();
 
         return reports;
+    }
+
+    public List<Report> getReports(Person person, String reportTitle) {
+        if (person == null || reportTitle == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        Criteria criteria = session.createCriteria(Report.class);
+        List<Report> reports = criteria.add(eq("person", person))
+                .add(eq("title", reportTitle))
+                .list();
+
+        return reports;
+    }
+
+    public List<Report> getReports(Person person, Date startDate, Date endDate) {
+        if (person == null) {
+            throw new IllegalArgumentException("Cannot filter by null value.");
+        }
+
+        Criteria criteria = session.createCriteria(Report.class);
+        criteria.add(eq("person", person));
+
+        if (startDate != null) {
+            criteria.add(eq("startDate", startDate));
+        }
+        if (endDate != null) {
+            criteria.add(eq("endDate", endDate));
+        }
+
+        return criteria.list();
     }
 
     @CommitAfter

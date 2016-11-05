@@ -73,7 +73,11 @@ public class AddReference {
     }
 
     void setupRender() {
-        this.referenceTypeName = referenceTypeNameQueryString;
+        if (referenceTypeNameQueryString != null) {
+            referenceTypeName = referenceTypeNameQueryString;
+        } else {
+            referenceTypeName = "";
+        }
         this.referenceTypeNames = referenceTypeHibernate.getAllNames();
 
         refs = new ArrayList<ReferenceType>();

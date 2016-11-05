@@ -117,6 +117,26 @@ public class ReferenceTypeHibernate {
         return getSortedReferenceTypes(references, limit);
     }
 
+    public List<ReferenceType> getPopularByPerson(Person person, Integer limit, List<Section> sections, String referenceTypeName) {
+        List<Reference> allReferences = personHibernate.getReferences(person);
+        List<Reference> references = new ArrayList<Reference>();
+
+        for (Reference reference : allReferences) {
+            List<Section> refSections = getSections(reference.getReferenceType());
+
+            for (Section section : sections) {
+                for(Section refSection: refSections) {
+                    if (refSection.getId().equals(section.getId())
+                            && reference.getReferenceType().getName().startsWith(referenceTypeName)) {
+                        references.add(reference);
+                    }
+                }
+            }
+        }
+
+        return getSortedReferenceTypes(references, limit);
+    }
+
     private List<ReferenceType> getSortedReferenceTypes(List<Reference> allReferences, Integer limit) {
         List<ReferenceType> sortedReferenceTypes = new ArrayList<ReferenceType>();
 

@@ -1,0 +1,100 @@
+<html t:type="layout" title="ReferenceType Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div class="row">
+    <div class="col-md-4 margin-top-20px">
+        <div class="row">
+            <t:form t:id="form">
+                <div class="col-md-9">
+                    <t:textfield t:id="searchName" t:mixins="autocomplete" value="reportName" placeholder="Пребарај..."/>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-default">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </t:form>
+        </div>
+
+        <h3 class="padding-top-20px">Филтрирај:</h3>
+
+        <t:form t:id="filterForm">
+
+            <div class="col-md-12 padding-top-10px">
+                <label class="control-label">Од</label>
+            </div>
+
+            <div class="col-md-12 padding-top-10px">
+                <div class="">
+                    <t:datefield value="startDate"/>
+                </div>
+            </div>
+
+            <div class="col-md-12 padding-top-10px">
+                <label class="control-label">Од</label>
+            </div>
+
+            <div class="col-md-12 padding-top-10px">
+                <div class="">
+                    <t:datefield value="endDate"/>
+                </div>
+            </div>
+
+            <div class="col-md-12 padding-top-15px">
+                <div class="form-group">
+                    <div class="col-md-5 no-padding-left">
+                        <t:submit t:id="save" value="Филтрирај" class="btn btn-default"/>
+                    </div>
+                    <div class="col-md-7">
+                        <t:actionlink t:id="resetFilter" class="btn btn-default">Откажи</t:actionlink>
+                    </div>
+                </div>
+            </div>
+        </t:form>
+
+    </div>
+
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Извештаи</h2>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="row margin-bottom-15px">
+            <div class="no-padding-left float-right">
+                <t:pagelink page="reference/addreference" class="btn btn-default add-ref-ins-text-size">
+                    <i class="fa fa-plus-square-o add-ref-ins-text-size" aria-hidden="true"/> Додај
+                </t:pagelink>
+            </div>
+        </div>
+
+        <t:loop source="reports" value="report">
+            <t:delegate to="block:reportElement"/>
+        </t:loop>
+
+    </div>
+</div>
+
+<t:block id="reportElement">
+
+    <t:pagelink page="reference/showreference" context="report.id">
+        <div class="row div-shadow white-background ref-list-padding">
+
+            <div class="col-md-11">
+                <h4 class="no-margin truncate-ref-link black-color">${report.getTitle()}</h4>
+            </div>
+
+            <div class="col-md-1">
+                <i class="fa fa-list ref-list-icon-size black-color" aria-hidden="true"></i>
+            </div>
+        </div>
+    </t:pagelink>
+
+</t:block>
+
+
+</html>

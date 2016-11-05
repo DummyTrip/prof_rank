@@ -73,8 +73,12 @@ public class Index {
     }
 
     void setupRender() {
-        this.referenceTypeName = referenceTypeNameQueryString;
-        this.referenceTypeNames = referenceTypeHibernate.getAllNames();
+        if (referenceTypeNameQueryString != null) {
+            referenceTypeName = referenceTypeNameQueryString;
+        } else {
+            referenceTypeName = "";
+        }
+        referenceTypeNames = referenceTypeHibernate.getAllNames();
 
         refs = new ArrayList<ReferenceType>();
         firstPageRefs = new ArrayList<ReferenceType>();
@@ -121,7 +125,8 @@ public class Index {
 
         List<ReferenceType> newInstances;
 
-        newInstances = referenceTypeHibernate.getPopularByPerson(personHibernate.getById(Long.valueOf(1)), Integer.MAX_VALUE, selectedSections);
+        newInstances = referenceTypeHibernate.getPopularByPerson(personHibernate.getById(Long.valueOf(1)),
+                Integer.MAX_VALUE, selectedSections, referenceTypeName);
 
         // This fix makes sure the items from page 0 don't duplicate
         // by separating the items of page 0 from the rest.
