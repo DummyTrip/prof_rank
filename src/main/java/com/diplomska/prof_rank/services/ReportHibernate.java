@@ -6,6 +6,7 @@ import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class ReportHibernate {
     }
 
     public List<Report> getAll() {
-        return session.createCriteria(Report.class).list();
+        return session.createCriteria(Report.class).addOrder(Order.desc("startDate")).list();
     }
 
     @CommitAfter

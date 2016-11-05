@@ -66,7 +66,7 @@
 
         <div class="row margin-bottom-15px">
             <div class="no-padding-left float-right">
-                <t:pagelink page="reference/addreference" class="btn btn-default add-ref-ins-text-size">
+                <t:pagelink page="report/createreport" class="btn btn-default add-ref-ins-text-size">
                     <i class="fa fa-plus-square-o add-ref-ins-text-size" aria-hidden="true"/> Додај
                 </t:pagelink>
             </div>
@@ -81,7 +81,7 @@
 
 <t:block id="reportElement">
 
-    <t:pagelink page="reference/showreference" context="report.id">
+    <t:pagelink page="report/showreport" context="report.id">
         <div class="row div-shadow white-background ref-list-padding">
 
             <div class="col-md-11">
