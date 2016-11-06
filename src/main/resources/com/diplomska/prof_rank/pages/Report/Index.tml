@@ -44,7 +44,7 @@
             <div class="col-md-12 padding-top-15px">
                 <div class="form-group">
                     <div class="col-md-5 no-padding-left">
-                        <t:submit t:id="save" value="Филтрирај" class="btn btn-default"/>
+                        <t:submit t:id="filter" value="Филтрирај" class="btn btn-default"/>
                     </div>
                     <div class="col-md-7">
                         <t:actionlink t:id="resetFilter" class="btn btn-default">Откажи</t:actionlink>

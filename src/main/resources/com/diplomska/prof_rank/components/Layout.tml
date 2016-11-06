@@ -39,6 +39,8 @@
                     </t:any>
                 </t:loop>
                 <li><t:pagelink page="reference/index">ReferenceTypes</t:pagelink></li>
+                <li><t:pagelink page="commission/index">Commission</t:pagelink></li>
+                <li><t:pagelink page="report/index">Reports</t:pagelink></li>
             </ul>
             <span class="navbar-right">
                  <t:if test="loggedIn">

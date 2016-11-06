@@ -208,6 +208,9 @@ public class ReportHibernate {
 
         referenceReport.setReport(report);
         referenceReport.setReference(reference);
+        if (reference.getReferenceType().getPoints() != null) {
+            referenceReport.setPoints(reference.getReferenceType().getPoints());
+        }
 
         session.saveOrUpdate(referenceReport);
     }

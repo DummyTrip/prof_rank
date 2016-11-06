@@ -1,14 +1,12 @@
 package com.diplomska.prof_rank.pages.Report;
 
 import com.diplomska.prof_rank.entities.Report;
+import com.diplomska.prof_rank.model.UserInfo;
 import com.diplomska.prof_rank.services.PersonHibernate;
 import com.diplomska.prof_rank.services.ReportHibernate;
 import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.Link;
-import org.apache.tapestry5.annotations.ActivationRequestParameter;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 
@@ -47,6 +45,9 @@ public class Index {
     @Property
     Date endDate;
 
+    @SessionState
+    UserInfo userInfo;
+
     public void setupRender() {
         if (reportNameQueryString != null) {
             reportName = reportNameQueryString;
@@ -55,9 +56,9 @@ public class Index {
 
         if (startDate != null || endDate != null) {
             // this is correct
-//            reports = personHibernate.getReports(person, startDate, endDate);
+            reports = personHibernate.getReports(userInfo.getPerson(), startDate, endDate);
             // this is not correct. temp code.
-            reports = reportHibernate.getAll();
+//            reports = reportHibernate.getAll();
         }
 
         if (reports == null) {
@@ -91,7 +92,7 @@ public class Index {
         return pageRenderLinkSource.createPageRenderLink(this.getClass());
     }
 
-    @OnEvent(component = "save", value = "selected")
+    @OnEvent(component = "filter", value = "selected")
     public Object filterReports() {
         return this;
     }
@@ -99,5 +100,6 @@ public class Index {
     public void onActionFromResetFilter() {
         startDate = null;
         endDate = null;
+        reportNameQueryString = null;
     }
 }

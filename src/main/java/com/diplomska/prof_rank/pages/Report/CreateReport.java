@@ -2,12 +2,14 @@ package com.diplomska.prof_rank.pages.Report;
 
 import com.diplomska.prof_rank.entities.Reference;
 import com.diplomska.prof_rank.entities.Report;
+import com.diplomska.prof_rank.model.UserInfo;
 import com.diplomska.prof_rank.services.PersonHibernate;
 import com.diplomska.prof_rank.services.ReportHibernate;
 import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SessionState;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -32,6 +34,9 @@ public class CreateReport {
     @InjectPage
     Index index;
 
+    @SessionState
+    UserInfo userInfo;
+
     public void setupRender() {
 
     }
@@ -46,16 +51,22 @@ public class CreateReport {
 
     private void storeReport() {
         Report report = new Report();
-        Person person = personHibernate.getById(Long.valueOf(1));
+        Person person = personHibernate.getById(userInfo.getPersonId());
+        float total = 0f;
 
         report.setPerson(person);
         report.setStartDate(startDate);
         report.setEndDate(endDate);
         report.setTitle("Test Report");
-        report.setTotalScore(0f);
+
         for (Reference reference : personHibernate.getReferences(person)) {
             reportHibernate.setReference(report, reference);
+
+            if (reference.getReferenceType().getPoints() != null) {
+                total += reference.getReferenceType().getPoints();
+            }
         }
+        report.setTotalScore(total);
 
         reportHibernate.store(report);
     }

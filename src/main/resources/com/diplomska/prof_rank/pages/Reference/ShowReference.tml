@@ -112,6 +112,15 @@
         <hr/>
 
         <div class="row margin-bottom-15px">
+
+            <t:if test="papersReferenceType">
+                <div class="col-md-3 no-padding-left">
+                    <t:pagelink page="scholar/index" class="btn btn-default" style="font-size: 20px;">
+                        <i class="fa fa-search add-ref-ins-text-size" aria-hidden="true"/> Пребарај Google Scholar
+                    </t:pagelink>
+                </div>
+            </t:if>
+
             <div class="no-padding-left float-right">
                 <t:pagelink page="reference/createreference" context="referenceType.id" class="btn btn-default add-ref-ins-text-size">
                     <i class="fa fa-plus-square-o add-ref-ins-text-size" aria-hidden="true"/> Додај

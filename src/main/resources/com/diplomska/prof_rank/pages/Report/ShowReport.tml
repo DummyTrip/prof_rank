@@ -2,6 +2,8 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
       xmlns:p="tapestry:parameter">
 
+<div style="">
+
 <div class="row">
     <div class="col-md-offset-5 col-md-7">
         <h4>АНЕКС</h4>
@@ -21,33 +23,6 @@
 </div>
 
 <br/>
-
-<!--<div class="row">-->
-    <!--<div class="col-md-2">-->
-        <!--<h4 class="">Кандидат:</h4>-->
-    <!--</div>-->
-    <!--<div class="col-md-10">-->
-        <!--<h4>${personName}</h4>-->
-    <!--</div>-->
-<!--</div>-->
-
-<!--<div class="row">-->
-    <!--<div class="col-md-2">-->
-        <!--<h4 class="">Институција: </h4>-->
-    <!--</div>-->
-    <!--<div class="col-md-10">-->
-        <!--<h4>${personName}</h4>-->
-    <!--</div>-->
-<!--</div>-->
-
-<!--<div class="row">-->
-    <!--<div class="col-md-2">-->
-        <!--<h4 class="">Научна област: </h4>-->
-    <!--</div>-->
-    <!--<div class="col-md-10">-->
-        <!--<h4>${personName}</h4>-->
-    <!--</div>-->
-<!--</div>-->
 
 <div class="row">
     <div class="col-md-7">
@@ -96,14 +71,15 @@
                         <tr>
                             <td class="col-md-1">${referenceTypeIndex}</td>
                             <td class="col-md-10">${referenceType}</td>
-                            <td class="col-md-1">0</td>
+                            <td class="col-md-1">${referenceTypePoints}</td>
                         </tr>
                     </t:loop>
 
                     <tr>
                         <td colspan="2" style="text-align: right"><b>Вкупно: </b></td>
-                        <td class="col-md-1">0</td>
+                        <td class="col-md-1">${sectionPoints}</td>
                     </tr>
+
                 </tbody>
 
             </table>
@@ -117,16 +93,24 @@
 
             <thead>
                 <tr>
-                    <th>ПРОФЕСИОНАЛНИ РЕФЕРЕНЦИ НА КАНДИДАТОТ ЗА ИЗБОР ВО ЗВАЊЕ</th>
-                    <th>Поени</th>
+                    <th class="col-md-11">ПРОФЕСИОНАЛНИ РЕФЕРЕНЦИ НА КАНДИДАТОТ ЗА ИЗБОР ВО ЗВАЊЕ</th>
+                    <th class="col-md-1">Поени</th>
                 </tr>
             </thead>
 
             <tbody>
+                <t:loop source="sections" value="section">
+                    <tr>
+                        <td class="col-md-11">${sectionName}</td>
+                        <td class="col-md-1">${sectionPoints}</td>
+                    </tr>
+                </t:loop>
+
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td class="col-md-11" style="text-align: right">ВКУПНО</td>
+                    <td class="col-md-1">${totalPoints}</td>
                 </tr>
+
             </tbody>
 
         </table>
@@ -140,6 +124,8 @@
             <p>${commissionerIndex}. ${commissionerName}</p>
         </t:loop>
     </div>
+</div>
+
 </div>
 
 </html>

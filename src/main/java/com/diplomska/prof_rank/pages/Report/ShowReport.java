@@ -7,8 +7,7 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Aleksandar on 05-Nov-16.
@@ -69,6 +68,12 @@ public class ShowReport {
 
     @Property
     private Integer commissionIndex;
+    
+    @Property
+    private Map<ReferenceType, Float> referenceTypePointsMap;
+
+    @Property
+    private Map<Section, Float> totalSectionPointsMap;
 
     public void setupRender() {
         // TODO: only commission and this report's owner can see this page.
@@ -85,17 +90,31 @@ public class ShowReport {
 
     private void loadReferenceTypes() {
         referenceTypes = new ArrayList<ReferenceType>();
+        referenceTypePointsMap = new HashMap<ReferenceType, Float>();
 
         for (Reference reference : references) {
             ReferenceType referenceType = reference.getReferenceType();
             if (!referenceTypes.contains(referenceType)) {
                 referenceTypes.add(referenceType);
+                referenceTypePointsMap.put(referenceType, 0f);
+            }
+            if (referenceType.getPoints() != null) {
+                referenceTypePointsMap.put(referenceType, referenceTypePointsMap.get(referenceType) + referenceType.getPoints());
             }
         }
     }
 
     public List<Section> getSections() {
-        return rulebookHibernate.getSections(rulebook);
+        List<Section> sections = rulebookHibernate.getSections(rulebook);
+
+        if (totalSectionPointsMap == null) {
+            totalSectionPointsMap = new HashMap<Section, Float>();
+            for (Section section : sections) {
+                totalSectionPointsMap.put(section, 0f);
+            }
+        }
+
+        return sections;
     }
 
     public List<ReferenceType> getReferenceTypesBySection() {
@@ -142,6 +161,24 @@ public class ShowReport {
         StringBuilder sb = buildPersonName(commissioner);
 
         return sb.toString();
+    }
+
+    public Float getReferenceTypePoints() {
+        sumSectionPoints();
+
+        return referenceTypePointsMap.get(referenceType);
+    }
+
+    private void sumSectionPoints() {
+        totalSectionPointsMap.put(section, totalSectionPointsMap.get(section) + referenceTypePointsMap.get(referenceType));
+    }
+
+    public Float getSectionPoints() {
+        return totalSectionPointsMap.get(section);
+    }
+
+    public Float getTotalPoints() {
+        return report.getTotalScore();
     }
 
     private StringBuilder buildPersonName(Person person) {

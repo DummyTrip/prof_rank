@@ -410,4 +410,8 @@ public class ShowReference {
         return this;
     }
 
+    public boolean isPapersReferenceType() {
+        return referenceType.getName().equals("Papers") ? true : false;
+    }
+
 }

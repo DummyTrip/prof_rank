@@ -15,6 +15,8 @@ public class ReferenceReport {
 
     private Report report;
 
+    private float points;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NonVisual
@@ -46,4 +48,11 @@ public class ReferenceReport {
         this.report = report;
     }
 
+    public float getPoints() {
+        return points;
+    }
+
+    public void setPoints(float points) {
+        this.points = points;
+    }
 }
