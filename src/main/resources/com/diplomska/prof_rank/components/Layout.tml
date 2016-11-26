@@ -41,6 +41,9 @@
                 <li><t:pagelink page="reference/index">ReferenceTypes</t:pagelink></li>
                 <li><t:pagelink page="commission/index">Commission</t:pagelink></li>
                 <li><t:pagelink page="report/index">Reports</t:pagelink></li>
+                <t:if test="admin">
+                    <li><t:pagelink page="admin">Admin</t:pagelink></li>
+                </t:if>
             </ul>
             <span class="navbar-right">
                  <t:if test="loggedIn">

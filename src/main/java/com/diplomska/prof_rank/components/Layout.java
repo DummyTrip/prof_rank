@@ -72,9 +72,12 @@ public class Layout
     }
 
     public boolean isLoggedIn() {
-        return person != null ? true : false;
+        return person != null;
     }
 
+    public boolean isAdmin() {
+        return userInfo.isAdmin();
+    }
 
     @Inject
     private Request request;

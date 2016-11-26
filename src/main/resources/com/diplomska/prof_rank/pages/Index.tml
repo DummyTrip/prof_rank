@@ -2,56 +2,27 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
         >
 
-        <t:if test="popularReferenceTypesForPersonNull">
-            <div class="row">
-                <h3>Најпопуларни референци за корисник со ID 1</h3>
+    <t:if test="popularReferenceTypesForPersonNull">
+        <div class="row">
+            <h3>Најпопуларни референци за корисник со ID 1</h3>
 
-                <t:loop source="popularReferenceTypesForPerson" value="referenceType">
-                    <t:delegate to="block:referenceForPersonElement"/>
-                </t:loop>
-
-            </div>
-        </t:if>
-
-        <t:if test="popularReferenceTypesNull">
-            <div class="row">
-                <h3>Најпопуларни</h3>
-
-                <t:loop source="popularReferenceTypes" value="referenceType">
-                    <t:delegate to="block:referenceElement"/>
-                </t:loop>
-
-            </div>
-        </t:if>
-
-        <hr/>
-        <div>
-            <t:actionlink t:id="addPersonAndReferenceInputTemplate">Add Person, Reference Input Template, Rulebook and Sections</t:actionlink>
-        </div>
-
-        <div>
-            <t:actionlink t:id="addReferencesFromExcel">Add References From Excel</t:actionlink>
-        </div>
-
-        <br/>
-
-        <div>
-            <h2>Pages</h2>
-
-            <ul>
-                <li><t:pagelink page="admin/person/index">Persons</t:pagelink></li>
-                <li><t:pagelink page="admin/role/index">Roles</t:pagelink></li>
-                <li><t:pagelink page="admin/rulebook/index">Rulebooks</t:pagelink></li>
-                <li><t:pagelink page="admin/section/index">Sections</t:pagelink></li>
-                <li><t:pagelink page="admin/referenceType/index">Reference Types</t:pagelink></li>
-                <li><t:pagelink page="admin/referenceinputtemplate/index">Reference Input Templates</t:pagelink></li>
-                <li><t:pagelink page="admin/attribute/index">Attributes</t:pagelink></li>
-                <li><t:pagelink page="admin/report/index">Reports</t:pagelink></li>
-                <li><t:pagelink page="admin/institutionProfRank/index">Institutions</t:pagelink></li>
-                <li><t:pagelink page="admin/subjectdomain/index">Subject Domains</t:pagelink></li>
-            </ul>
+            <t:loop source="popularReferenceTypesForPerson" value="referenceType">
+                <t:delegate to="block:referenceForPersonElement"/>
+            </t:loop>
 
         </div>
+    </t:if>
+
+    <t:if test="popularReferenceTypesNull">
+        <div class="row">
+            <h3>Најпопуларни</h3>
+
+            <t:loop source="popularReferenceTypes" value="referenceType">
+                <t:delegate to="block:referenceElement"/>
+            </t:loop>
+
+        </div>
+    </t:if>
 
 
     <t:block id="referenceForPersonElement">

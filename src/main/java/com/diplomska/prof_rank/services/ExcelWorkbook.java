@@ -36,7 +36,9 @@ public class ExcelWorkbook {
 
     @Inject
     RulebookHibernate rulebookHibernate;
-    
+
+    // TODO add (secondary) english names of attributes for Papers ReferenceType. 
+
     // helper variable. remembers parent name for category names
     private String parentCategoryName = "";
 
