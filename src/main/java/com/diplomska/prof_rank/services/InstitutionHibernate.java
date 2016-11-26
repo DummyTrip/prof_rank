@@ -6,6 +6,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hibernate.criterion.Restrictions.eq;
@@ -65,5 +66,15 @@ public class InstitutionHibernate {
         List<InstitutionProfRank> entities = criteria.add(eq(column, value)).list();
 
         return entities;
+    }
+
+    public List<String> findAllInstitutionNames() {
+        List<String> institutionNames = new ArrayList<String>();
+
+        for (InstitutionProfRank institution : getAll()) {
+            institutionNames.add(institution.getName());
+        }
+
+        return institutionNames;
     }
 }

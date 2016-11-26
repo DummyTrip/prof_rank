@@ -1,11 +1,13 @@
 package com.diplomska.prof_rank.services;
 
 import com.diplomska.prof_rank.entities.SubjectDomain;
+import org.apache.poi.hssf.record.pivottable.StreamIDRecord;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hibernate.criterion.Restrictions.eq;
@@ -65,5 +67,15 @@ public class SubjectDomainHibernate {
         List<SubjectDomain> entities = criteria.add(eq(column, value)).list();
 
         return entities;
+    }
+
+    public List<String> findAllSubjectDomainNames() {
+        List<String> subjectDomainNames = new ArrayList<String>();
+
+        for (SubjectDomain subjectDomain : getAll()) {
+            subjectDomainNames.add(subjectDomain.getName());
+        }
+
+        return subjectDomainNames;
     }
 }

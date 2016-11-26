@@ -7,10 +7,12 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hibernate.criterion.Restrictions.*;
 import static org.hibernate.criterion.Restrictions.eq;
 
 /**
@@ -90,7 +92,10 @@ public class ReportHibernate {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        List<InstitutionReport> institutionReports = report.getInstitutionReports();
+        List<InstitutionReport> institutionReports = session.createCriteria(InstitutionReport.class, "institutionReport")
+                .add(eq("report", report))
+                .list();
+
         List<InstitutionProfRank> institutionProfRanks = new ArrayList<InstitutionProfRank>();
 
         for (InstitutionReport institutionReport : institutionReports) {
@@ -140,7 +145,9 @@ public class ReportHibernate {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        List<ReportSubjectDomain> subjectDomainReports = report.getReportSubjectDomains();
+        List<ReportSubjectDomain> subjectDomainReports = session.createCriteria(ReportSubjectDomain.class)
+                .add(eq("report", report))
+                .list();;
         List<SubjectDomain> subjectDomains = new ArrayList<SubjectDomain>();
 
         for (ReportSubjectDomain subjectDomainReport : subjectDomainReports) {
@@ -189,7 +196,9 @@ public class ReportHibernate {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        List<ReferenceReport> referenceReports = report.getReferenceReports();
+        List<ReferenceReport> referenceReports = session.createCriteria(ReferenceReport.class)
+                .add(eq("report", report))
+                .list();
         List<Reference> references = new ArrayList<Reference>();
 
         for (ReferenceReport referenceReport : referenceReports) {
