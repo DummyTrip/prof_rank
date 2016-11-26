@@ -7,6 +7,10 @@
     color: #286090;
 }
 
+.main-background-color {
+    background-color: #286090;
+}
+
 .contrast-color
 {
     color: #FFF488;
@@ -262,8 +266,9 @@ div.scrollExtend-loading {
     height: 150px;
 }
 
-
-
+.active-row {
+    background-color: rgba(0,0,0,.075);
+}
 
 
 

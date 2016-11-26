@@ -244,4 +244,15 @@ public class ReportHibernate {
         referenceReport.setReport(null);
         report.getReferenceReports().remove(referenceReport);
     }
+
+    public boolean containsRefrerence(Report report, Reference reference) {
+        if (report == null || reference == null) {
+            throw new IllegalArgumentException("Cannot fliter by null value.");
+        }
+
+        return session.createCriteria(ReferenceReport.class)
+                .add(eq("report", report))
+                .add(eq("reference", reference))
+                .list().size() > 0;
+    }
 }

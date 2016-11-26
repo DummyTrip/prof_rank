@@ -282,7 +282,7 @@ public class ShowReport {
     }
 
     public String getActiveReference() {
-        if (references.contains(reference)) {
+        if (reportHibernate.containsRefrerence(report, reference)) {
             return "-";
         } else {
             return "+";
@@ -369,8 +369,7 @@ public class ShowReport {
     }
 
     @CommitAfter
-    @OnEvent(component = "toggleActiveReference", value = "selected")
-    public void toggleActiveReference(Reference reference) {
+    public void ontoggleActiveReference(Reference reference) {
         Report report = reportHibernate.getById(reportId);
         if (reportHibernate.getReferences(report).contains(reference)) {
             reportHibernate.deleteReference(report, reference);
@@ -378,6 +377,7 @@ public class ShowReport {
             reportHibernate.setReference(report, reference);
         }
 
+        this.reference = reference;
         ajaxResponseRenderer.addRender(referencesZone);
     }
 }

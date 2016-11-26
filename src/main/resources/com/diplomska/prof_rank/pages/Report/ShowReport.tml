@@ -89,7 +89,7 @@
                 <h4>${sectionName}</h4>
                 <table class="table table-bordered">
 
-                    <thead>
+                    <thead class="main-background-color white-color">
                         <tr>
                             <th class="col-md-1">Ред. број</th>
                             <th class="col-md-10">Назив на активноста</th>
@@ -100,24 +100,23 @@
                     <tbody>
 
                         <t:loop source="referenceTypesBySection" value="referenceType" index="loopIndex">
-                            <tr>
+                            <tr class="">
                                 <td class="col-md-1">${referenceTypeIndex}</td>
                                 <td class="col-md-10">${referenceType}</td>
                                 <td class="col-md-1">${referenceTypePoints}</td>
                             </tr>
                             <t:if test="editReport">
-                                <t:zone t:id="referencesZone" id="referencesZone">
-                                    <t:form t:id="referencesForm">
-                                        <t:loop source="referencesByReferenceType" value="reference">
-                                            <tr>
-                                                <td class="col-md-1"></td>
-                                                <td class="col-md-10">${referenceDisplayName}</td>
-                                                <td class="col-md-1"><t:submit t:id="toggleActiveReference" class="btn ${activeReferenceClass}" context="reference" value="${activeReference}"/></td>
-                                            </tr>
-                                        </t:loop>
-                                    </t:form>
-                                </t:zone>
+                                <t:loop source="referencesByReferenceType" value="reference">
+                                    <tr t:type="zone" t:id="referencesZone" id="referencesZone_${reference.getId()}">
+                                        <td class="col-md-1"></td>
+                                        <td class="col-md-10">${referenceDisplayName}</td>
+                                        <td class="col-md-1">
+                                            <t:eventLink zone="referencesZone_${reference.getId()}" t:id="toggleActiveReference" class="btn ${activeReferenceClass}" context="reference">${activeReference}</t:eventLink>
+                                        </td>
+                                    </tr>
+                                </t:loop>
                             </t:if>
+
                         </t:loop>
 
                         <tr>
@@ -136,7 +135,7 @@
         <div class="col-md-12">
             <table class="table table-bordered">
 
-                <thead>
+                <thead class="main-background-color white-color">
                     <tr>
                         <th class="col-md-11">ПРОФЕСИОНАЛНИ РЕФЕРЕНЦИ НА КАНДИДАТОТ ЗА ИЗБОР ВО ЗВАЊЕ</th>
                         <th class="col-md-1">Поени</th>
@@ -178,7 +177,7 @@
                 <t:pagelink page="report/showreport" context="reportId" t:parameters="{'edit': false}" class="btn btn-primary float-right">Approve</t:pagelink>
             </t:if>
             <t:if test="editReport">
-                <t:pagelink page="report/showreport" context="reportId" t:parameters="{'edit': false}" class="btn btn-danger float-right margin-left-danger">Cancel</t:pagelink>
+                <!--<t:pagelink page="report/showreport" context="reportId" t:parameters="{'edit': false}" class="btn btn-danger float-right margin-left-danger">Cancel</t:pagelink>-->
                 <t:pagelink page="report/showreport" context="reportId" t:parameters="{'edit': false}" class="btn btn-primary float-right">Confirm</t:pagelink>
             </t:if>
         </div>
