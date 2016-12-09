@@ -46,13 +46,16 @@ public class Index {
     @Property
     boolean showCommission;
 
+    private static final String personDisplayName = "Академик";
+    private static final String commissionDisplayName = "Член на комисија ";
+
     public void setupRender() {
         if (testMap == null) {
             testMap = new HashMap<String, String>();
         }
 
         if (person == null) {
-            person = "person";
+            person = personDisplayName;
             testMap.put(person, "");
         }
     }
@@ -69,19 +72,18 @@ public class Index {
         return testMap.size() > 0 ? true : false;
     }
 
-    @OnEvent(component = "deleteCommissioner", value = "selected")
-    public void deleteCommissioner(String commissioner) {
+    void onDeleteCommissioner(String commissioner) {
         for (Iterator<String> iterator = commissioners.iterator(); iterator.hasNext(); ) {
             if (commissioner.equals(iterator.next())) {
                 iterator.remove();
             }
         }
 
+        commissioners.remove(commissioner);
         testMap.remove(commissioner);
     }
 
-    @OnEvent(component = "addCommissioner", value = "selected")
-    void createNewCommissioner(String value) {
+    public void onAddCommissioner() {
         addCommissioner("");
     }
 
@@ -90,10 +92,10 @@ public class Index {
         if (commissioners.size() > 0){
             lastCommissioner = commissioners.get(commissioners.size() - 1);
         } else{
-            lastCommissioner = "commissioner 0";
+            lastCommissioner = commissionDisplayName + "0";
         }
-        Integer newCommissionerNumber = Integer.valueOf(lastCommissioner.split(" ")[1]) + 1;
-        String commissionerName = "commissioner " + newCommissionerNumber;
+        Integer newCommissionerNumber = Integer.valueOf(lastCommissioner.split(" ")[3]) + 1;
+        String commissionerName = commissionDisplayName + newCommissionerNumber;
         addCommissionerToForm(commissionerName, value);
     }
 
@@ -115,8 +117,9 @@ public class Index {
         if (tempMap.get(person) == null) {
             return missingCommissioner();
         }
-
         List<String> commissionNames = new ArrayList<String>();
+
+        // find the person whose commission is edited
         Person academic;
         List<Person> persons = personHibernate.getPersonFromIdentifier(tempMap.get(person));
         if (persons.size() > 0) {
@@ -126,11 +129,16 @@ public class Index {
             return missingCommissioner();
         }
 
+        // get the names of the commission
         for (String commissioner : commissioners) {
             commissionNames.add(tempMap.get(commissioner));
             tempMap.remove(commissioner);
         }
 
+        // delete previous commission
+        personHibernate.deleteCommission(academic);
+
+        // add new commission
         for (String commissionerName : commissionNames) {
             if (commissionerName == null) {
                 return missingCommissioner();
@@ -139,7 +147,8 @@ public class Index {
             persons = personHibernate.getPersonFromIdentifier(commissionerName);
             if (persons.size() > 0) {
                 Person commissioner = persons.get(0);
-                personHibernate.setCommissioner(academic, commissioner, commissionNames.indexOf(commissionerName));
+                if (!personHibernate.getCommission(academic).contains(commissioner))
+                    personHibernate.setCommissioner(academic, commissioner, commissionNames.indexOf(commissionerName));
             } else {
                 return missingCommissioner();
             }
@@ -166,7 +175,7 @@ public class Index {
 
         commissioners = new ArrayList<String>();
         if (commission.size() == 0){
-            String commissionerName = "commissioner 1";
+            String commissionerName = commissionDisplayName + "1";
             commissioners.add(commissionerName );
             testMap.put(commissionerName , "");
         }

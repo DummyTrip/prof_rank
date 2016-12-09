@@ -4,7 +4,7 @@
 
     <t:if test="popularReferenceTypesForPersonNull">
         <div class="row">
-            <h3>Најпопуларни референци за корисник со ID 1</h3>
+            <h3>Вашите најпопуларни референци</h3>
 
             <t:loop source="popularReferenceTypesForPerson" value="referenceType">
                 <t:delegate to="block:referenceForPersonElement"/>

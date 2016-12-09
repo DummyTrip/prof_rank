@@ -18,16 +18,23 @@
         <t:form t:id="form" class="form-horizontal">
 
             <div class="form-group">
+                <label class="control-label col-sm-3">Име на извештајот</label>
+                <div class="col-sm-8">
+                    <t:textfield value="title" validate="required"/>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label class="control-label col-sm-3">Од</label>
                 <div class="col-sm-8">
-                    <t:datefield value="startDate" validate="required"></t:datefield>
+                    <t:datefield value="startDate" validate="required"/>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-3">До</label>
                 <div class="col-sm-8">
-                    <t:datefield value="endDate" validate="required"></t:datefield>
+                    <t:datefield value="endDate" validate="required"/>
                 </div>
             </div>
 

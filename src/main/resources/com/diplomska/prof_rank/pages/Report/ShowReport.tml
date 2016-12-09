@@ -48,8 +48,8 @@
                                 </t:loop>
                                 <tr>
                                     <td class="col-md-4"></td>
-                                    <td class="col-md-7"><t:textfield t:id="newInstitutionField" t:mixins="autocomplete" value="newInstitutionName" class="col-md-4"/></td>
-                                    <td class="col-md-1"><t:submit t:id="saveNewInstitution" class="btn btn-default" value="Add"/></td>
+                                    <td class="col-md-7"><t:textfield t:id="newInstitutionField" t:mixins="autocomplete" placeholder="Внеси институција" value="newInstitutionName" class="col-md-4"/></td>
+                                    <td class="col-md-1"><t:submit t:id="saveNewInstitution" class="btn btn-default" value="Додај"/></td>
                                 </tr>
                             </t:if>
                             <tr>
@@ -66,8 +66,8 @@
                                 </t:loop>
                                 <tr>
                                     <td class="col-md-4"></td>
-                                    <td class="col-md-7"><t:textfield t:id="newSubjectDomainField" t:mixins="autocomplete" value="newSubjectDomainName"/></td>
-                                    <td class="col-md-1"><t:submit t:id="saveNewSubjectDomain" class="btn btn-default" value="Add"/></td>
+                                    <td class="col-md-7"><t:textfield t:id="newSubjectDomainField" t:mixins="autocomplete" placeholder="Внеси научна област" value="newSubjectDomainName"/></td>
+                                    <td class="col-md-1"><t:submit t:id="saveNewSubjectDomain" class="btn btn-default" value="Додај"/></td>
                                 </tr>
                             </t:if>
                             <tr>
@@ -93,7 +93,8 @@
                         <tr>
                             <th class="col-md-1">Ред. број</th>
                             <th class="col-md-10">Назив на активноста</th>
-                            <th class="col-md-1">Поени</th>
+                            <th class="col-md-1" t:type="if" test="!editReport">Поени</th>
+                            <th class="col-md-1" t:type="if" test="editReport">Избери</th>
                         </tr>
                     </thead>
 
@@ -103,7 +104,7 @@
                             <tr class="">
                                 <td class="col-md-1">${referenceTypeIndex}</td>
                                 <td class="col-md-10">${referenceType}</td>
-                                <td class="col-md-1">${referenceTypePoints}</td>
+                                <td class="col-md-1" t:type="if" test="!editReport">${referenceTypePoints}</td>
                             </tr>
                             <t:if test="editReport">
                                 <t:loop source="referencesByReferenceType" value="reference">
@@ -119,7 +120,7 @@
 
                         </t:loop>
 
-                        <tr>
+                        <tr t:type="if" test="!editReport">
                             <td colspan="2" style="text-align: right"><b>Вкупно: </b></td>
                             <td class="col-md-1">${sectionPoints}</td>
                         </tr>
@@ -131,7 +132,7 @@
         </t:loop>
     </div>
 
-    <div class="row">
+    <div class="row" t:type="if" test="!editReport">
         <div class="col-md-12">
             <table class="table table-bordered">
 
@@ -161,7 +162,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" t:type="if" test="!editReport">
         <div class="col-md-12">
             <h4>Членови на Комисијата</h4>
             <t:loop source="commission" value="commissioner" index="commissionIndex">
@@ -170,15 +171,15 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row margin-top-20px">
         <div class="col-md-12">
             <t:if test="!editReport">
-                <t:pagelink page="report/showreport" context="reportId" t:parameters="{'edit': true}" class="btn btn-warning float-right margin-left-danger">Edit</t:pagelink>
-                <t:pagelink page="report/showreport" context="reportId" t:parameters="{'edit': false}" class="btn btn-primary float-right">Approve</t:pagelink>
+                <t:pagelink page="report/showreport" context="reportId" t:parameters="{'edit': true}" class="btn btn-warning float-right margin-left-danger">Уреди</t:pagelink>
+                <t:pagelink page="report/showreport" context="reportId" t:parameters="{'edit': false}" class="btn btn-primary float-right">Одобри</t:pagelink>
             </t:if>
             <t:if test="editReport">
                 <!--<t:pagelink page="report/showreport" context="reportId" t:parameters="{'edit': false}" class="btn btn-danger float-right margin-left-danger">Cancel</t:pagelink>-->
-                <t:pagelink page="report/showreport" context="reportId" t:parameters="{'edit': false}" class="btn btn-primary float-right">Confirm</t:pagelink>
+                <t:pagelink page="report/showreport" context="reportId" t:parameters="{'edit': false}" class="btn btn-primary float-right">Одобри</t:pagelink>
             </t:if>
         </div>
     </div>

@@ -152,7 +152,6 @@ public class CreateReference {
         referenceHibernate.updateAttributeReferences(reference, testMap, attributes);
 
         for (String authorName : authorNames) {
-            // TODO: create new referencePerson for every author
             personHibernate.setReference(reference, authorName, authorNames.indexOf(authorName));
         }
 
@@ -216,8 +215,7 @@ public class CreateReference {
     }
 
     @CommitAfter
-    @OnEvent(component = "deleteAttribute", value = "selected")
-    public void delete(Long attributeId) {
+    public void onDeleteAttribute(Long attributeId) {
         for (Iterator<Attribute> iterator = attributes.iterator(); iterator.hasNext(); ) {
             Long id = iterator.next().getId();
             if (id.equals(attributeId)) {
@@ -346,14 +344,14 @@ public class CreateReference {
         }
     }
 
-    @OnEvent(component = "deleteAuthor", value = "selected")
-    public void deleteAuthor(String author) {
+    public void onDeleteAuthor(String author) {
         for (Iterator<String> iterator = authors.iterator(); iterator.hasNext(); ) {
             if (author.equals(iterator.next())) {
                 iterator.remove();
             }
         }
 
+        authors.remove(author);
         testMap.remove(author);
     }
 

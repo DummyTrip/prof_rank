@@ -118,17 +118,19 @@ public class EditReference {
                 authors.add(authorName);
                 testMap.put(authorName, identifier);
             }
-
-//            String authorName = "author 1";
-//            authors.add(authorName);
-//            testMap.put(authorName, "");
         }
     }
 
     @CommitAfter
     @OnEvent(component = "save", value = "selected")
     Object saveReference() {
+        referenceHibernate.deleteAuthors(reference);
+
+        // add authors
         for (String author : authors) {
+            Reference reference = referenceHibernate.getById(referenceId);
+            personHibernate.setReference(reference, testMap.get(author), authors.indexOf(author));
+
             testMap.remove(author);
         }
 
@@ -196,8 +198,7 @@ public class EditReference {
     }
 
     @CommitAfter
-    @OnEvent(component = "delete", value = "selected")
-    public void delete(Long attributeId) {
+    public void onDelete(Long attributeId) {
         testMap.remove(String.valueOf(attributeId));
         for (Iterator<Attribute> iterator = attributes.iterator(); iterator.hasNext(); ) {
             Long id = iterator.next().getId();
@@ -334,11 +335,11 @@ public class EditReference {
     }
 
     @CommitAfter
-    @OnEvent(component = "deleteAuthor", value = "selected")
-    public void deleteAuthor(String author) {
+    public void onDeleteAuthor(String author) {
         for (Iterator<String> iterator = authors.iterator(); iterator.hasNext(); ) {
             if (author.equals(iterator.next())) {
                 iterator.remove();
+                authors.remove(author);
             }
         }
 

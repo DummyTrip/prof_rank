@@ -334,9 +334,11 @@ public class ShowReport {
     @CommitAfter
     @OnEvent(component = "saveNewInstitution", value = "selected")
     public void saveNewInstitution() {
-        InstitutionProfRank institutionProfRank = institutionHibernate.getByColumn("name", newInstitutionName).get(0);
-        report = reportHibernate.getById(reportId);
-        reportHibernate.setInstitution(report, institutionProfRank);
+        if (newInstitutionName != null) {
+            InstitutionProfRank institutionProfRank = institutionHibernate.getByColumn("name", newInstitutionName).get(0);
+            report = reportHibernate.getById(reportId);
+            reportHibernate.setInstitution(report, institutionProfRank);
+        }
 
         ajaxResponseRenderer.addRender(reportInfoZone);
     }
@@ -353,8 +355,10 @@ public class ShowReport {
     @CommitAfter
     @OnEvent(component = "saveNewSubjectDomain", value = "selected")
     public void saveNewSubjectDomain() {
-        report = reportHibernate.getById(reportId);
-        reportHibernate.setSubjectDomain(report, subjectDomainHibernate.getByColumn("name", newSubjectDomainName).get(0));
+        if (newSubjectDomainName != null) {
+            report = reportHibernate.getById(reportId);
+            reportHibernate.setSubjectDomain(report, subjectDomainHibernate.getByColumn("name", newSubjectDomainName).get(0));
+        }
 
         ajaxResponseRenderer.addRender(reportInfoZone);
     }

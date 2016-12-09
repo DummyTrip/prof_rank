@@ -3,9 +3,11 @@ package com.diplomska.prof_rank.pages;
 
 import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.entities.*;
+import com.diplomska.prof_rank.model.UserInfo;
 import com.diplomska.prof_rank.services.*;
 import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SessionState;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.ArrayList;
@@ -29,11 +31,15 @@ public class Index
     @Property
     ReferenceType referenceType;
 
+    @SessionState
+    private UserInfo userInfo;
+
     public Float getPoints() {
         Float points = 0f;
 
         List<Reference> references = referenceHibernate.getAll();
 
+        // calculate points
         for (Reference reference : references) {
             Float referencePoints = reference.getReferenceType().getPoints();
             if (referencePoints != null) {
@@ -49,9 +55,8 @@ public class Index
     }
 
     public List<ReferenceType> getPopularReferenceTypesForPerson() {
-        Person person = personHibernate.getById(Long.valueOf(1));
-        if (person != null) {
-            return referenceTypeHibernate.getPopularByPerson(person, 9);
+        if (userInfo != null && userInfo.getPerson() != null) {
+            return referenceTypeHibernate.getPopularByPerson(userInfo.getPerson(), 9);
         } else {
             return new ArrayList<ReferenceType>();
         }
@@ -76,10 +81,10 @@ public class Index
     }
 
     public boolean isPopularReferenceTypesNull() {
-        return getPopularReferenceTypes().size() > 0 ? true : false;
+        return getPopularReferenceTypes().size() > 0;
     }
 
     public boolean isPopularReferenceTypesForPersonNull() {
-        return getPopularReferenceTypesForPerson().size() > 0 ? true : false;
+        return getPopularReferenceTypesForPerson().size() > 0;
     }
 }

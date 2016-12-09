@@ -17,7 +17,7 @@
 <div class="row">
 
     <div class="col-md-3">
-        <h2 class="float-right">Commission</h2>
+        <h2 class="float-right">Комисија</h2>
     </div>
 
 </div>
@@ -58,14 +58,16 @@
                                 <t:authormapfield key="${commissioner}" t:map="testMap"/>
                             </div>
                             <div class="col-sm-1">
-                                <input t:type="submit" t:id="deleteCommissioner" class="btn btn-danger btn-outline" defer="false" value="Х" context="commissioner"/>
+                                <t:eventlink t:id="deleteCommissioner" event="deleteCommissioner" class="btn btn-danger btn-outline" defer="false" context="commissioner">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </t:eventlink>
                             </div>
                         </div>
                     </t:loop>
 
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-9">
-                            <t:submit t:id="addCommissioner" class="btn btn-primary btn-outline" value="Додај нов член на комисија"/>
+                            <t:eventlink t:id="addCommissioner" event="addCommissioner" class="btn btn-primary btn-outline">Додај нов член на комисија</t:eventlink>
                         </div>
                     </div>
 

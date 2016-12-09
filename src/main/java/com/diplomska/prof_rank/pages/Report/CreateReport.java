@@ -25,6 +25,9 @@ public class CreateReport {
     @Property
     Date endDate;
 
+    @Property
+    private String title;
+
     @Inject
     ReportHibernate reportHibernate;
 
@@ -57,8 +60,9 @@ public class CreateReport {
         report.setPerson(person);
         report.setStartDate(startDate);
         report.setEndDate(endDate);
-        report.setTitle("Test Report");
+        report.setTitle(title);
 
+        // add every reference the person has and calculate points
         for (Reference reference : personHibernate.getReferences(person)) {
             reportHibernate.setReference(report, reference);
 

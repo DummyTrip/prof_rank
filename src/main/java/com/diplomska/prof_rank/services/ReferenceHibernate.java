@@ -413,7 +413,6 @@ public class ReferenceHibernate {
         session.persist(attributeReference);
     }
 
-    @CommitAfter
     public void setAttributeValueIndexDisplay(Reference reference, Attribute attribute, String value, Integer index, boolean display) {
         if (reference == null || attribute == null || value == null || index == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -448,5 +447,21 @@ public class ReferenceHibernate {
         AttributeReference attributeReference = entities.get(0);
         attributeReference.setReference(null);
         reference.getAttributeReferences().remove(attributeReference);
+    }
+
+    public void deleteAuthors(Reference reference) {
+        if (reference == null) {
+            throw new IllegalArgumentException("Cannotfilter by null valyue");
+        }
+
+        List<ReferencePerson> referencePersons = session.createCriteria(ReferencePerson.class)
+                .add(eq("reference", reference))
+                .list();
+
+        for (ReferencePerson referencePerson : referencePersons) {
+            referencePerson.setPerson(null);
+            referencePerson.setReference(null);
+            session.delete(referencePerson);
+        }
     }
 }

@@ -75,7 +75,9 @@
                                 <t:authormapfield key="${author}" t:map="testMap"/>
                             </div>
                             <div class="col-sm-1">
-                                <input t:type="submit" t:id="deleteAuthor" class="btn btn-danger btn-outline" defer="false" value="Х" context="author"/>
+                                <t:eventlink t:id="deleteAuthor" event="deleteAuthor" class="btn btn-danger btn-outline" defer="false" context="author">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </t:eventlink>
                             </div>
                         </div>
                     </t:loop>
@@ -98,7 +100,9 @@
                                 </div>
                             </t:if>
                             <div class="col-sm-1">
-                                <input t:type="submit" t:id="delete" class="btn btn-danger btn-outline" defer="false" value="Х" context="attribute.id"/>
+                                <t:eventlink t:id="delete" event="delete" class="btn btn-danger btn-outline" defer="false" context="attribute.id">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </t:eventlink>
                             </div>
                         </div>
                     </t:loop>
