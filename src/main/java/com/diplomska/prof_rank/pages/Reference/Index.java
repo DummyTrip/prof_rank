@@ -2,6 +2,7 @@ package com.diplomska.prof_rank.pages.Reference;
 
 import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.entities.*;
+import com.diplomska.prof_rank.model.UserInfo;
 import com.diplomska.prof_rank.services.*;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.*;
@@ -40,6 +41,9 @@ public class Index {
 
     @Inject
     PersonHibernate personHibernate;
+
+    @SessionState
+    private UserInfo userInfo;
 
     public String getreferenceTypeNameQueryString() {
         return referenceTypeNameQueryString;
@@ -125,7 +129,7 @@ public class Index {
 
         List<ReferenceType> newInstances;
 
-        newInstances = referenceTypeHibernate.getPopularByPerson(personHibernate.getById(Long.valueOf(1)),
+        newInstances = referenceTypeHibernate.getPopularByPerson(personHibernate.getById(userInfo.getPersonId()),
                 Integer.MAX_VALUE, selectedSections, referenceTypeName);
 
         // This fix makes sure the items from page 0 don't duplicate

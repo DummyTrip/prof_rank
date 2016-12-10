@@ -2,6 +2,7 @@ package com.diplomska.prof_rank.pages.Reference;
 
 import com.diplomska.prof_rank.annotations.InstructorPage;
 import com.diplomska.prof_rank.entities.*;
+import com.diplomska.prof_rank.model.UserInfo;
 import com.diplomska.prof_rank.services.*;
 import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.Link;
@@ -49,13 +50,10 @@ public class ShowReference {
     Long oldreferenceTypeId;
 
     @Property
-    String referenceName;
-
-    @Property
     Attribute attribute;
 
-    @ActivationRequestParameter(value = "name")
-    private String referenceNameQueryString;
+    @SessionState
+    private UserInfo userInfo;
 
     // This query is used to send a dynamic list of filters.
     // The filters are sent in this format:
@@ -98,26 +96,6 @@ public class ShowReference {
         return referenceTypeId;
     }
 
-    // TODO: make the search bar work
-    List<String> onProvideCompletionsFromSearchName(String partial) {
-        List<String> matches = new ArrayList<String>();
-        partial = partial.toUpperCase();
-
-        for (String name : displayNames) {
-            if (name.toUpperCase().startsWith(partial)) {
-                matches.add(name);
-            }
-        }
-
-        return matches;
-    }
-
-    public Link set(String referenceName) {
-        this.referenceNameQueryString = referenceName;
-
-        return pageRenderLinkSource.createPageRenderLink(this.getClass());
-    }
-
     public Link setFilters(Map<String, String> filterMap) {
         if (filterMap.keySet().size() > 0) {
             filtersQueryString = "";
@@ -138,12 +116,6 @@ public class ShowReference {
         return link;
     }
 
-    public Object onSuccessFromForm() {
-        Link link = this.set(referenceName);
-
-        return link;
-    }
-
     public boolean isTextInput() {
         return attribute.getInputType().equals("text") ? true :false;
     }
@@ -156,7 +128,6 @@ public class ShowReference {
         }
 
         this.referenceType = referenceTypeHibernate.getById(referenceTypeId);
-        this.referenceName = referenceNameQueryString;
         this.displayNames = referenceHibernate.getAllDisplayNames();
 
         refInstances = new ArrayList<Reference>();
@@ -187,7 +158,7 @@ public class ShowReference {
     }
 
     private List<Reference> sortReferenceInstaces(Map<String, String> filterMap) {
-        Person person = personHibernate.getById(Long.valueOf(1));
+        Person person = personHibernate.getById(userInfo.getPersonId());
         List<Reference> references = referenceHibernate.getByReferenceTypeFilterAndPerson(referenceType, filterMap, person);
 
         if (references == null) {

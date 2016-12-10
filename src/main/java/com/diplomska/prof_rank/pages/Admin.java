@@ -1,14 +1,13 @@
 package com.diplomska.prof_rank.pages;
 
+import com.diplomska.prof_rank.annotations.AdministratorPage;
 import com.diplomska.prof_rank.entities.*;
 import com.diplomska.prof_rank.services.*;
 import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-/**
- * Created by Aleksandar on 26-Nov-16.
- */
+@AdministratorPage
 public class Admin {
     @Inject
     private AttributeHibernate attributeHibernate;
@@ -75,6 +74,11 @@ public class Admin {
         rulebookHibernate.setSection(rulebook, section);
 
         section = new Section();
+        section.setName("Стручно-Уметничка Дејност");
+        sectionHibernate.store(section);
+        rulebookHibernate.setSection(rulebook, section);
+
+        section = new Section();
         section.setName("Стручно-Апликативна Дејност");
         sectionHibernate.store(section);
         rulebookHibernate.setSection(rulebook, section);
@@ -85,8 +89,10 @@ public class Admin {
         excelWorkbook.readCategorySpreadsheet(fileName, 1, rulebook, section, referenceInputTemplate);
         section = sectionHibernate.getByColumn("name", "Наставно-Истражувачка Дејност").get(0);
         excelWorkbook.readCategorySpreadsheet(fileName, 2, rulebook, section, referenceInputTemplate);
-        section = sectionHibernate.getByColumn("name", "Стручно-Апликативна Дејност").get(0);
+        section = sectionHibernate.getByColumn("name", "Стручно-Уметничка Дејност").get(0);
         excelWorkbook.readCategorySpreadsheet(fileName, 3, rulebook, section, referenceInputTemplate);
+        section = sectionHibernate.getByColumn("name", "Стручно-Апликативна Дејност").get(0);
+        excelWorkbook.readCategorySpreadsheet(fileName, 4, rulebook, section, referenceInputTemplate);
     }
 
     private void addRefs(String fileName) throws Exception{
@@ -94,24 +100,24 @@ public class Admin {
         Rulebook rulebook = rulebookHibernate.getById(Long.valueOf(1));
 
         Section section = sectionHibernate.getByColumn("name", "Наставно-Образовна Дејност").get(0);
-        excelWorkbook.readNastavaSpreadsheet(fileName, 4, person, rulebook, section);
+        excelWorkbook.readNastavaSpreadsheet(fileName, 5, person, rulebook, section);
 
         section = sectionHibernate.getByColumn("name", "Наставно-Истражувачка Дејност").get(0);
         // read Projects sheet
         excelWorkbook.readSpreadsheet(fileName,
-                5, "Projects", 2,
+                6, "Projects", 2,
                 "Име на проектот", "ПОЕНИ", person, rulebook, section);
 
         section = sectionHibernate.getByColumn("name", "Наставно-Истражувачка Дејност").get(0);
         // read Papers sheet
         excelWorkbook.readSpreadsheet(fileName,
-                6, "Papers", 2,
+                7, "Papers", 2,
                 "Автор 1", "//", person, rulebook, section);
 
         section = sectionHibernate.getByColumn("name", "Наставно-Образовна Дејност").get(0);
         // read Books sheet
         excelWorkbook.readSpreadsheet(fileName,
-                7, "Books", 1,
+                8, "Books", 1,
                 "Автори", "ПОЕНИ", person, rulebook, section);
     }
 

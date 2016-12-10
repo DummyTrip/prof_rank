@@ -73,7 +73,7 @@ public class Index
     }
 
     public Integer getNumberOfReferencesForPerson() {
-        Person person = personHibernate.getById(Long.valueOf(1));
+        Person person = personHibernate.getById(userInfo.getPersonId());
 
         List<Reference> referencesOfCurrentReferenceType = referenceHibernate.getByReferenceTypeAndPerson(referenceType, person);
 

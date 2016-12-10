@@ -11,6 +11,7 @@ import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.SelectModelFactory;
@@ -114,7 +115,7 @@ public class EditReference {
             String authorName;
 
             for (String identifier : personIdentifiers) {
-                authorName = "author " + (++i);
+                authorName = "Автор " + (++i);
                 authors.add(authorName);
                 testMap.put(authorName, identifier);
             }
@@ -270,15 +271,18 @@ public class EditReference {
         }
     }
 
+    @Inject
+    private Messages messages;
+
     private void readBibtexValues(Key key, Value value) {
         try {
             String attributeValue = value.toUserString().trim();
             String attributeName = key.toString().trim();
 
             if (attributeName.equals("author")) {
-                addBibtexAuthors(attributeName, attributeValue);
-            } else {
-                Attribute attribute = attributeHibernate.getOrCreateAttribute(attributeName);
+                addBibtexAuthors(messages.get(attributeName), attributeValue);
+            } else if (messages.get(attributeName) != null){
+                Attribute attribute = attributeHibernate.getOrCreateAttribute(messages.get(attributeName));
                 addAttributeToForm(attribute, attributeValue);
             }
         } catch (Exception e) {
@@ -292,7 +296,7 @@ public class EditReference {
             String fullName = bibtexAuthors[i];
 
             List<Person> persons = personHibernate.getByBibtexAuthorName(fullName);
-            String authorKey = "author "+ (i+1);
+            String authorKey = "Автор "+ (i+1);
 
             if (persons.size() > 0) {
                 addBibtexPersonToForm(persons, fullName, authorKey);
@@ -360,10 +364,10 @@ public class EditReference {
         if (authors.size() > 0){
             lastAuthor = authors.get(authors.size() - 1);
         } else{
-            lastAuthor = "author 0";
+            lastAuthor = "Автор 0";
         }
         Integer newAuthorNumber = Integer.valueOf(lastAuthor.split(" ")[1]) + 1;
-        String authorName = "author " + newAuthorNumber;
+        String authorName = "Автор " + newAuthorNumber;
         addAuthorToForm(authorName, "");
 
         if (request.isXHR()) {
