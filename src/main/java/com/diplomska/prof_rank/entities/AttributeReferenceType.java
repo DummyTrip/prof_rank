@@ -4,10 +4,8 @@ import org.apache.tapestry5.beaneditor.NonVisual;
 
 import javax.persistence.*;
 
-/**
- * Created by Aleksandar on 23-Sep-16.
- */
 @Entity
+@Table(schema = "edubio", name = "attribute_reference_type")
 public class AttributeReferenceType {
     private Long id;
 
@@ -18,7 +16,7 @@ public class AttributeReferenceType {
     private ReferenceType referenceType;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;
@@ -39,7 +37,7 @@ public class AttributeReferenceType {
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "referenceType_id")
+    @JoinColumn(name = "reference_type_id")
     public ReferenceType getReferenceType() {
         return referenceType;
     }

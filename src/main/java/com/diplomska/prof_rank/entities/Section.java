@@ -7,22 +7,16 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Aleksandar on 21-Sep-16.
- */
 @Entity
+@Table(schema = "edubio", name = "sections")
 public class Section {
     private Long id;
 
     @Validate("required")
     private String name;
 
-//    @Column
-//    @ElementCollection(targetClass = RulebookSection.class)
-//    private List<RulebookSection> rulebookSections = new ArrayList<RulebookSection>();
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;
@@ -39,13 +33,4 @@ public class Section {
     public void setName(String name) {
         this.name = name;
     }
-
-//    @OneToMany(mappedBy = "section")
-//    public List<RulebookSection> getRulebookSections() {
-//        return rulebookSections;
-//    }
-//
-//    public void setRulebookSections(List<RulebookSection> rulebookSections) {
-//        this.rulebookSections = rulebookSections;
-//    }
 }

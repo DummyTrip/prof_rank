@@ -5,10 +5,8 @@ import org.apache.tapestry5.beaneditor.Validate;
 
 import javax.persistence.*;
 
-/**
- * Created by Aleksandar on 21-Sep-16.
- */
 @Entity
+@Table(schema = "edubio", name = "rulebook_section")
 public class RulebookSection {
     private Long id;
 
@@ -19,7 +17,7 @@ public class RulebookSection {
     private Section section;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;

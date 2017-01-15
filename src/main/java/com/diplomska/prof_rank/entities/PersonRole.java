@@ -6,10 +6,8 @@ import org.apache.tapestry5.beaneditor.Validate;
 
 import javax.persistence.*;
 
-/**
- * Created by Aleksandar on 07-Oct-16.
- */
 @Entity
+@Table(schema = "edubio", name = "person_role")
 public class PersonRole {
     private Long id;
 
@@ -20,7 +18,7 @@ public class PersonRole {
     private Role role;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;

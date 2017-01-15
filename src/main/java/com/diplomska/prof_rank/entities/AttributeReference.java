@@ -5,10 +5,8 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
-/**
- * Created by Aleksandar on 27.09.2016.
- */
 @Entity
+@Table(schema = "edubio", name = "attribute_reference")
 public class AttributeReference {
     private Long id;
 
@@ -23,7 +21,7 @@ public class AttributeReference {
     private Reference reference;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;

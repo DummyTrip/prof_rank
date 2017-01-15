@@ -4,10 +4,8 @@ import org.apache.tapestry5.beaneditor.NonVisual;
 
 import javax.persistence.*;
 
-/**
- * Created by Aleksandar on 23-Sep-16.
- */
 @Entity
+@Table(schema = "edubio", name = "report_subject_domain")
 public class ReportSubjectDomain {
     private Long id;
 
@@ -16,7 +14,7 @@ public class ReportSubjectDomain {
     private SubjectDomain subjectDomain;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;
@@ -37,7 +35,7 @@ public class ReportSubjectDomain {
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "subjectDomain_id")
+    @JoinColumn(name = "subject_domain_id")
     public SubjectDomain getSubjectDomain() {
         return subjectDomain;
     }

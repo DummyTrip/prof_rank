@@ -6,10 +6,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Aleksandar on 23-Sep-16.
- */
 @Entity
+@Table(schema = "edubio", name = "subject_domains")
 public class SubjectDomain {
     private Long id;
 
@@ -17,12 +15,8 @@ public class SubjectDomain {
 
     private String identifier;
 
-//    @Column
-//    @ElementCollection(targetClass = InstitutionReport.class)
-//    private List<InstitutionReport> institutionReports = new ArrayList<InstitutionReport>();
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;
@@ -47,12 +41,4 @@ public class SubjectDomain {
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
-
-//    public List<InstitutionReport> getInstitutionReports() {
-//        return institutionReports;
-//    }
-//
-//    public void setInstitutionReports(List<InstitutionReport> institutionReports) {
-//        this.institutionReports = institutionReports;
-//    }
 }

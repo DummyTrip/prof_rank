@@ -5,10 +5,8 @@ import org.apache.tapestry5.beaneditor.NonVisual;
 
 import javax.persistence.*;
 
-/**
- * Created by Aleksandar on 06-Oct-16.
- */
 @Entity
+@Table(schema = "edubio", name = "reference_person")
 public class ReferencePerson {
     private Long id;
 
@@ -21,7 +19,7 @@ public class ReferencePerson {
     private Integer authorNum;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;

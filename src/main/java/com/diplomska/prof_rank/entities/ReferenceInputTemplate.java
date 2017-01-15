@@ -6,21 +6,19 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Aleksandar on 23-Sep-16.
- */
 @Entity
+@Table(schema = "edubio", name = "reference_input_templates")
 public class ReferenceInputTemplate {
     private Long id;
 
     private String name;
 
-    @Column
+    @Column(name = "attribute_reference_input_template_ids")
     @ElementCollection(targetClass = AttributeReferenceInputTemplate.class)
     private List<AttributeReferenceInputTemplate> attributeReferenceInputTemplates = new ArrayList<AttributeReferenceInputTemplate>();
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;

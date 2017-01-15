@@ -4,10 +4,8 @@ import org.apache.tapestry5.beaneditor.NonVisual;
 
 import javax.persistence.*;
 
-/**
- * Created by Aleksandar on 23-Sep-16.
- */
 @Entity
+@Table(schema = "edubio", name = "attribute_reference_input_template")
 public class AttributeReferenceInputTemplate {
     private Long id;
 
@@ -16,7 +14,7 @@ public class AttributeReferenceInputTemplate {
     private Attribute attribute;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;
@@ -27,7 +25,7 @@ public class AttributeReferenceInputTemplate {
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "referenceInputTemplate_id")
+    @JoinColumn(name = "reference_input_template_id")
     public ReferenceInputTemplate getReferenceInputTemplate() {
         return referenceInputTemplate;
     }

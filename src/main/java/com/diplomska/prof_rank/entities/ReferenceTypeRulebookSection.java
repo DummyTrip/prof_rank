@@ -4,10 +4,8 @@ import org.apache.tapestry5.beaneditor.NonVisual;
 
 import javax.persistence.*;
 
-/**
- * Created by Aleksandar on 24-Sep-16.
- */
 @Entity
+@Table(schema = "edubio", name = "reference_type_rulebook_section")
 public class ReferenceTypeRulebookSection {
     private Long id;
 
@@ -16,7 +14,7 @@ public class ReferenceTypeRulebookSection {
     private RulebookSection rulebookSection;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;
@@ -27,7 +25,7 @@ public class ReferenceTypeRulebookSection {
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "referenceType_id")
+    @JoinColumn(name = "reference_type_id")
     public ReferenceType getReferenceType() {
         return referenceType;
     }
@@ -37,7 +35,7 @@ public class ReferenceTypeRulebookSection {
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rulebookSection_id")
+    @JoinColumn(name = "rulebook_section_id")
     public RulebookSection getRulebookSection() {
         return rulebookSection;
     }

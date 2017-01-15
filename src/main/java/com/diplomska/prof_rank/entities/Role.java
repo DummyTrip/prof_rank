@@ -3,15 +3,10 @@ package com.diplomska.prof_rank.entities;
 import org.apache.tapestry5.beaneditor.NonVisual;
 import org.apache.tapestry5.beaneditor.Validate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-/**
- * Created by Aleksandar on 21-Sep-16.
- */
 @Entity
+@Table(schema = "edubio", name = "roles")
 public class Role {
     private Long id;
 
@@ -19,7 +14,7 @@ public class Role {
     private String name;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;

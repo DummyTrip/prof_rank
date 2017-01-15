@@ -6,10 +6,10 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Aleksandar on 23-Sep-16.
- */
+// TODO REMOVE THIS ENTITY. USE ISIS INSTITUTION ENTITY INSTEAD
+
 @Entity
+@Table(schema = "edubio", name = "institutions_prof_rank")
 public class InstitutionProfRank {
     private Long id;
 
@@ -18,13 +18,9 @@ public class InstitutionProfRank {
     private String city;
 
     private String country;
-//
-//    @Column
-//    @ElementCollection(targetClass = InstitutionReport.class)
-//    private List<InstitutionReport> institutionReports = new ArrayList<InstitutionReport>();
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;
@@ -57,12 +53,4 @@ public class InstitutionProfRank {
     public void setCountry(String country) {
         this.country = country;
     }
-
-//    public List<InstitutionReport> getInstitutionReports() {
-//        return institutionReports;
-//    }
-//
-//    public void setInstitutionReports(List<InstitutionReport> institutionReports) {
-//        this.institutionReports = institutionReports;
-//    }
 }

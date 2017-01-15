@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Aleksandar on 23-Sep-16.
- */
 @Entity
+@Table(schema = "edubio", name = "reports")
 public class Report {
     private Long id;
 
@@ -23,22 +21,22 @@ public class Report {
 
     private Date endDate;
 
-    @Column
+    @Column(name = "institution_reports_ids")
     @ElementCollection(targetClass = InstitutionReport.class)
     private List<InstitutionReport> institutionReports = new ArrayList<InstitutionReport>();
 
-    @Column
+    @Column(name = "report_subject_domain_ids")
     @ElementCollection(targetClass = ReportSubjectDomain.class)
     private List<ReportSubjectDomain> reportSubjectDomains = new ArrayList<ReportSubjectDomain>();
 
-    @Column
+    @Column(name = "reference_report_ids")
     @ElementCollection(targetClass = ReferenceReport.class)
     private List<ReferenceReport> referenceReports = new ArrayList<ReferenceReport>();
 
     private Person person;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;

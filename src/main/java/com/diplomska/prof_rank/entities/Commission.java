@@ -5,10 +5,8 @@ import org.apache.tapestry5.beaneditor.NonVisual;
 
 import javax.persistence.*;
 
-/**
- * Created by Aleksandar on 28-Oct-16.
- */
 @Entity
+@Table(schema = "edubio", name = "commission")
 public class Commission {
     private Long id;
 
@@ -19,7 +17,7 @@ public class Commission {
     private Integer commissionerNum;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;

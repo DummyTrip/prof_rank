@@ -6,10 +6,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Aleksandar on 23-Sep-16.
- */
 @Entity
+@Table(schema = "edubio", name = "reference_types")
 public class ReferenceType {
     private Long id;
 
@@ -21,16 +19,16 @@ public class ReferenceType {
 
     private ReferenceInputTemplate referenceInputTemplate;
 
-    @Column
+    @Column(name = "attribute_reference_type_ids")
     @ElementCollection(targetClass = AttributeReferenceType.class)
     private List<AttributeReferenceType> attributeReferenceTypes = new ArrayList<AttributeReferenceType>();
 
-    @Column
+    @Column(name = "reference_type_rulebook_section_ids")
     @ElementCollection(targetClass = ReferenceTypeRulebookSection.class)
     private List<ReferenceTypeRulebookSection> referenceTypeRulebookSections = new ArrayList<ReferenceTypeRulebookSection>();
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;
@@ -57,6 +55,7 @@ public class ReferenceType {
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rulebook_section_id")
     public RulebookSection getRulebookSection() {
         return rulebookSection;
     }
@@ -66,6 +65,7 @@ public class ReferenceType {
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "reference_input_template_id")
     public ReferenceInputTemplate getReferenceInputTemplate() {
         return referenceInputTemplate;
     }

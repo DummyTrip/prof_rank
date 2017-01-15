@@ -6,21 +6,19 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Aleksandar on 27.09.2016.
- */
 @Entity
+@Table(schema = "edubio", name = "references")
 public class Reference {
     private Long id;
 
     private ReferenceType referenceType;
 
-    @Column
+    @Column(name = "attribute_reference_ids")
     @ElementCollection(targetClass = AttributeReference.class)
     private List<AttributeReference> attributeReferences = new ArrayList<AttributeReference>();
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonVisual
     public Long getId() {
         return id;
@@ -31,6 +29,7 @@ public class Reference {
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "reference_type_id")
     public ReferenceType getReferenceType() {
         return referenceType;
     }
