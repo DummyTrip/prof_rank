@@ -385,15 +385,13 @@ public class ReferenceTypeHibernate {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
 
-        attribute = (Attribute) session.createCriteria(Attribute.class).add(eq("id", attribute.getId())).list().get(0);
-
         AttributeReferenceType attributeReferenceType = getOrCreateAttributeReferenceType(referenceType, attribute);
 
         attributeReferenceType.setReferenceType(referenceType);
         attributeReferenceType.setAttribute(attribute);
         attributeReferenceType.setDisplay(display);
 
-        session.persist(attributeReferenceType);
+        session.save(attributeReferenceType);
     }
 
     public void deleteAttribute(ReferenceType referenceType, Attribute attribute) {

@@ -173,6 +173,12 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
             <version>LATEST</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.tapestry</groupId>
+            <artifactId>tapestry-upload</artifactId>
+            <version>${tapestry-release-version}</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>prof_rank</finalName>
