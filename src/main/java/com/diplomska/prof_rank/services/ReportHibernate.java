@@ -2,17 +2,14 @@ package com.diplomska.prof_rank.services;
 
 import com.diplomska.prof_rank.entities.*;
 import mk.ukim.finki.isis.model.entities.Person;
-import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hibernate.criterion.Restrictions.*;
 import static org.hibernate.criterion.Restrictions.eq;
 
 /**
@@ -25,7 +22,6 @@ public class ReportHibernate {
     @Inject
     PersonHibernate personHibernate;
 
-    @CommitAfter
     public void store(Report report) {
         if (report == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -38,7 +34,6 @@ public class ReportHibernate {
         return session.createCriteria(Report.class).addOrder(Order.desc("startDate")).list();
     }
 
-    @CommitAfter
     public void update(Report report) {
         if (report == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
@@ -47,7 +42,6 @@ public class ReportHibernate {
         session.update(report);
     }
 
-    @CommitAfter
     public void delete(Report report) {
         if (report == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
@@ -105,7 +99,6 @@ public class ReportHibernate {
         return institutionProfRanks;
     }
 
-    @CommitAfter
     public void setInstitution(Report report, InstitutionProfRank institutionProfRank) {
         if (report == null || institutionProfRank == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -119,7 +112,6 @@ public class ReportHibernate {
     }
 
 
-    @CommitAfter
     public void deleteInstitution(Report report, InstitutionProfRank institutionProfRank) {
         if (report == null || institutionProfRank == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -157,7 +149,6 @@ public class ReportHibernate {
         return subjectDomains;
     }
 
-    @CommitAfter
     public void setSubjectDomain(Report report, SubjectDomain subjectDomain) {
         if (report == null || subjectDomain == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -170,7 +161,6 @@ public class ReportHibernate {
         session.saveOrUpdate(subjectDomainReport);
     }
 
-    @CommitAfter
     public void deleteSubjectDomain(Report report, SubjectDomain subjectDomain) {
         if (report == null || subjectDomain == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -208,7 +198,6 @@ public class ReportHibernate {
         return references;
     }
 
-    @CommitAfter
     public void setReference(Report report, Reference reference) {
         if (report == null || reference == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -224,7 +213,6 @@ public class ReportHibernate {
         session.saveOrUpdate(referenceReport);
     }
 
-    @CommitAfter
     public void deleteReference(Report report, Reference reference) {
         if (report == null || reference == null) {
             throw new IllegalArgumentException("Cannot persist null value.");

@@ -18,7 +18,6 @@ public class InstitutionHibernate {
     @Inject
     Session session;
 
-    @CommitAfter
     public void store(InstitutionProfRank institutionProfRank) {
         if (institutionProfRank == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -31,7 +30,6 @@ public class InstitutionHibernate {
         return session.createCriteria(InstitutionProfRank.class).list();
     }
 
-    @CommitAfter
     public void update(InstitutionProfRank institutionProfRank) {
         if (institutionProfRank == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
@@ -40,7 +38,6 @@ public class InstitutionHibernate {
         session.update(institutionProfRank);
     }
 
-    @CommitAfter
     public void delete(InstitutionProfRank institutionProfRank) {
         if (institutionProfRank == null) {
             throw new IllegalArgumentException("Cannot remove null value.");

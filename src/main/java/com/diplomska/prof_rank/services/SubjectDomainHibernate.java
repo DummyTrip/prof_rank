@@ -19,7 +19,6 @@ public class SubjectDomainHibernate {
     @Inject
     Session session;
 
-    @CommitAfter
     public void store(SubjectDomain subjectDomain) {
         if (subjectDomain == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -32,7 +31,6 @@ public class SubjectDomainHibernate {
         return session.createCriteria(SubjectDomain.class).list();
     }
 
-    @CommitAfter
     public void update(SubjectDomain subjectDomain) {
         if (subjectDomain == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
@@ -41,7 +39,6 @@ public class SubjectDomainHibernate {
         session.update(subjectDomain);
     }
 
-    @CommitAfter
     public void delete(SubjectDomain subjectDomain) {
         if (subjectDomain == null) {
             throw new IllegalArgumentException("Cannot remove null value.");

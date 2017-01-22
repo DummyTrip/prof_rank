@@ -2,7 +2,6 @@ package com.diplomska.prof_rank.services;
 
 import com.diplomska.prof_rank.entities.*;
 import mk.ukim.finki.isis.model.entities.Person;
-import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -12,7 +11,6 @@ import org.hibernate.criterion.Order;
 import java.util.*;
 
 import static org.hibernate.criterion.Restrictions.eq;
-import static org.hibernate.criterion.Restrictions.in;
 
 /**
  * Created by Aleksandar on 27.09.2016.
@@ -36,7 +34,6 @@ public class ReferenceHibernate {
     @Inject
     PersonHibernate personHibernate;
 
-    @CommitAfter
     public void store(Reference reference) {
         if (reference == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -53,7 +50,6 @@ public class ReferenceHibernate {
         return session.createCriteria(Reference.class).addOrder(Order.desc("id")).setFirstResult(offset).setMaxResults(limit).list();
     }
 
-    @CommitAfter
     public void update(Reference reference) {
         if (reference == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
@@ -62,7 +58,6 @@ public class ReferenceHibernate {
         session.update(reference);
     }
 
-    @CommitAfter
     public void delete(Reference reference) {
         if (reference == null) {
             throw new IllegalArgumentException("Cannot remove null value.");

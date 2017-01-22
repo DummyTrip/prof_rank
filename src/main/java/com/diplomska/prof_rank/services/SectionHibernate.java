@@ -23,7 +23,6 @@ public class SectionHibernate {
     @Inject
     ReferenceTypeHibernate referenceTypeHibernate;
 
-    @CommitAfter
     public void store(Section section) {
         if (section == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -40,7 +39,6 @@ public class SectionHibernate {
         return session.createCriteria(RulebookSection.class).list();
     }
 
-    @CommitAfter
     public void update(Section section) {
         if (section == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
@@ -49,7 +47,6 @@ public class SectionHibernate {
         session.update(section);
     }
 
-    @CommitAfter
     public void delete(Section section) {
         if (section == null) {
             throw new IllegalArgumentException("Cannot remove null value.");

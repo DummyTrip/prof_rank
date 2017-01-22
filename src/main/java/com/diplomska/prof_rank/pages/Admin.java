@@ -36,7 +36,7 @@ public class Admin {
         ReferenceInputTemplate referenceInputTemplate = new ReferenceInputTemplate();
         referenceInputTemplate.setName("Default");
         Attribute attribute = new Attribute();
-        attribute.setName("Title");
+        attribute.setName("Наслов");
         attribute.setInputType("text");
         attributeHibernate.store(attribute);
         referenceInputTemplateHibernate.store(referenceInputTemplate);

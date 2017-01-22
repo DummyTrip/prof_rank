@@ -3,7 +3,6 @@ package com.diplomska.prof_rank.services;
 import com.diplomska.prof_rank.entities.Attribute;
 import com.diplomska.prof_rank.entities.AttributeReferenceInputTemplate;
 import com.diplomska.prof_rank.entities.ReferenceInputTemplate;
-import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -20,7 +19,6 @@ public class ReferenceInputTemplateHibernate {
     @Inject
     Session session;
 
-    @CommitAfter
     public void store(ReferenceInputTemplate referenceInputTemplate) {
         if (referenceInputTemplate == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -33,7 +31,6 @@ public class ReferenceInputTemplateHibernate {
         return session.createCriteria(ReferenceInputTemplate.class).list();
     }
 
-    @CommitAfter
     public void update(ReferenceInputTemplate referenceInputTemplate) {
         if (referenceInputTemplate == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
@@ -42,7 +39,6 @@ public class ReferenceInputTemplateHibernate {
         session.update(referenceInputTemplate);
     }
 
-    @CommitAfter
     public void delete(ReferenceInputTemplate referenceInputTemplate) {
         if (referenceInputTemplate == null) {
             throw new IllegalArgumentException("Cannot remove null value.");

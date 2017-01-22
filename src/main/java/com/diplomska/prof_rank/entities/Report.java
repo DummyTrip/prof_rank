@@ -2,6 +2,7 @@ package com.diplomska.prof_rank.entities;
 
 import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.beaneditor.NonVisual;
+import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class Report {
         this.title = title;
     }
 
+    @Column(name = "total_score")
     public Float getTotalScore() {
         return totalScore;
     }
@@ -62,6 +64,7 @@ public class Report {
         this.totalScore = totalScore;
     }
 
+    @Column(name = "start_date")
     public Date getStartDate() {
         return startDate;
     }
@@ -70,6 +73,7 @@ public class Report {
         this.startDate = startDate;
     }
 
+    @Column(name = "end_date")
     public Date getEndDate() {
         return endDate;
     }

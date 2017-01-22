@@ -2,6 +2,7 @@ package com.diplomska.prof_rank.entities;
 
 import mk.ukim.finki.isis.model.entities.Person;
 import org.apache.tapestry5.beaneditor.NonVisual;
+import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 
 import javax.persistence.*;
 
@@ -57,6 +58,7 @@ public class ReferencePerson {
         this.author = author;
     }
 
+    @Column(name = "author_num")
     public Integer getAuthorNum() {
         return authorNum;
     }

@@ -17,7 +17,6 @@ public class PersonHibernate {
     @Inject
     Session session;
 
-    @CommitAfter
     public void store(Person person) {
         if (person == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -30,7 +29,6 @@ public class PersonHibernate {
         return session.createCriteria(Person.class).list();
     }
 
-    @CommitAfter
     public void update(Person person) {
         if (person == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -39,7 +37,6 @@ public class PersonHibernate {
         session.update(person);
     }
 
-    @CommitAfter
     public void delete(Person person) {
         if (person == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
@@ -227,7 +224,6 @@ public class PersonHibernate {
         session.saveOrUpdate(referencePerson);
     }
 
-    @CommitAfter
     public void deleteReference(Person person, Reference reference) {
         if (person == null || reference == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -289,7 +285,6 @@ public class PersonHibernate {
         return criteria.list();
     }
 
-    @CommitAfter
     public void setReports(Person person, List<Report> reports) {
         if (person == null || reports == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -301,7 +296,6 @@ public class PersonHibernate {
     }
 
 
-    @CommitAfter
     public void setReport(Person person, Report report) {
         if (person == null || report == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -310,7 +304,6 @@ public class PersonHibernate {
         report.setPerson(person);
     }
 
-    @CommitAfter
     public void deleteReport(Person person, Report report) {
         if (person == null || report == null) {
             throw new IllegalArgumentException("Cannot persist null value.");

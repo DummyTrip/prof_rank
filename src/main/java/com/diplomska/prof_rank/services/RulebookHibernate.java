@@ -3,8 +3,6 @@ package com.diplomska.prof_rank.services;
 import com.diplomska.prof_rank.entities.Section;
 import com.diplomska.prof_rank.entities.RulebookSection;
 import com.diplomska.prof_rank.entities.Rulebook;
-import com.diplomska.prof_rank.entities.Section;
-import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -22,7 +20,6 @@ public class RulebookHibernate {
     @Inject
     Session session;
 
-    @CommitAfter
     public void store(Rulebook rulebook) {
         if (rulebook == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -35,7 +32,6 @@ public class RulebookHibernate {
         return session.createCriteria(Rulebook.class).list();
     }
 
-    @CommitAfter
     public void update(Rulebook rulebook) {
         if (rulebook == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
@@ -44,7 +40,6 @@ public class RulebookHibernate {
         session.update(rulebook);
     }
 
-    @CommitAfter
     public void delete(Rulebook rulebook) {
         if (rulebook == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
@@ -106,7 +101,6 @@ public class RulebookHibernate {
     }
 
 
-    @CommitAfter
     public void setSection(Rulebook rulebook, Section section) {
         if (rulebook == null || section == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -119,7 +113,6 @@ public class RulebookHibernate {
         session.saveOrUpdate(rulebookSection);
     }
 
-    @CommitAfter
     public void setSection(Rulebook rulebook, Section section, RulebookSection rulebookSection) {
         if (rulebook == null || section == null || rulebookSection == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -131,7 +124,6 @@ public class RulebookHibernate {
         session.update(rulebookSection);
     }
 
-    @CommitAfter
     public void deleteSection(Rulebook rulebook, Section section) {
         if (rulebook == null || section == null) {
             throw new IllegalArgumentException("Cannot persist null value.");

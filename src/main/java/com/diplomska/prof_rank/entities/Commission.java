@@ -47,6 +47,7 @@ public class Commission {
         this.person = person;
     }
 
+    @Column(name="commissioner_num")
     public Integer getCommissionerNum() {
         return commissionerNum;
     }

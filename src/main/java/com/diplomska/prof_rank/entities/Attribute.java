@@ -26,6 +26,7 @@ public class Attribute {
         this.id = id;
     }
 
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -34,6 +35,7 @@ public class Attribute {
         this.name = name;
     }
 
+    @Column(name = "input_type")
     public String getInputType() {
         return inputType;
     }

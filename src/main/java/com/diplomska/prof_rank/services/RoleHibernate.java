@@ -1,7 +1,6 @@
 package com.diplomska.prof_rank.services;
 
 import com.diplomska.prof_rank.entities.Role;
-import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -17,7 +16,6 @@ public class RoleHibernate {
     @Inject
     Session session;
 
-    @CommitAfter
     public void store(Role role) {
         if (role == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -30,7 +28,6 @@ public class RoleHibernate {
         return session.createCriteria(Role.class).list();
     }
 
-    @CommitAfter
     public void update(Role role) {
         if (role == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
@@ -39,7 +36,6 @@ public class RoleHibernate {
         session.update(role);
     }
 
-    @CommitAfter
     public void delete(Role role) {
         if (role == null) {
             throw new IllegalArgumentException("Cannot remove null value.");

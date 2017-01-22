@@ -92,9 +92,11 @@ public class Index {
     @Inject
     ReferenceHibernate referenceHibernate;
 
+    // todo remove hardcoded commands
     void readScholar() throws Exception{
         String command = "py scholar.py --author \"vangel ajanovski\"";
 
+        // todo make it work for linux
         ProcessBuilder builder = new ProcessBuilder(
                 "cmd.exe", "/c", command);
         builder.redirectErrorStream(true);
@@ -134,7 +136,8 @@ public class Index {
 
             for (String name: allDisplayNames) {
                 if (name.startsWith(title)) {
-                    allDisplayNames.remove(result);
+                    // todo see why it doesn't filter papers alredy written to db.
+                    allScholarResults.remove(result);
                     break;
                 }
             }
@@ -166,7 +169,7 @@ public class Index {
     }
 
     List<String> filterScholarResultsByTitle(String title) {
-        if (title == null || title == ""){
+        if (title == null || title.equals("")){
             return new ArrayList<String>();
         }
 

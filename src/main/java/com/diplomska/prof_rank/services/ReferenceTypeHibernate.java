@@ -2,7 +2,6 @@ package com.diplomska.prof_rank.services;
 
 import com.diplomska.prof_rank.entities.*;
 import mk.ukim.finki.isis.model.entities.Person;
-import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -28,13 +27,12 @@ public class ReferenceTypeHibernate {
     @Inject
     PersonHibernate personHibernate;
 
-    @CommitAfter
     public void store(ReferenceType referenceType) {
         if (referenceType == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
         }
 
-        session.persist(referenceType);
+        session.save(referenceType);
     }
 
     public List<ReferenceType> getAll() {
@@ -185,7 +183,6 @@ public class ReferenceTypeHibernate {
         return sortedMap;
     }
 
-    @CommitAfter
     public void update(ReferenceType referenceType) {
         if (referenceType == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
@@ -194,7 +191,6 @@ public class ReferenceTypeHibernate {
         session.update(referenceType);
     }
 
-    @CommitAfter
     public void delete(ReferenceType referenceType) {
         if (referenceType == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
@@ -243,7 +239,6 @@ public class ReferenceTypeHibernate {
         return sections;
     }
 
-    @CommitAfter
     public void setSection(ReferenceType referenceType, RulebookSection rulebookSection) {
         if (referenceType == null || rulebookSection == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -256,7 +251,6 @@ public class ReferenceTypeHibernate {
         session.persist(referenceTypeRulebookSection);
     }
 
-    @CommitAfter
     public void deleteSection(ReferenceType referenceType, RulebookSection rulebookSection) {
         if (referenceType == null || rulebookSection == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -390,6 +384,8 @@ public class ReferenceTypeHibernate {
         if (referenceType == null || attribute == null) {
             throw new IllegalArgumentException("Cannot filter by null value.");
         }
+
+        attribute = (Attribute) session.createCriteria(Attribute.class).add(eq("id", attribute.getId())).list().get(0);
 
         AttributeReferenceType attributeReferenceType = getOrCreateAttributeReferenceType(referenceType, attribute);
 

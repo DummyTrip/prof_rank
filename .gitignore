@@ -22,3 +22,5 @@ build/
 env-config/
 
 *.pyc
+
+seed.sql

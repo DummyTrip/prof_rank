@@ -17,7 +17,6 @@ public class AttributeHibernate {
     @Inject
     Session session;
 
-    @CommitAfter
     public void store(Attribute attribute) {
         if (attribute == null) {
             throw new IllegalArgumentException("Cannot persist null value.");
@@ -30,7 +29,6 @@ public class AttributeHibernate {
         return session.createCriteria(Attribute.class).list();
     }
 
-    @CommitAfter
     public void update(Attribute attribute) {
         if (attribute == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
@@ -39,7 +37,6 @@ public class AttributeHibernate {
         session.update(attribute);
     }
 
-    @CommitAfter
     public void delete(Attribute attribute) {
         if (attribute == null) {
             throw new IllegalArgumentException("Cannot remove null value.");
