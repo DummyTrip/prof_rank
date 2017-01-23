@@ -1,0 +1,102 @@
+<html t:type="layout" title="EduBio Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+    <t:if test="popularReferenceTypesForPersonNull">
+        <div class="row">
+            <h3>Вашите најпопуларни референци</h3>
+
+            <t:loop source="popularReferenceTypesForPerson" value="referenceType">
+                <t:delegate to="block:referenceForPersonElement"/>
+            </t:loop>
+
+        </div>
+
+        <t:if test="popularReferenceTypesNull">
+            <div class="row">
+                <h3>Најпопуларни</h3>
+
+                <t:loop source="popularReferenceTypes" value="referenceType">
+                    <t:delegate to="block:referenceElement"/>
+                </t:loop>
+
+            </div>
+        </t:if>
+
+        <p:else>
+            <t:delegate to="block:emptyBiographyBlock"/>
+        </p:else>
+    </t:if>
+
+    <t:block id="referenceForPersonElement">
+        <div class="col-md-4 no-padding-left">
+            <div class="div-shadow white-background ref-box-padding">
+                <div class="col-md-10 no-padding-left">
+                    <h4 class="truncate no-margin-top">${referenceType.getName()}</h4>
+                </div>
+                <div class="col-md-2">
+                    <b>${numberOfReferencesForPerson}</b>
+                </div>
+                <div class="row ref-info-row-padding">
+                    <div class="col-md-12">
+                        <div>${section.getName()}</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <t:pagelink page="reference/showreference" context="referenceType.id" class="btn btn-default">
+                            <i class="fa fa-list ref-box-icon-size" aria-hidden="true"></i> Прикажи
+                        </t:pagelink>
+                    </div>
+                    <div class="col-md-4">
+                        <t:pagelink page="reference/createreference" context="referenceType.id" class="btn btn-default">
+                            <i class="fa fa-plus-square-o ref-box-icon-size" aria-hidden="true"/> Додај
+                        </t:pagelink>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t:block>
+
+
+    <t:block id="referenceElement">
+        <div class="col-md-4 no-padding-left">
+            <div class="div-shadow white-background ref-box-padding">
+                <div class="col-md-10 no-padding-left">
+                    <h4 class="truncate no-margin-top">${referenceType.getName()}</h4>
+                </div>
+                <div class="col-md-2">
+                    <b>${numberOfReferences}</b>
+                </div>
+                <div class="row ref-info-row-padding">
+                    <div class="col-md-12">
+                        <div>${section.getName()}</div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-md-8">
+                        <t:pagelink page="reference/showreference" context="referenceType.id" class="btn btn-default">
+                            <i class="fa fa-list ref-box-icon-size" aria-hidden="true"></i> Прикажи
+                        </t:pagelink>
+                    </div>
+                    <div class="col-md-4">
+                        <t:pagelink page="reference/createreference" context="referenceType.id" class="btn btn-default">
+                            <i class="fa fa-plus-square-o ref-box-icon-size" aria-hidden="true"/> Додај
+                        </t:pagelink>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t:block>
+
+    <t:block t:id="emptyBiographyBlock">
+        <t:form>
+            <t:errors/>
+            <h4>Додади биографија преку Excel фајл</h4>
+            <input t:type="upload" t:id="file" t:value="file" validate="required"/>
+            <br/>
+            <input type="submit" class="btn btn-primary" value="Додади"/>
+        </t:form>
+    </t:block>
+
+</html>

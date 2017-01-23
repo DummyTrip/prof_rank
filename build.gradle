@@ -1,4 +1,4 @@
-description = "prof_rank application"
+description = "EduBio application"
 
 apply plugin: "war"
 apply plugin: "java"

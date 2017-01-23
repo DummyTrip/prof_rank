@@ -4,14 +4,14 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
     version="2.4">
 
-    <display-name>prof_rank Tapestry 5 Application</display-name>
+    <display-name>EduBio</display-name>
     <context-param>
         <!--
         The only significant configuration for Tapestry 5, this informs Tapestry
         of where to look for pages, components and mixins.
         -->
         <param-name>tapestry.app-package</param-name>
-        <param-value>com.diplomska.prof_rank</param-value>
+        <param-value>mk.ukim.finki.isis.edubio</param-value>
     </context-param>
 
     <!--
@@ -22,13 +22,13 @@
     <context-param>
         <param-name>tapestry.development-modules</param-name>
         <param-value>
-            com.diplomska.prof_rank.services.DevelopmentModule
+            mk.ukim.finki.isis.edubio.services.DevelopmentModule
         </param-value>
     </context-param>
     <context-param>
         <param-name>tapestry.qa-modules</param-name>
         <param-value>
-            com.diplomska.prof_rank.services.QaModule
+            mk.ukim.finki.isis.edubio.services.QaModule
         </param-value>
     </context-param>
 
@@ -50,12 +50,12 @@
     </context-param>
     <context-param>
         <param-name>service</param-name>
-        <param-value>${app.server}/prof_rank</param-value>
+        <param-value>${app.server}/edubio</param-value>
     </context-param>
 
     <filter>
         <filter-name>encodingFilter</filter-name>
-        <filter-class>com.diplomska.prof_rank.util.UTF8Filter</filter-class>
+        <filter-class>mk.ukim.finki.isis.edubio.util.UTF8Filter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>encodingFilter</filter-name>

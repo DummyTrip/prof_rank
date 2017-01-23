@@ -1,0 +1,104 @@
+package mk.ukim.finki.isis.edubio.pages.Report;
+
+import mk.ukim.finki.isis.edubio.entities.Report;
+import mk.ukim.finki.isis.edubio.model.UserInfo;
+import mk.ukim.finki.isis.edubio.services.PersonHibernate;
+import mk.ukim.finki.isis.edubio.services.ReportHibernate;
+import org.apache.tapestry5.Link;
+import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.PageRenderLinkSource;
+
+import java.util.*;
+
+/**
+ * Created by Aleksandar on 31-Oct-16.
+ */
+public class Index {
+    @Property
+    List<Report> reports;
+
+    @Property
+    Report report;
+
+    @Inject
+    ReportHibernate reportHibernate;
+
+    @Inject
+    PersonHibernate personHibernate;
+
+    @Property
+    String reportName;
+
+    @ActivationRequestParameter(value = "title")
+    String reportNameQueryString;
+
+    @Inject
+    PageRenderLinkSource pageRenderLinkSource;
+
+    @Persist
+    @Property
+    Date startDate;
+
+    @Persist
+    @Property
+    Date endDate;
+
+    @SessionState
+    UserInfo userInfo;
+
+    public void setupRender() {
+        if (reportNameQueryString != null) {
+            reportName = reportNameQueryString;
+            reports = reportHibernate.getByColumn("title", reportNameQueryString);
+        }
+
+        if (startDate != null || endDate != null) {
+            // this is correct
+            reports = personHibernate.getReports(userInfo.getPerson(), startDate, endDate);
+            // this is not correct. temp code.
+//            reports = reportHibernate.getAll();
+        }
+
+        if (reports == null) {
+            reports = reportHibernate.getAll();
+        }
+    }
+
+    public List<String> onProvideCompletionsFromSearchName(String partial) {
+        List<String> matches = new ArrayList<String>();
+        partial = partial.toUpperCase();
+
+        for (Report report: reportHibernate.getAll()) {
+            String title = report.getTitle();
+            if (title.toUpperCase().startsWith(partial)) {
+                matches.add(title);
+            }
+        }
+
+        return matches;
+    }
+
+    public Object onSuccessFromForm() {
+        Link link = this.set(reportName);
+
+        return link;
+    }
+
+    public Link set(String reportName) {
+        this.reportNameQueryString = reportName;
+
+        return pageRenderLinkSource.createPageRenderLink(this.getClass());
+    }
+
+    @OnEvent(component = "filter", value = "selected")
+    public Object filterReports() {
+        return this;
+    }
+
+    public void onActionFromResetFilter() {
+        startDate = null;
+        endDate = null;
+        reportNameQueryString = null;
+    }
+}

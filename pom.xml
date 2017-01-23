@@ -1,11 +1,11 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.diplomska</groupId>
-    <artifactId>prof_rank</artifactId>
+    <groupId>mk.ukim.finki.isis</groupId>
+    <artifactId>edubio</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>prof_rank Tapestry 5 Application</name>
+    <name>EduBio</name>
 
     <profiles>
 
@@ -181,7 +181,7 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
 
     </dependencies>
     <build>
-        <finalName>prof_rank</finalName>
+        <finalName>edubio</finalName>
 
         <resources>
             <resource>

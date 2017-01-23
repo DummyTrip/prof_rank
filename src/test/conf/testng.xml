@@ -1,8 +1,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="prof_rank Application Test Suite" annotations="1.5">
+<suite name="EduBio Application Test Suite" annotations="1.5">
     <test name="Unit Tests">
         <packages>
-            <package name="com.diplomska.prof_rank"/>
+            <package name="mk.ukim.finki.isis.edubio"/>
         </packages>
     </test>
 </suite>
