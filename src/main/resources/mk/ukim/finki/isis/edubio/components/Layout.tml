@@ -74,7 +74,7 @@
     <hr />
 
     <footer>
-        <p>&copy; Your Company 2015</p>
+        <p>&copy; EduBio ${year}</p>
     </footer>
 
 </div> <!-- /container -->

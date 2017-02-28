@@ -2,14 +2,13 @@ package mk.ukim.finki.isis.edubio.pages.Scholar;
 
 import mk.ukim.finki.isis.edubio.annotations.InstructorPage;
 import mk.ukim.finki.isis.edubio.entities.ReferenceType;
+import mk.ukim.finki.isis.edubio.model.UserInfo;
 import mk.ukim.finki.isis.edubio.pages.Reference.CreateReference;
 import mk.ukim.finki.isis.edubio.services.ReferenceHibernate;
 import mk.ukim.finki.isis.edubio.services.ReferenceTypeHibernate;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.Link;
-import org.apache.tapestry5.annotations.ActivationRequestParameter;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 
@@ -22,6 +21,8 @@ import java.util.*;
  */
 @InstructorPage
 public class Index {
+    @SessionState
+    private UserInfo userInfo;
 
     @Persist
     @Property
@@ -52,11 +53,13 @@ public class Index {
         }
 
 //        filtersQueryString = null;
-        if (filtersQueryString != null) {
+        if (StringUtils.isNotBlank(filtersQueryString)) {
             scholarResults = filterScholarResults(filterMap);
         }
 
-        if (allScholarResults == null) {
+        System.err.println("test");
+
+        if (allScholarResults == null || allScholarResults.isEmpty()) {
             allScholarResults = new ArrayList<String>();
             scholarResults = new ArrayList<String>();
 
@@ -67,7 +70,7 @@ public class Index {
             searchScholarResult = "";
         }
 
-        if (scholarResultTitleQueryString != null) {
+        if (StringUtils.isNotBlank(scholarResultTitleQueryString)) {
             scholarResults = filterScholarResultsByTitle(scholarResultTitleQueryString);
 
             if (scholarResults.size() == 0) {
@@ -93,7 +96,9 @@ public class Index {
 
     // todo remove hardcoded commands
     void readScholar() throws Exception{
-        String command = "py scholar.py --author \"vangel ajanovski\"";
+        String firstName = userInfo.getPerson().getFirstName();
+        String lastName = userInfo.getPerson().getLastName();
+        String command = "python scholar.py --author \"" + firstName + " " + lastName + "\"";
 
         // todo make it work for linux
         ProcessBuilder builder = new ProcessBuilder(
@@ -126,7 +131,11 @@ public class Index {
 
         List<String> allDisplayNames = referenceHibernate.getAllDisplayNames();
 
-        for (String result: allScholarResults) {
+        Iterator<String> iter = allScholarResults.iterator();
+
+        while (iter.hasNext()) {
+            String result = iter.next();
+
             String title = result;
             String[] splitResult = result.split(", ");
             if (splitResult.length > 1) {
@@ -136,7 +145,7 @@ public class Index {
             for (String name: allDisplayNames) {
                 if (name.startsWith(title)) {
                     // todo see why it doesn't filter papers alredy written to db.
-                    allScholarResults.remove(result);
+                    iter.remove();
                     break;
                 }
             }

@@ -6,11 +6,13 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 
 import java.util.*;
 
 import static org.hibernate.criterion.Restrictions.eq;
+import static org.hibernate.criterion.Restrictions.ilike;
 
 /**
  * Created by Aleksandar on 27.09.2016.
@@ -233,7 +235,7 @@ public class ReferenceHibernate {
 
         for (String key : filterMap.keySet()) {
             criteria.add(eq("attribute.name", key));
-            criteria.add(eq("ari.value", filterMap.get(key)));
+            criteria.add(ilike("ari.value", filterMap.get(key), MatchMode.ANYWHERE));
         }
 
         criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);

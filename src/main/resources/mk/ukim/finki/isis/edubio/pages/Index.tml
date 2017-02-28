@@ -4,28 +4,34 @@
 
     <t:if test="popularReferenceTypesForPersonNull">
         <div class="row">
-            <h3>Вашите најпопуларни референци</h3>
+            <div class="col-sm-12">
+                <h3>Вашите најпопуларни референци</h3>
 
-            <t:loop source="popularReferenceTypesForPerson" value="referenceType">
-                <t:delegate to="block:referenceForPersonElement"/>
-            </t:loop>
+                <t:loop source="popularReferenceTypesForPerson" value="referenceType">
+                    <t:delegate to="block:referenceForPersonElement"/>
+                </t:loop>
 
+            </div>
         </div>
-
-        <t:if test="popularReferenceTypesNull">
+        <p:else>
             <div class="row">
+                <div class="col-sm-12">
+                    <t:delegate to="block:emptyBiographyBlock"/>
+                </div>
+            </div>
+        </p:else>
+    </t:if>
+
+    <t:if test="popularReferenceTypesNull">
+        <div class="row">
+            <div class="col-sm-12">
                 <h3>Најпопуларни</h3>
 
                 <t:loop source="popularReferenceTypes" value="referenceType">
                     <t:delegate to="block:referenceElement"/>
                 </t:loop>
-
             </div>
-        </t:if>
-
-        <p:else>
-            <t:delegate to="block:emptyBiographyBlock"/>
-        </p:else>
+        </div>
     </t:if>
 
     <t:block id="referenceForPersonElement">
@@ -92,10 +98,22 @@
     <t:block t:id="emptyBiographyBlock">
         <t:form>
             <t:errors/>
-            <h4>Додади биографија преку Excel фајл</h4>
-            <input t:type="upload" t:id="file" t:value="file" validate="required"/>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3>Додади биографија преку Excel фајл</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <input t:type="upload" t:id="file" t:value="file" validate="required"/>
+                </div>
+            </div>
             <br/>
-            <input type="submit" class="btn btn-primary" value="Додади"/>
+            <div class="row">
+                <div class="col-sm-12">
+                    <input type="submit" class="btn btn-primary" value="Додади"/>
+                </div>
+            </div>
         </t:form>
     </t:block>
 

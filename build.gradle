@@ -40,8 +40,8 @@ sourceSets {
     main {
         compileClasspath += [configurations.provided]
         // To give the same path as IDEA has
-        // output.resourcesDir = 'build/production/prof_rank'
-        // output.classesDir = 'build/production/prof_rank'
+        // output.resourcesDir = 'build/production/edubio'
+        // output.classesDir = 'build/production/edubio'
     }
     test {
         compileClasspath += [configurations.provided]

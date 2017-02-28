@@ -13,6 +13,11 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 
 /**
  * Layout component for pages of application test-project.
@@ -85,4 +90,8 @@ public class Layout
         return new URL(AppConfig.getString("cas.server")+"/cas/logout?service="+AppConfig.getString("app.server")+"/");
     }
 
+    public String getYear() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy");
+        return dateFormat.format(new Date());
+    }
 }

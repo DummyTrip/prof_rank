@@ -75,7 +75,7 @@
 <t:block id="referenceTypeElement">
 
     <t:pagelink page="reference/showreference" context="referenceType.id">
-        <!--<div class="row div-shadow white-background ref-list-padding" onclick="location.href='/prof_rank/reference/showreference/${referenceType.id}'">-->
+        <!--<div class="row div-shadow white-background ref-list-padding" onclick="location.href='/edubio/reference/showreference/${referenceType.id}'">-->
         <div class="row div-shadow white-background ref-list-padding">
 
             <div class="col-md-11">

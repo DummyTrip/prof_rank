@@ -4,8 +4,10 @@ import mk.ukim.finki.isis.edubio.annotations.InstructorPage;
 import mk.ukim.finki.isis.edubio.entities.Attribute;
 import mk.ukim.finki.isis.edubio.entities.ReferenceType;
 import mk.ukim.finki.isis.edubio.entities.Reference;
+import mk.ukim.finki.isis.edubio.model.UserInfo;
 import mk.ukim.finki.isis.edubio.services.*;
 import mk.ukim.finki.isis.model.entities.Person;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.*;
@@ -30,6 +32,9 @@ import java.util.*;
  */
 @InstructorPage
 public class CreateReference {
+    @SessionState
+    private UserInfo userInfo;
+
     @Persist
     @Property
     private Long referenceTypeId;
@@ -421,7 +426,11 @@ public class CreateReference {
     }
 
     void readScholarBibtex() throws Exception{
-        String command = "py scholar.py -c 1 --author \"vangel ajanovski\" --citation bt --phrase " + phrase;
+        String firstName = userInfo.getPerson().getFirstName();
+        String lastName = userInfo.getPerson().getLastName();
+        String command = "python scholar.py -c 1 --author \"" + firstName + " " + lastName + "\" --citation bt ";
+        if (StringUtils.isNotBlank(phrase))
+            command += "--phrase " + phrase;
 
         ProcessBuilder builder = new ProcessBuilder(
                 "cmd.exe", "/c", command);
